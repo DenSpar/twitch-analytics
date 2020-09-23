@@ -1,34 +1,5 @@
 var api = require('twitch-api-v5');
-
 api.clientID = '08i240lntql615wx8iozx8rq23krxr';
-
-//пример
-// api.users.userByID({ userID: '12826' }, (err, res) => {
-//   if(err) {
-//     console.log(err);
-//   } else {
-//     console.log('test: userByID', res);
-//     /* Example response
-//       {
-//         display_name: 'Twitch',
-//         _id: '12826',
-//         name: 'twitch',
-//         type: 'user',
-//         ...
-//       }
-//     */
-//   }
-// });
-
-
-// api.search.channels({ query: 'Domontovich' }, (err, res) => {
-//     // поиск каналов по имени
-//     if(err) {
-//         console.log(err);
-//     } else {
-//         console.log('search.channel', res);
-//     }
-// });
 
 let getChannelByID = (numID, obj) => {
     return new Promise((resolve, reject) => {
@@ -37,6 +8,7 @@ let getChannelByID = (numID, obj) => {
             if(err) {
                 console.log(err);
             } else {
+                // console.log('channel', res);
                 obj.id = res._id;
                 obj.name = res.display_name;
                 obj.logo = res.logo;
@@ -54,6 +26,7 @@ let getStreamsChannelByID = (numID, obj) => {
             if(err) {
                 console.log(err);
             } else {
+                // console.log('stream', res);
                 obj.stream = res.stream;
                 resolve()
             };
@@ -68,6 +41,7 @@ let getChannelsVideoByID = (numID, obj) => {
             if(err) {
                 console.log(err);
             } else {
+                // console.log('videos', res);
                 obj.videos = res.videos;
                 obj.totalVideos = res._total;
                 resolve()
@@ -89,13 +63,59 @@ let getStreamer = (numID) => {
     .catch(err => console.log(err));
 };
 
-let getList = (channelsID) => {
-    return new Promise ((resolve, reject) => {
-        Promise.all(
-            channelsID.map(channelID => (getStreamer(channelID)))
-        )
-        .then((channelsArr) => resolve(channelsArr));
-    });
+let getStreamersbyTeam = (team) => {
+    return new Promise((resolve, reject) => {
+        api.teams.getTeam({ team: team }, (err, res) => {
+            // поиск team по имени
+            if(err) {
+                console.log(err);
+            } else {
+                let streamers = [];
+                res.users.map((streamer) => {
+                    let streamerOBJ = {
+                        name: streamer.display_name,
+                        id: streamer._id
+                    };
+                    streamers.push(streamerOBJ);
+                    resolve(streamers);
+                    return null
+                });
+                //console.log('team, srcData:', res, 'streamers: ', streamers);
+            }
+        });
+    })
 };
+
+let filterDeadChannels = (channels) => {
+    let onlyUndead = [];
+    channels.map(channel => {
+        if (
+            channel.name !== undefined 
+            && channel.logo !== undefined 
+            && channel.id !== undefined
+            && channel.followers !== undefined 
+            ) {
+            onlyUndead.push(channel);
+        }
+        return null
+    })
+    return onlyUndead
+};
+
+let getList = () => (
+    new Promise ((resolveList, reject) => (
+        getStreamersbyTeam ('streamersalliance')
+        .then(teamData => (
+            new Promise ((resolve, reject) => {
+                Promise.all(
+                    teamData.map(channel => (getStreamer(channel.id)))
+                )
+                .then(channelsData => resolve(channelsData))
+            })
+        ))
+        .then(allChannelsArr => filterDeadChannels(allChannelsArr))
+        .then(onlyLiveChannels => resolveList(onlyLiveChannels))
+    ))
+);
 
 export default getList;

@@ -3,14 +3,16 @@ import './App.css';
 import Table from 'components/table/Table';
 import getList from 'js/getList';
 
-let channelsArr = [70075625, 83597658, 142022455, 92202465];
+//delete after
+import getStat from 'js/getStat';
+getStat();
 
 function App() {
   const [tableState, setTableState] = useState([]);
 
   let btnHandler = () => {
-    getList(channelsArr)
-    .then(dataArr => {;setTableState(dataArr)});
+    getList()
+    .then(dataArr => setTableState(dataArr));
   };
 
   if (tableState.length === 0) {
