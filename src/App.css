@@ -9,3 +9,11 @@
   padding-bottom: 7px;
   margin: 0 auto 10px
 }
+
+.btn_getData {
+  background-size: cover;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+}

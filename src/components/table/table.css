@@ -10,8 +10,28 @@
     padding: 1px 6px;
 }
 
+.table_nameContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.table_name {
+    margin: auto 5px;
+}
+
 .table_img {
     max-width: 40px;
     max-height: 40px;
     border-radius: 50%;
+    margin: 10px 5px;
+}
+
+.table_onAir {
+    font-size: 14px;
+    color: white;
+    font: bold;
+    background-color: red;
+    border-radius: 4px;
+    padding: 0 3px;
 }

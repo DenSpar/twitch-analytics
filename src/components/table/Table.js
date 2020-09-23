@@ -6,13 +6,12 @@ import './table.css';
 const OnAir = ({stream}) => {
   if (stream) {
     return(
-      <span className="onAir" >В ЭФИРЕ</span>
+      <span className="table_onAir" >В ЭФИРЕ</span>
     )
   } else {return null}
 };
 
 const Table = ({streamers}) => {
-    console.log('table begin');
     return(
       <table className="table">
         <thead>
@@ -26,9 +25,9 @@ const Table = ({streamers}) => {
           {streamers.map((streamer, num) => (
             <tr key={num}>
               <td className="table_cell">
-                <div className="flex">
+                <div className="table_nameContainer">
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
-                  <p>{streamer.name}</p>
+                  <p className="table_name">{streamer.name}</p>
                   <OnAir stream={streamer.stream}/>
                 </div>
               </td>

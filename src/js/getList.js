@@ -21,7 +21,7 @@ api.clientID = '08i240lntql615wx8iozx8rq23krxr';
 // });
 
 
-// api.search.channels({ query: 'godrickshow' }, (err, res) => {
+// api.search.channels({ query: 'Domontovich' }, (err, res) => {
 //     // поиск каналов по имени
 //     if(err) {
 //         console.log(err);
@@ -97,7 +97,5 @@ let getList = (channelsID) => {
         .then((channelsArr) => resolve(channelsArr));
     });
 };
-
-//let getList = (numID) => {return getStreamer(numID)};
 
 export default getList;
