@@ -106,16 +106,14 @@ let getList = () => (
     new Promise ((resolveList, reject) => (
         getStreamersbyTeam ('streamersalliance')
         .then(teamData => (
-            new Promise ((resolve, reject) => {
-                Promise.all(
-                    teamData.map(channel => (getStreamer(channel.id)))
-                )
-                .then(channelsData => resolve(channelsData))
-            })
+            Promise.all(
+                teamData.map(channel => (getStreamer(channel.id)))
+            )
         ))
-        .then(allChannelsArr => filterDeadChannels(allChannelsArr))
-        .then(onlyLiveChannels => resolveList(onlyLiveChannels))
+        .then(allChannels => filterDeadChannels(allChannels))
+        .then(onlyLiveChannels => resolveList(onlyLiveChannels))        
     ))
+    .catch(err => console.log(err))
 );
 
 export default getList;
