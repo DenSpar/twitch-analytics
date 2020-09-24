@@ -10,7 +10,20 @@
   margin: 0 auto 10px
 }
 
-.btn_getData {
+.getData_container {
+  margin: auto;
+  width: max-content;
+  border: 2px solid green;
+  border-radius: 10px;
+  padding: 0 16px 16px;
+}
+
+.getData_head {
+  text-align: center;
+  font-size: 16px;
+}
+
+.getData_btn {
   background-size: cover;
   background-color: green;
   color: white;

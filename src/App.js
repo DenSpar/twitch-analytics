@@ -3,21 +3,26 @@ import './App.css';
 import Table from 'components/table/Table';
 import getList from 'js/getList';
 
-let channelsArr = [70075625, 83597658, 142022455, 92202465];
+//delete after
+import getStat from 'js/getStat';
+getStat();
 
 function App() {
   const [tableState, setTableState] = useState([]);
 
   let btnHandler = () => {
-    getList(channelsArr)
-    .then(dataArr => {;setTableState(dataArr)});
+    getList()
+    .then(dataArr => setTableState(dataArr));
   };
 
   if (tableState.length === 0) {
     return (
       <div className="App">
         <h1 className="serviceName">twitch-analytics</h1>
-        <button className="btn_getData" onClick={btnHandler}>Загрузить данные</button>
+        <div className="getData_container">
+          <p className="getData_head">Показать сримеров из команды "Streamers Alliance"</p>
+          <button className="getData_btn" onClick={btnHandler}>Загрузить данные</button>
+        </div>
       </div>
     )
   } else {
