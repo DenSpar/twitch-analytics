@@ -19,7 +19,10 @@ function App() {
     return (
       <div className="App">
         <h1 className="serviceName">twitch-analytics</h1>
-        <button className="btn_getData" onClick={btnHandler}>Загрузить данные</button>
+        <div className="getData_container">
+          <p className="getData_head">Показать сримеров из команды "Streamers Alliance"</p>
+          <button className="getData_btn" onClick={btnHandler}>Загрузить данные</button>
+        </div>
       </div>
     )
   } else {

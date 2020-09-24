@@ -10,6 +10,15 @@ api.clientID = '08i240lntql615wx8iozx8rq23krxr';
 //     }
 // });
 
+// api.channels.channelByID({ channelID: 111 }, (err, res) => {
+//     //поиск канала по номеру
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log('channelByID', res);
+//     };
+// })
+
 // api.teams.getTeam({ team: 'streamersalliance' }, (err, res) => {
 //     // поиск team по имени
 //     if(err) {
