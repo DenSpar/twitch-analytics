@@ -19,6 +19,7 @@ const Table = ({streamers}) => {
             <th className="table_cell">logo/name</th>
             <th className="table_cell">videos</th>
             <th className="table_cell">followers</th>
+            <th className="table_cell">views</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@ const Table = ({streamers}) => {
               </td>
               <td className="table_cell">{streamer.totalVideos}</td>
               <td className="table_cell">{streamer.followers}</td>
+              <td className="table_cell">{streamer.views}</td>
             </tr>
           ))}
         </tbody>
