@@ -103,7 +103,7 @@ let filterDeadChannels = (channels) => {
 };
 
 let getList = () => (
-    new Promise ((resolveList, reject) => (
+    new Promise ((resolve, reject) => (
         getStreamersbyTeam ('streamersalliance')
         .then(teamData => (
             Promise.all(
@@ -111,7 +111,7 @@ let getList = () => (
             )
         ))
         .then(allChannels => filterDeadChannels(allChannels))
-        .then(onlyLiveChannels => resolveList(onlyLiveChannels))        
+        .then(onlyLiveChannels => resolve(onlyLiveChannels))        
     ))
     .catch(err => console.log(err))
 );
