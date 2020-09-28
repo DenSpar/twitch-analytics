@@ -8,6 +8,30 @@ import Preloader from 'components/preloader/Preloader';
 import getStat from 'js/getStat';
 getStat();
 
+let splitInto3 = {
+  getFirstPart: (arr) => {
+    let firstPart = [];
+    for (let i = 0; i < Math.ceil(arr.length/3); i++) {
+      firstPart.push(arr[i])
+    };
+    return firstPart
+  },
+  getSecondPart: (arr) => {
+    let secondPart = [];
+    for (let i = Math.ceil(arr.length/3); i < Math.ceil(arr.length*2/3); i++) {
+      secondPart.push(arr[i])
+    };
+    return secondPart
+  },
+  getThirdPart: (arr) => {
+    let thirdPart = [];
+    for (let i = Math.ceil(arr.length*2/3); i < arr.length; i++) {
+      thirdPart.push(arr[i])
+    };
+    return thirdPart
+  }
+};
+
 function App() {
   const [tableState, setTableState] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,26 +41,6 @@ function App() {
     getList()
     .then(dataArr => setTableState(dataArr));
   };
-
-  // if (tableState.length === 0) {
-  //   return (
-  //     <div className="App">
-  //       <h1 className="serviceName">twitch-analytics</h1>
-  //       <div className="getData_container">
-  //         <p className="getData_head">Показать сримеров из команды "Streamers Alliance"</p>
-  //         <button className="getData_btn" onClick={btnHandler}>Загрузить данные</button>
-  //       </div>
-  //       {loading && <Preloader />}
-  //     </div>
-  //   )
-  // } else {
-  //   return (
-  //     <div className="App">
-  //       <h1 className="serviceName">twitch-analytics</h1>
-  //       <Table streamers={tableState} />
-  //     </div>
-  //   );
-  // };
   
   return (
     <div className="App">
@@ -50,7 +54,13 @@ function App() {
               </div>
               {loading && <Preloader />}
             </Fragment>
-          ) : <Table streamers={tableState} />
+          ) : (
+                <div className="flex">
+                  <Table streamers={splitInto3.getFirstPart(tableState)} />
+                  <Table streamers={splitInto3.getSecondPart(tableState)} />
+                  <Table streamers={splitInto3.getThirdPart(tableState)} />
+                </div>
+              )
         }
       </div>
   )
