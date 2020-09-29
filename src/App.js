@@ -3,6 +3,7 @@ import './App.css';
 import Table from 'components/table/Table';
 import getList from 'js/getList';
 import Preloader from 'components/preloader/Preloader';
+import SearchChannel from 'components/searchChannel/SearchChannel';
 
 //delete after
 import getStat from 'js/getStat';
@@ -35,35 +36,43 @@ let splitInto3 = {
 function App() {
   const [tableState, setTableState] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isAllianceLoaded, setIsAllianceLoaded] = useState(false);
 
   let btnHandler = () => {
     setLoading(true);
     getList()
-    .then(dataArr => setTableState(dataArr));
+    .then(dataArr => {
+      setTableState(dataArr);
+      setIsAllianceLoaded(true);
+      setLoading(true);
+    });
   };
   
   return (
     <div className="App">
         <h1 className="serviceName">twitch-analytics</h1>
-        {tableState.length === 0 ? 
-          (
+        <SearchChannel />
+        {!isAllianceLoaded && (
             <Fragment>
               <div className="getData_container">
                 <p className="getData_head">Показать сримеров из команды "Streamers Alliance"</p>
-                <button className="getData_btn" onClick={btnHandler}>Загрузить данные</button>
+                <button className="greenBtn" onClick={btnHandler}>Загрузить данные</button>
               </div>
               {loading && <Preloader />}
             </Fragment>
-          ) : (
-                <div className="flex">
-                  <Table streamers={splitInto3.getFirstPart(tableState)} />
-                  <Table streamers={splitInto3.getSecondPart(tableState)} />
-                  <Table streamers={splitInto3.getThirdPart(tableState)} />
-                </div>
-              )
+          )
+        }
+        {tableState.length !== 0 && (
+            <div className="flex">
+              <Table streamers={splitInto3.getFirstPart(tableState)} />
+              <Table streamers={splitInto3.getSecondPart(tableState)} />
+              <Table streamers={splitInto3.getThirdPart(tableState)} />
+            </div>
+          )
         }
       </div>
   )
 };
 
 export default App;
+

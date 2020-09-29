@@ -1,0 +1,18 @@
+.search_container {
+    margin: auto;
+    width: max-content;
+    border: 2px solid green;
+    border-radius: 10px;
+    padding: 0 16px 16px;
+  }
+  
+.search_head {
+text-align: center;
+font-size: 16px;
+}
+
+.search_input {
+    border: solid green 1px;
+    height: 29px;
+    box-sizing: border-box;
+}

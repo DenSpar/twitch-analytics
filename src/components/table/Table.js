@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import './table.css';
-
-//если не стримит - onAir: {stream: null}
 
 const OnAir = ({stream}) => {
   if (stream) {
@@ -11,8 +9,9 @@ const OnAir = ({stream}) => {
   } else {return null}
 };
 
-const Table = ({streamers}) => {
-    return(
+const Table = ({streamers}) => (
+  <Fragment>
+    {!streamers.length ? null : (
       <table className="table">
         <thead>
           <tr>
@@ -39,7 +38,8 @@ const Table = ({streamers}) => {
           ))}
         </tbody>
       </table>
-    )
-  };
+    )}
+  </Fragment>
+);
 
   export default Table;

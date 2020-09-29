@@ -11,7 +11,7 @@
 }
 
 .getData_container {
-  margin: auto;
+  margin: 10px auto;
   width: max-content;
   border: 2px solid green;
   border-radius: 10px;
@@ -21,12 +21,4 @@
 .getData_head {
   text-align: center;
   font-size: 16px;
-}
-
-.getData_btn {
-  background-size: cover;
-  background-color: green;
-  color: white;
-  border-radius: 5px;
-  padding: 5px;
 }

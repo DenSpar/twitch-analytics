@@ -15,3 +15,11 @@ code {
 .flex {
   display: flex;
 }
+
+.greenBtn {
+  background-size: cover;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
