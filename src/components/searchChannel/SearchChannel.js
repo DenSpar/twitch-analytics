@@ -13,7 +13,7 @@ let searchChannelByName = (name) => {
       if(err) {
           console.log(err);
       } else {
-          console.log('search', res);
+          // console.log('search', res);
           resolve(res);
       };
     });
@@ -24,6 +24,7 @@ const SearchChannel = () => {
     const [searchState, setSearchState] = useState([]);
     const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
+    // const [title, setTitle] = useState('');
 
     const submitHandler = (event) => {
       event.preventDefault();
@@ -32,11 +33,9 @@ const SearchChannel = () => {
         setLoading(true);
         searchChannelByName(value)
         .then(searchRes => {
-          console.log("find", searchRes);
           setSearchState(searchRes.channels);
         })
-        .then(data => {
-          console.log("after setState", data);
+        .then(() => {
           setLoading(false);
           setValue('');
         })
@@ -53,7 +52,7 @@ const SearchChannel = () => {
             <button className="greenBtn">Искать</button>
           </form>
         </div>
-        <Table streamers={searchState} />
+        <Table streamers={searchState} target={'search'}/>
         {loading && <Preloader />}
       </Fragment>
     )

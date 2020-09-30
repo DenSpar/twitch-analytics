@@ -4,6 +4,7 @@ import Table from 'components/table/Table';
 import getList from 'js/getList';
 import Preloader from 'components/preloader/Preloader';
 import SearchChannel from 'components/searchChannel/SearchChannel';
+import StreamersContext from 'streamersContext';
 
 //delete after
 import getStat from 'js/getStat';
@@ -34,22 +35,24 @@ let splitInto3 = {
 };
 
 function App() {
-  const [tableState, setTableState] = useState([]);
+  const [streamers, setStreamers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAllianceLoaded, setIsAllianceLoaded] = useState(false);
+  console.log("streamers", streamers);
 
   let btnHandler = () => {
     setLoading(true);
     getList()
     .then(dataArr => {
-      setTableState(dataArr);
+      setStreamers(dataArr);
       setIsAllianceLoaded(true);
       setLoading(true);
     });
   };
   
   return (
-    <div className="App">
+    <StreamersContext.Provider value={{ setStreamers }}>
+      <div className="App">
         <h1 className="serviceName">twitch-analytics</h1>
         <SearchChannel />
         {!isAllianceLoaded && (
@@ -62,15 +65,16 @@ function App() {
             </Fragment>
           )
         }
-        {tableState.length !== 0 && (
+        {streamers.length !== 0 && (
             <div className="flex">
-              <Table streamers={splitInto3.getFirstPart(tableState)} />
-              <Table streamers={splitInto3.getSecondPart(tableState)} />
-              <Table streamers={splitInto3.getThirdPart(tableState)} />
+              <Table streamers={splitInto3.getFirstPart(streamers)} />
+              <Table streamers={splitInto3.getSecondPart(streamers)} />
+              <Table streamers={splitInto3.getThirdPart(streamers)} />
             </div>
           )
         }
       </div>
+    </StreamersContext.Provider>
   )
 };
 
