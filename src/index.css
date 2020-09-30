@@ -20,6 +20,7 @@ code {
   background-size: cover;
   background-color: green;
   color: white;
-  border-radius: 5px;
-  padding: 5px;
+  padding: 5px;  
+  outline: none;
+  border: none;
 }

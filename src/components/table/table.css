@@ -38,11 +38,18 @@
 
 .buttonAdd {
     font-size: 24px;
-    color: white;
-    font: bold;
-    background-color:rgb(106, 106, 218);
+    font: bold;    
     border-radius: 50%;
     margin: 5px;
     padding: 0 7px;
     outline: none;
+    border: none;
+}
+.buttonAdd:hover {
+  background-color:rgb(106, 106, 218);  
+  color: white;
+}
+.buttonAdd:active {
+    background-color:rgb(17, 17, 104);  
+    color: white;
 }

@@ -21,10 +21,10 @@ let searchChannelByName = (name) => {
 };
 
 const SearchChannel = () => {
-    const [searchState, setSearchState] = useState([]);
+    const [searchState, setSearchState] = useState({channels:[]});
     const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
-    // const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('');
 
     const submitHandler = (event) => {
       event.preventDefault();
@@ -33,14 +33,28 @@ const SearchChannel = () => {
         setLoading(true);
         searchChannelByName(value)
         .then(searchRes => {
-          setSearchState(searchRes.channels);
+          console.log('searchRes', searchRes);
+          setSearchState(searchRes);
         })
         .then(() => {
           setLoading(false);
+          setTitle(value);
           setValue('');
         })
       };
     };
+
+    const clearSearchState = () => {
+      setSearchState({channels:[]});
+      setTitle('');
+    };
+
+    const SearchTableControlButtons = () => (
+      <div className="flex сontrolButtonsContainer">
+        <button className="сontrolButton">показать еще</button>
+        <button className="сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
+      </div>
+    );
 
     return (
       <Fragment>
@@ -49,11 +63,13 @@ const SearchChannel = () => {
           <form onSubmit={submitHandler}>
             <input className="search_input" placeholder="Введите название" value={value} 
             onChange={event => (setValue(event.target.value))} />
-            <button className="greenBtn">Искать</button>
+            <button className="greenBtn searchBtn">Искать</button>
           </form>
         </div>
-        <Table streamers={searchState} target={'search'}/>
+        {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
+        <Table streamers={searchState.channels} target={'search'}/>
         {loading && <Preloader />}
+        {title.trim() && <SearchTableControlButtons />}
       </Fragment>
     )
 };

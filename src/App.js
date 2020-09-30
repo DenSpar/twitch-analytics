@@ -66,7 +66,7 @@ function App() {
           )
         }
         {streamers.length !== 0 && (
-            <div className="flex">
+            <div className="flex mainTable">
               <Table streamers={splitInto3.getFirstPart(streamers)} />
               <Table streamers={splitInto3.getSecondPart(streamers)} />
               <Table streamers={splitInto3.getThirdPart(streamers)} />
