@@ -38,7 +38,7 @@ function App() {
   const [streamers, setStreamers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAllianceLoaded, setIsAllianceLoaded] = useState(false);
-  console.log("streamers", streamers);
+  // console.log("streamers", streamers);
 
   let btnHandler = () => {
     setLoading(true);
