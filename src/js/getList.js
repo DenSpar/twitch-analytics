@@ -14,6 +14,7 @@ let getChannelByID = (numID, obj) => {
                 obj.logo = res.logo;
                 obj.followers = res.followers;
                 obj.views = res.views;
+                obj.description = res.description;
                 resolve()
             };
         })

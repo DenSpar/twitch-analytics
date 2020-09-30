@@ -16,7 +16,10 @@ const Table = ({streamers}) => (
         <thead>
           <tr>
             <th className="table_cell">logo/name</th>
-            <th className="table_cell">videos</th>
+            <th className="table_cell">
+              {streamers[0].totalVideos ? "videos" : "description"}
+              
+            </th>
             <th className="table_cell">followers</th>
             <th className="table_cell">views</th>
           </tr>
@@ -31,7 +34,9 @@ const Table = ({streamers}) => (
                   <OnAir stream={streamer.stream}/>
                 </div>
               </td>
-              <td className="table_cell">{streamer.totalVideos}</td>
+              <td className="table_cell">
+                {streamer.totalVideos ? streamer.totalVideos : streamer.description}
+              </td>
               <td className="table_cell">{streamer.followers}</td>
               <td className="table_cell">{streamer.views}</td>
             </tr>
