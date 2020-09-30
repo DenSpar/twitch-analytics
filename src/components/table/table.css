@@ -1,7 +1,7 @@
 .table {
-    border: 1px solid black;
     border-collapse: collapse;    
     margin: 10px auto;
+    max-width: 70%;
 }
 
 .table_cell {
@@ -34,4 +34,22 @@
     border-radius: 4px;
     padding: 0 3px;
     margin: 5px;
+}
+
+.buttonAdd {
+    font-size: 24px;
+    font: bold;    
+    border-radius: 50%;
+    margin: 5px;
+    padding: 0 7px;
+    outline: none;
+    border: none;
+}
+.buttonAdd:hover {
+  background-color:rgb(106, 106, 218);  
+  color: white;
+}
+.buttonAdd:active {
+    background-color:rgb(17, 17, 104);  
+    color: white;
 }
