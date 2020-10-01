@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState } from 'react';
 import './table.css';
-import StreamersContext from 'streamersContext';
+import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
 
 const OnAir = ({stream}) => {
