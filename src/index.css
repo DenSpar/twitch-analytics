@@ -24,3 +24,11 @@ code {
   outline: none;
   border: none;
 }
+.greenBtn:hover {
+  background-color:darkgreen;  
+  color: white;
+}
+.greenBtn:active {
+    background-color:lightgreen;  
+    color: darkgreen;
+}

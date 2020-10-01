@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useState } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
+import {AlertContext} from 'context/alert/alertContext';
 
 const OnAir = ({stream}) => {
   if (stream) {
@@ -19,6 +20,7 @@ const Table = ({streamers, target = 'main'}) => {
   // eslint-disable-next-line
   const [tableFor, setTableFor] = useState(tableTarget);
   
+  const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
   const addChannel = (streamer) => {
     console.log(streamer.name, streamer._id);
@@ -29,6 +31,7 @@ const Table = ({streamers, target = 'main'}) => {
         ...prevState,
         newStreamer
       ]));
+      alert.show('Канал '+ (<strong>{newStreamer.name}</strong>) +' добавлен в основной стэк', 'success');
     });    
   };
 

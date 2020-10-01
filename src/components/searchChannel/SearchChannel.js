@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import Table from 'components/table/Table';
 import './searchChannel.css';
 import Preloader from 'components/preloader/Preloader';
+import {AlertContext} from 'context/alert/alertContext';
 
 var api = require('twitch-api-v5');
 api.clientID = '08i240lntql615wx8iozx8rq23krxr';
@@ -25,6 +26,7 @@ const SearchChannel = () => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [actualLimit, setActialLimit] = useState(10);
+  const alert = useContext(AlertContext);
 
   let searchChannel = (query, limit) => {
     setLoading(true);
@@ -46,7 +48,10 @@ const SearchChannel = () => {
     if (value.trim()) {
       setActialLimit(10);
       searchChannel(value);
-    };
+    } else {
+      setValue('');
+      alert.show('Введите название канала');
+    }
   };  
 
   const SearchTableControlButtons = () => {
