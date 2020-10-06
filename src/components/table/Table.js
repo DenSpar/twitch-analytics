@@ -31,7 +31,7 @@ const Table = ({streamers, target = 'main'}) => {
         ...prevState,
         newStreamer
       ]));
-      alert.show('Канал '+ (<strong>{newStreamer.name}</strong>) +' добавлен в основной стэк', 'success');
+      alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
     });    
   };
 
