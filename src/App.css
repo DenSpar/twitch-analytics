@@ -1,15 +1,14 @@
 .App {
-  text-align: center;
-}
-
-.appName {
-  background-size: cover;
-  background-color: green;
-  color: white;
-  padding-bottom: 7px;
-  margin: 0 auto;
+  margin: 70px 30px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  align-items: center;
 }
 
 .mainTable {
-  margin-top: 40px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

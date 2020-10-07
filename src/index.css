@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F2F4F4;
 }
 
 code {
@@ -16,19 +17,23 @@ code {
   display: flex;
 }
 
-.greenBtn {
-  background-size: cover;
-  background-color: green;
-  color: white;
-  padding: 5px;  
-  outline: none;
+.defaultBtn {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 25px;
+  text-align: center;
+  vertical-align: center;
+  background-color: #E2ECFF;
+  color: #5A8DEE;
   border: none;
 }
-.greenBtn:hover {
-  background-color:darkgreen;  
-  color: white;
+.defaultBtn:hover {
+  background-color: #5A8DEE;
+  color: #FFFFFF;
 }
-.greenBtn:active {
-    background-color:lightgreen;  
-    color: darkgreen;
+.defaultBtn:active {
+    background-color:lightgreen;
+    color: #FFFFFF;
 }

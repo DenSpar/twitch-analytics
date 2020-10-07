@@ -23,7 +23,7 @@ const isInTable = (newStreamer, tableState) => {
   return isIn;
 };
 
-const Table = ({streamers, target = 'main'}) => {
+const Table = ({streamers, border = '', target = 'main'}) => {
   let tableTarget = {};
   target === 'search' 
   ? tableTarget = {main: false, search: true} 
@@ -54,27 +54,28 @@ const Table = ({streamers, target = 'main'}) => {
   return(
     <Fragment>
       {!streamers.length ? null : (
-        <table className="table">
+        <table className={"table " + border}>
           <thead>
             <tr>
-              <th className="table_cell">logo/name</th>
-              <th className="table_cell">
+              <th className="table_cell headCell logoCollumn"></th>
+              <th className="table_cell headCell">name</th>
+              <th className="table_cell headCell">
                 {tableFor.main ? "videos" : "description"}
                 
               </th>
-              <th className="table_cell">followers</th>
-              <th className="table_cell">views</th>
+              <th className="table_cell headCell">followers</th>
+              <th className="table_cell headCell">views</th>
             </tr>
           </thead>
           <tbody>
             {streamers.map((streamer, num) => (
               <tr key={num}>
                 <td className="table_cell">
-                  <div className="table_nameContainer">
-                    <img className="table_img" src={streamer.logo} alt={streamer.name}/>
-                    <p className="table_name">{streamer.name}</p>
-                    <OnAir stream={streamer.stream}/>
-                  </div>
+                  <img className="table_img" src={streamer.logo} alt={streamer.name}/>
+                </td>
+                <td className="table_cell">
+                  <p className="table_name">{streamer.name}</p>
+                  <OnAir stream={streamer.stream}/>
                 </td>
                 <td className="table_cell">
                   {
