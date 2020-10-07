@@ -77,7 +77,15 @@ const Table = ({streamers, target = 'main'}) => {
                   </div>
                 </td>
                 <td className="table_cell">
-                  {tableFor.main ? streamer.totalVideos : streamer.description}
+                  {
+                    tableFor.main
+                    ? streamer.totalVideos
+                    : (
+                      streamer.description.trim()
+                      ? streamer.description
+                      : (<em>описание отсутсвует</em>)
+                      )
+                  }
                 </td>
                 <td className="table_cell">{streamer.followers}</td>
                 <td className="table_cell">{streamer.views}</td>
