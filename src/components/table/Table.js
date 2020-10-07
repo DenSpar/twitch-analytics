@@ -12,6 +12,17 @@ const OnAir = ({stream}) => {
   } else {return null}
 };
 
+const isInTable = (newStreamer, tableState) => {
+  let isIn = false;
+  for (let i = 0; i < tableState.length; i++) {
+    if (tableState[i].id === newStreamer.id) {
+      isIn = true;
+      break
+    };
+  };
+  return isIn;
+};
+
 const Table = ({streamers, target = 'main'}) => {
   let tableTarget = {};
   target === 'search' 
@@ -27,11 +38,16 @@ const Table = ({streamers, target = 'main'}) => {
     getStreamer(streamer._id)
     .then(newStreamer => {
       console.log("newStreamer", newStreamer);
-      setStreamers(prevState => ([
-        ...prevState,
-        newStreamer
-      ]));
-      alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
+      setStreamers(prevState => {
+        if (isInTable(newStreamer, prevState)) {
+          alert.show('Канал '+ newStreamer.name +' уже в основном стэке');
+          return (prevState);
+        } else {
+          alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
+          return [...prevState, newStreamer]
+        };
+      });
+      
     });    
   };
 
