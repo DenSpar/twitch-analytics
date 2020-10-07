@@ -9,14 +9,13 @@
   height: 25px;
   min-width: 350px;
   box-sizing: border-box;
-  border-radius: 5px 0 0 5px;
+  border-radius: 4px 0 0 4px;
   padding-left: 5px;    
   outline: none;
 }
 
 .searchBtn {
-  border-radius: 0 5px 5px 0;
-  border: none;
+  border-radius: 0 4px 4px 0;
   outline: none;
   height: 25px;
 }
@@ -29,4 +28,5 @@
 
 .сontrolButton {
   margin: 0 10px;
+  border-radius: 4px;
 }

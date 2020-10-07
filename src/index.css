@@ -21,10 +21,11 @@ code {
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 25px;
   text-align: center;
   vertical-align: center;
+  background-color: #E2ECFF;
   color: #5A8DEE;
   border: none;
 }

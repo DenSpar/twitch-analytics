@@ -18,8 +18,6 @@ export const AlertState = ({children}) => {
         }, 3000);
     };
 
-    
-
     return (
         <AlertContext.Provider value={{
             show, hide,
