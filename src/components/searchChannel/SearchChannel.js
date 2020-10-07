@@ -54,7 +54,7 @@ const SearchChannel = () => {
     }
   };  
 
-  const SearchTableControlButtons = () => {
+  const SearchTableControlButtons = ({howManyResults}) => {
     const showMoreChannels = () => {
       //т.к. в модуле для запросов нет пагинации, то новые результаты поиска буду получать увеличивая лимит
       searchChannel(title, actualLimit);
@@ -68,7 +68,10 @@ const SearchChannel = () => {
 
     return (
     <div className="flex сontrolButtonsContainer">
-      <button className="сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
+      {
+        howManyResults!==0 && 
+        <button className="сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
+      }
       <button className="сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
     </div>
   )};
@@ -86,7 +89,7 @@ const SearchChannel = () => {
       {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
       <Table streamers={searchState.channels} target={'search'}/>
       {loading && <Preloader />}
-      {title.trim() && <SearchTableControlButtons />}
+      {title.trim() && <SearchTableControlButtons howManyResults={searchState._total}/>}
     </Fragment>
   )
 };
