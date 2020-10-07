@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useState } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
+import {AlertContext} from 'context/alert/alertContext';
 
 const OnAir = ({stream}) => {
   if (stream) {
@@ -9,6 +10,17 @@ const OnAir = ({stream}) => {
       <span className="table_onAir" >В ЭФИРЕ</span>
     )
   } else {return null}
+};
+
+const isInTable = (newStreamer, tableState) => {
+  let isIn = false;
+  for (let i = 0; i < tableState.length; i++) {
+    if (tableState[i].id === newStreamer.id) {
+      isIn = true;
+      break
+    };
+  };
+  return isIn;
 };
 
 const Table = ({streamers, target = 'main'}) => {
@@ -19,16 +31,23 @@ const Table = ({streamers, target = 'main'}) => {
   // eslint-disable-next-line
   const [tableFor, setTableFor] = useState(tableTarget);
   
+  const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
   const addChannel = (streamer) => {
     console.log(streamer.name, streamer._id);
     getStreamer(streamer._id)
     .then(newStreamer => {
       console.log("newStreamer", newStreamer);
-      setStreamers(prevState => ([
-        ...prevState,
-        newStreamer
-      ]));
+      setStreamers(prevState => {
+        if (isInTable(newStreamer, prevState)) {
+          alert.show('Канал '+ newStreamer.name +' уже в основном стэке');
+          return (prevState);
+        } else {
+          alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
+          return [...prevState, newStreamer]
+        };
+      });
+      
     });    
   };
 

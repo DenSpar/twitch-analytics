@@ -1,0 +1,55 @@
+.alert_outerContainer {
+    position: sticky;
+    top: 0;    
+}
+
+.alert_innerContainer {
+    padding-left: 15px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.hideAlertBtn {
+    margin: auto 0;
+    margin-left: auto;
+    border-radius: 5px;
+    background: transparent;
+    font: bold;
+    font-size: 18px;
+    border-radius: 5px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    height: 26px;
+    width: 26px;
+}
+.hideAlertBtn:hover {
+    background-color: rgb(255, 60, 0);  
+    color: white;
+}
+
+.alert-success {
+    background-color: lightgreen;
+}
+
+.alert-warning {
+    background-color: rgb(255, 255, 138);
+}
+
+.alert-alarm {
+    background-color: rgb(233, 135, 152);
+}
+
+.alert-enter {
+    opacity: 0;
+}
+
+.alert-enter-active {
+    transition: opacity 750ms ease-out;
+    opacity: 1;
+}
+
+.alert-exit-active {
+    transition: opacity 750ms ease-out;
+    opacity: 0;
+}
