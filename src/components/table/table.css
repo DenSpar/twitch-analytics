@@ -1,19 +1,36 @@
 .table {
     border-collapse: collapse;    
-    margin: 10px auto;
+    margin: 10px 0;
     max-width: 70%;
+    min-width: 50%;
+}
+
+.border-left {
+    border-left: 0.5px solid #C7CFD6;
+}
+
+.border-right {
+    border-right: 0.5px solid #C7CFD6;
+}
+
+.headCell {
+    text-align: start;
+    border-bottom: 0.5px solid #C7CFD6;
+    border-top: 0.5px solid #C7CFD6;
+}
+
+.logoCollumn {
+    width: 62px;
 }
 
 .table_cell {
-    border: 1px solid black;
-    text-align: center;
-    padding: 1px 6px;
-}
-
-.table_nameContainer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 21px;
+    color: #727E8C;
+    padding: 5px 10px 5px;
 }
 
 .table_name {
@@ -23,7 +40,7 @@
 .table_img {
     max-height: 40px;
     border-radius: 50%;
-    margin: 5px;
+    margin: 0;
 }
 
 .table_onAir {
@@ -33,7 +50,6 @@
     background-color: red;
     border-radius: 4px;
     padding: 0 3px;
-    margin: 5px;
 }
 
 .buttonAdd {

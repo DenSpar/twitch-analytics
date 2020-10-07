@@ -1,11 +1,12 @@
 .alert_outerContainer {
     position: sticky;
-    top: 0;    
+    top: 0;
+    width: 100%;
 }
 
 .alert_innerContainer {
-    padding-left: 15px;
-    width: 70%;
+    width: 100%;
+    padding-left: 60px;
     margin: 0 auto;
 }
 

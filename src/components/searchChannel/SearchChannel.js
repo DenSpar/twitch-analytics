@@ -70,22 +70,19 @@ const SearchChannel = () => {
     <div className="flex сontrolButtonsContainer">
       {
         howManyResults!==0 && 
-        <button className="сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
+        <button className="defaultBtn сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
       }
-      <button className="сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
+      <button className="defaultBtn сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
     </div>
   )};
 
   return (
     <Fragment>
-      <div className="search_container">
-        <p className="search_head">Искать канал по названию</p>
-        <form onSubmit={submitHandler}>
-          <input className="search_input" placeholder="Введите название" value={value} 
-          onChange={event => (setValue(event.target.value))} />
-          <button className="greenBtn searchBtn">Искать</button>
-        </form>
-      </div>
+      <form className="search_container" onSubmit={submitHandler}>
+        <input className="search_input" placeholder="Искать канал по названию" value={value} 
+        onChange={event => (setValue(event.target.value))} />
+        <button className="defaultBtn searchBtn">Искать</button>
+      </form>
       {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
       <Table streamers={searchState.channels} target={'search'}/>
       {loading && <Preloader />}
