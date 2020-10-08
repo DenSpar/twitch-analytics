@@ -61,15 +61,15 @@ const Table = ({streamers, border = '', target = 'main'}) => {
               <th className="table_cell headCell">name</th>
               <th className="table_cell headCell">
                 {tableFor.main ? "videos" : "description"}
-                
               </th>
               <th className="table_cell headCell">followers</th>
               <th className="table_cell headCell">views</th>
+              {tableFor.search && (<th className="table_cell headCell"></th>)}
             </tr>
           </thead>
           <tbody>
             {streamers.map((streamer, num) => (
-              <tr key={num}>
+              <tr className="table_row" key={num}>
                 <td className="table_cell">
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
                 </td>

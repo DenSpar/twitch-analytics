@@ -7,7 +7,7 @@ import SearchChannel from 'components/searchChannel/SearchChannel';
 import StreamersContext from 'context/streamersContext';
 import Alert from 'components/alert/Alert';
 import {AlertState} from 'context/alert/AlertState';
-import splitInto2 from 'js/splitInto3';
+import splitInto2 from 'js/splitInto2';
 
 //delete after
 // import splitInto3 from 'js/splitInto3';
@@ -17,7 +17,6 @@ import splitInto2 from 'js/splitInto3';
 function App() {
   const [streamers, setStreamers] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log("streamers", streamers);
 
   useEffect(() => {
     setLoading(true);
@@ -31,7 +30,7 @@ function App() {
   return (
     <AlertState>
       <Alert />
-      <div className="App">        
+      <div className="App">
         <StreamersContext.Provider value={{ setStreamers }}>
           <SearchChannel />
           {loading && <Preloader />}

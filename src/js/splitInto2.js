@@ -11,6 +11,7 @@ export default {
       for (let i = Math.ceil(arr.length/2); i < arr.length; i++) {
         secondPart.push(arr[i])
       };
+      if (arr.length%2 === 1) {secondPart.push({})}
       return secondPart
     }
   };
