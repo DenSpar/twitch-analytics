@@ -19,6 +19,10 @@
     border-top: 0.5px solid #C7CFD6;
 }
 
+.table_row {
+    height: 56px;
+}
+
 .logoCollumn {
     width: 62px;
 }
