@@ -3,6 +3,7 @@ import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
 import {AlertContext} from 'context/alert/alertContext';
+import splitNumbers from 'js/splitNumbers';
 
 const OnAir = ({stream}) => {
   if (stream) {
@@ -24,6 +25,8 @@ const isInTable = (newStreamer, tableState) => {
 };
 
 const Table = ({streamers, border = '', target = 'main'}) => {
+  console.log(streamers);
+
   let tableTarget = {};
   target === 'search' 
   ? tableTarget = {main: false, search: true} 
@@ -88,8 +91,8 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                       )
                   }
                 </td>
-                <td className="table_cell">{streamer.followers}</td>
-                <td className="table_cell">{streamer.views}</td>
+                <td className="table_cell">{splitNumbers(streamer.followers)}</td>
+                <td className="table_cell">{splitNumbers(streamer.views)}</td>
                 {tableFor.search && (<td>
                   <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
                 </td>)}
