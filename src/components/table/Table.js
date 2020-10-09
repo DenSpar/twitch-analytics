@@ -81,21 +81,21 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                   <OnAir stream={streamer.stream}/>
                 </td>
                 <td className="table_cell">
-                  {
-                    tableFor.main
-                    ? streamer.totalVideos
-                    : (
-                      streamer.description.trim()
-                      ? streamer.description
-                      : (<em>описание отсутсвует</em>)
-                      )
-                  }
+                  {tableFor.main
+                  ? streamer.totalVideos
+                  : (
+                    streamer.description.trim()
+                    ? streamer.description
+                    : (<em>описание отсутсвует</em>)
+                  )}
                 </td>
                 <td className="table_cell">{splitNumbers(streamer.followers)}</td>
                 <td className="table_cell">{splitNumbers(streamer.views)}</td>
-                {tableFor.search && (<td>
-                  <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
-                </td>)}
+                {tableFor.search && (
+                  <td>
+                    <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
+                  </td>)
+                }
               </tr>
             ))}
           </tbody>
@@ -104,4 +104,4 @@ const Table = ({streamers, border = '', target = 'main'}) => {
     </Fragment>
 )};
 
-  export default Table;
+export default Table;
