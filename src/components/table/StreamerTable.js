@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import './table.css';
 import './streamerTable.css';
 import splitNumbers from 'js/splitNumbers';
+import dateConverter from 'js/dateConverter';
 
 const StreamerTable = ({videos}) => {
 return(
@@ -34,7 +35,7 @@ return(
                 <td className="table_cell"></td>
                 <td className="table_cell">{video.game}</td>
                 <td className="table_cell">{video.title}</td>
-                <td className="table_cell">{video.dates.published_at}</td>
+                <td className="table_cell">{dateConverter(video.dates.published_at)}</td>
                 <td className="table_cell">{splitNumbers(Math.round(video.views * 0.8))}</td>
                 <td className="table_cell">{splitNumbers(Math.round(video.views * 0.5))}</td>
                 <td className="table_cell">{splitNumbers(video.views)}</td>
