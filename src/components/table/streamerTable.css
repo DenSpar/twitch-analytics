@@ -5,3 +5,7 @@
 .lastStubCol {
     width: 25px;
 }
+
+.audienceCol {
+    text-align: end;
+}

@@ -15,7 +15,7 @@ return(
               <th className="table_cell headCell">Игра</th>
               <th className="table_cell headCell">Описание</th>
               <th className="table_cell headCell">Дата</th>
-              <th className="table_cell headCell_videoTable-last" colSpan="3">Зрителей</th>
+              <th className="table_cell audienceCol" colSpan="3">Зрителей</th>
               <th className="lastStubCol"></th>
             </tr>
             <tr>

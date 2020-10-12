@@ -4,14 +4,7 @@ import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
 import {AlertContext} from 'context/alert/alertContext';
 import splitNumbers from 'js/splitNumbers';
-
-const OnAir = ({stream}) => {
-  if (stream) {
-    return(
-      <span className="table_onAir" >В ЭФИРЕ</span>
-    )
-  } else {return null}
-};
+import OnAir from 'components/onAir/OnAir';
 
 const isInTable = (newStreamer, tableState) => {
   let isIn = false;

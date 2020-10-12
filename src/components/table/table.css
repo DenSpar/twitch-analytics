@@ -27,10 +27,6 @@
     text-align: start;
 }
 
-.headCell_videoTable-last {
-    text-align: end;
-}
-
 .table_row {
     height: 56px;
 }
@@ -57,15 +53,6 @@
     max-height: 40px;
     border-radius: 50%;
     margin: 0;
-}
-
-.table_onAir {
-    font-size: 14px;
-    color: white;
-    font: bold;
-    background-color: red;
-    border-radius: 4px;
-    padding: 0 3px;
 }
 
 .buttonAdd {
