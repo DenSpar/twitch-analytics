@@ -68,8 +68,7 @@ const SearchChannel = () => {
 
     return (
     <div className="flex сontrolButtonsContainer">
-      {
-        howManyResults!==0 && 
+      {howManyResults!==0 && 
         <button className="defaultBtn сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
       }
       <button className="defaultBtn сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
@@ -84,7 +83,9 @@ const SearchChannel = () => {
         <button className="defaultBtn searchBtn">Искать</button>
       </form>
       {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
-      <Table streamers={searchState.channels} target={'search'}/>
+      {searchState.channels.length !==0 &&
+        <Table streamers={searchState.channels} target={'search'} border={"searchTable"}/>
+      }
       {loading && <Preloader />}
       {title.trim() && <SearchTableControlButtons howManyResults={searchState._total}/>}
     </Fragment>

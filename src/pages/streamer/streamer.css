@@ -1,0 +1,36 @@
+.streamer_container {
+    margin-right: auto;
+}
+
+.streamerLogo {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+
+.streamerDescription_container {
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 21px;
+    color: #727E8C;
+}
+
+.streamerName {
+    text-align: center;
+}
+
+.streamerDescription {
+    margin: 0;
+}
+
+.tableTitle {
+    margin: 20px auto 40px 33px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: #475F7B;
+}

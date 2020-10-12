@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
@@ -27,12 +27,10 @@ const isInTable = (newStreamer, tableState) => {
 const Table = ({streamers, border = '', target = 'main'}) => {
   console.log(streamers);
 
-  let tableTarget = {};
+  let tableFor = {};
   target === 'search' 
-  ? tableTarget = {main: false, search: true} 
-  : tableTarget = {main: true, search: false}
-  // eslint-disable-next-line
-  const [tableFor, setTableFor] = useState(tableTarget);
+  ? tableFor = {main: false, search: true} 
+  : tableFor = {main: true, search: false}
   
   const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
@@ -50,7 +48,6 @@ const Table = ({streamers, border = '', target = 'main'}) => {
           return [...prevState, newStreamer]
         };
       });
-      
     });    
   };
 
@@ -58,15 +55,15 @@ const Table = ({streamers, border = '', target = 'main'}) => {
     <Fragment>
       {!streamers.length ? null : (
         <table className={"table " + border}>
-          <thead>
+          <thead className="headRow">
             <tr>
               <th className="table_cell headCell logoCollumn"></th>
-              <th className="table_cell headCell">name</th>
+              <th className="table_cell headCell">Никнейм</th>
               <th className="table_cell headCell">
-                {tableFor.main ? "videos" : "description"}
+                {tableFor.main ? "Видео" : "Описание"}
               </th>
-              <th className="table_cell headCell">followers</th>
-              <th className="table_cell headCell">views</th>
+              <th className="table_cell headCell">Подписчиков</th>
+              <th className="table_cell headCell">Просмотров</th>
               {tableFor.search && (<th className="table_cell headCell"></th>)}
             </tr>
           </thead>
@@ -94,8 +91,8 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                 {tableFor.search && (
                   <td>
                     <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
-                  </td>)
-                }
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

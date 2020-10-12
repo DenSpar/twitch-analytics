@@ -20,8 +20,8 @@ const Dashboard = () => {
         setLoading(true);
         getList()
         .then(dataArr => {
-        setStreamers(dataArr);
-        setLoading(false);
+            setStreamers(dataArr);
+            setLoading(false);
         });
     }, [])
 
