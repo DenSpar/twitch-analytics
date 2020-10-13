@@ -19,7 +19,6 @@ let makeStreamerDescription = (objData, totVideos) => {
 };
 
 let makeVideosList = (videosArr) => {
-    console.log(videosArr);
     let arr = [] ;  
     videosArr.map(video => arr.push({
         dates: {

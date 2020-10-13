@@ -30,6 +30,13 @@
 .table_row {
     height: 56px;
 }
+.mainTableRow {
+    cursor: pointer;
+}
+.mainTableRow:hover {
+    background: #FAFBFB;
+    border-radius: 4px;
+}
 
 .logoCollumn {
     width: 62px;
@@ -63,6 +70,7 @@
     padding: 0 7px;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 .buttonAdd:hover {
   background-color:rgb(106, 106, 218);  
