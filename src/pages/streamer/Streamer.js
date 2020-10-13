@@ -6,9 +6,21 @@ import splitNumbers from 'js/splitNumbers';
 import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
 
-let makeVideosList = (objData) => { 
+let makeStreamerDescription = (objData, totVideos) => {
+    let newStreamerObj = {
+        logo: objData.logo,
+        name: objData.display_name,
+        followers: objData.followers,
+        views: objData.views,
+        totalVideos: totVideos
+    };    
+    document.title = newStreamerObj.name;
+    return newStreamerObj
+};
+
+let makeVideosList = (videosArr) => { 
     let arr = [] ;  
-    objData.videos.map(video => arr.push({
+    videosArr.map(video => arr.push({
         dates: {
             published_at: video.published_at,
             recorded_at: video.recorded_at,
@@ -32,54 +44,39 @@ let getStreamsChannelByID = (numID) => {
             if(err) {
                 console.log(err);
             } else {
-                // console.log('stream', res);
                 resolve(res.stream)
             };
         })
     })
 };
 
-let streamer = {
-    // буду получать из родительского элемента
-    logo: "https://static-cdn.jtvnw.net/jtv_user_pictures/c0f1ee2c-1d3c-42c9-b963-cbdba2728d1f-profile_image-300x300.png",
-    name: "Asmadey",
-    followers: 44124,
-    views: 3928352,
-    // id: 83597658,
-    id: 44442348,
-    totalVideos: 55
-};
-// Asmadey - 83597658
-// getAllChannelsVideoByID(streamer.id)
-// .then(data => {
-//     streamer.videos = makeVideosList(data);
-//     getStreamsChannelByID(streamer.id, streamer)    
-// })
-// .then(() => {
-//     console.log("Asmadey's all videos: ", streamer)
-// });
+let nowURL = new URL(window.location.href);
+const streamerID = nowURL.searchParams.get('streamerID');
 
 const Streamer = () => {
+    const [streamer, setStreamer] = useState({});
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [onAir, setOnAir] = useState(false);
 
     useEffect(() => {
         setLoading(true);
-        getAllChannelsVideoByID(streamer.id)
+        getAllChannelsVideoByID(streamerID)
         .then(data => {
-            setVideos(makeVideosList(data));
+            setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
+            setVideos(makeVideosList(data.videos));
             setLoading(false);
         });
     }, []);
 
     useEffect(() => {
-        getStreamsChannelByID(streamer.id)
+        getStreamsChannelByID(streamerID)
         .then(data => setOnAir(data));
     }, []);
 
     return(
         <Fragment>
+            {loading && <Preloader />}
             <div className="flex streamer_container">
                 <div className="streamerLogo_container">
                     <img className="streamerLogo" src={streamer.logo} alt={streamer.name}/>
@@ -92,7 +89,6 @@ const Streamer = () => {
                     <p className="streamerDescription">всего видео: <strong>{streamer.totalVideos}</strong></p>
                 </div>
             </div>
-            {loading && <Preloader />}
             <h1 className="tableTitle">Список трансляций</h1>
             <StreamerTable videos={videos}/>
         </Fragment>

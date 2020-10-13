@@ -27,6 +27,18 @@ const Table = ({streamers, border = '', target = 'main'}) => {
   
   const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
+
+  const openStreamerPage = (streamer) => {
+    //условие проверки - костыль, потом удалить
+    if (tableFor.search) return null
+    else {
+      let streamerURL = new URL(window.location.href);
+      streamerURL.searchParams.set('streamerID', streamer.id);    
+      streamerURL.pathname = 'streamer';
+      window.open(streamerURL, '_blank');
+    };
+  };
+
   const addChannel = (streamer) => {
     console.log(streamer.name, streamer._id);
     getStreamer(streamer._id)
@@ -62,7 +74,7 @@ const Table = ({streamers, border = '', target = 'main'}) => {
           </thead>
           <tbody>
             {streamers.map((streamer, num) => (
-              <tr className="table_row" key={num}>
+              <tr className="table_row" key={num} onClick={() => openStreamerPage(streamer)}>
                 <td className="table_cell">
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
                 </td>

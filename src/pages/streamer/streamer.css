@@ -1,5 +1,6 @@
 .streamer_container {
     margin-right: auto;
+    padding: 20px;
 }
 
 .streamerLogo_container {
@@ -8,7 +9,7 @@
 
 .onAir_container {
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     right: 10px;
 }
 
@@ -16,6 +17,7 @@
     height: 150px;
     width: 150px;
     border-radius: 50%;
+    box-shadow: 0 0 5px 1px rgba(122,122,122,0.5);
 }
 
 .streamerDescription_container {
@@ -25,6 +27,7 @@
     font-size: 15px;
     line-height: 21px;
     color: #727E8C;
+    margin-left: 20px;
 }
 
 .streamerName {
