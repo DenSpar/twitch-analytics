@@ -35,7 +35,7 @@ const Table = ({streamers, border = '', target = 'main'}) => {
       let streamerURL = new URL(window.location.href);
       streamerURL.searchParams.set('streamerID', streamer.id);    
       streamerURL.pathname = 'streamer';
-      window.open(streamerURL, '_blank');
+      document.location.href = streamerURL;
     };
   };
 
