@@ -2,7 +2,7 @@ import React from 'react';
 import './preloader.css';
 
 export default () => (
-    <div>
+    <div className="preloaderContainer">
         <div className="lds-facebook">
             <div></div>
             <div></div>

@@ -6,8 +6,10 @@ import dateConverter from 'js/dateConverter';
 
 const StreamerTable = ({videos}) => {
 return(
-    <Fragment>
-      {videos.length === 0 ? null : (
+  <Fragment>
+    {videos.length === 0 ? null : (
+      <div className="block wideBlock">
+        <h1 className="tableTitle">Список трансляций</h1>
         <table className="table videoTable">
           <thead className="headRow">
             <tr>
@@ -15,7 +17,9 @@ return(
               <th className="table_cell headCell">Игра</th>
               <th className="table_cell headCell">Описание</th>
               <th className="table_cell headCell">Дата</th>
-              <th className="table_cell audienceCol" colSpan="3">Зрителей</th>
+              <th className="table_cell headCell"></th>
+              <th className="table_cell headCell"></th>
+              <th className="table_cell headCell">Зрителей</th>
               <th className="lastStubCol"></th>
             </tr>
             <tr>
@@ -43,8 +47,9 @@ return(
             ))}
           </tbody>
         </table>
-      )}
-    </Fragment>
+      </div>
+    )}
+  </Fragment>
 )};
 
 export default StreamerTable;

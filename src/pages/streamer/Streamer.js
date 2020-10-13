@@ -50,33 +50,17 @@ let getStreamsChannelByID = (numID) => {
     })
 };
 
-let nowURL = new URL(window.location.href);
-const streamerID = nowURL.searchParams.get('streamerID');
-
-const Streamer = () => {
-    const [streamer, setStreamer] = useState({});
-    const [videos, setVideos] = useState([]);
-    const [loading, setLoading] = useState(false);
+const StreamerDescription = ({streamer}) => {    
     const [onAir, setOnAir] = useState(false);
-
-    useEffect(() => {
-        setLoading(true);
-        getAllChannelsVideoByID(streamerID)
-        .then(data => {
-            setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
-            setVideos(makeVideosList(data.videos));
-            setLoading(false);
-        });
-    }, []);
 
     useEffect(() => {
         getStreamsChannelByID(streamerID)
         .then(data => setOnAir(data));
     }, []);
-
-    return(
-        <Fragment>
-            {loading && <Preloader />}
+    
+    if(Object.keys(streamer).length === 0) {return null} 
+    else return (
+        <div className="block contentSizeBlock">
             <div className="flex streamer_container">
                 <div className="streamerLogo_container">
                     <img className="streamerLogo" src={streamer.logo} alt={streamer.name}/>
@@ -89,7 +73,32 @@ const Streamer = () => {
                     <p className="streamerDescription">всего видео: <strong>{streamer.totalVideos}</strong></p>
                 </div>
             </div>
-            <h1 className="tableTitle">Список трансляций</h1>
+        </div>
+    )
+};
+
+let nowURL = new URL(window.location.href);
+const streamerID = nowURL.searchParams.get('streamerID');
+
+const Streamer = () => {
+    const [streamer, setStreamer] = useState({});
+    const [videos, setVideos] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        getAllChannelsVideoByID(streamerID)
+        .then(data => {
+            setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
+            setVideos(makeVideosList(data.videos));
+            setLoading(false);
+        });
+    }, []);
+
+    return(
+        <Fragment>
+            {loading && <Preloader />}
+            <StreamerDescription streamer={streamer} />
             <StreamerTable videos={videos}/>
         </Fragment>
     );

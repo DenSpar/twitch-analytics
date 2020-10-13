@@ -27,14 +27,16 @@ const Dashboard = () => {
 
     return (
         <StreamersContext.Provider value={{ setStreamers }}>
-            <SearchChannel />
-            {loading && <Preloader />}
-            {streamers.length !== 0 && (
-                <div className="mainTable">
-                    <Table streamers={splitInto2.getFirstPart(streamers)} border={"border-right"} />
-                    <Table streamers={splitInto2.getSecondPart(streamers)} border={"border-left"} />
-                </div>
-            )}
+            <div className="block wideBlock">
+                <SearchChannel />
+                {loading && <Preloader />}
+                {streamers.length !== 0 && (
+                    <div className="mainTable">
+                        <Table streamers={splitInto2.getFirstPart(streamers)} border={"border-right"} />
+                        <Table streamers={splitInto2.getSecondPart(streamers)} border={"border-left"} />
+                    </div>
+                )}
+            </div>
         </StreamersContext.Provider>
     );
 };

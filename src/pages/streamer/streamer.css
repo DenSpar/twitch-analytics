@@ -27,7 +27,7 @@
     font-size: 15px;
     line-height: 21px;
     color: #727E8C;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .streamerName {
@@ -36,14 +36,4 @@
 
 .streamerDescription {
     margin: 0;
-}
-
-.tableTitle {
-    margin: 20px auto 40px 33px;
-    font-family: Rubik;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 21px;
-    color: #475F7B;
 }

@@ -1,11 +1,17 @@
+.tableTitle {
+    margin: 20px auto 40px 33px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: #475F7B;
+}
+
 .firstStubCol {
     width: 45px;
 }
 
 .lastStubCol {
     width: 25px;
-}
-
-.audienceCol {
-    text-align: end;
 }
