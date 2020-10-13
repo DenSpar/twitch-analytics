@@ -18,7 +18,8 @@ let makeStreamerDescription = (objData, totVideos) => {
     return newStreamerObj
 };
 
-let makeVideosList = (videosArr) => { 
+let makeVideosList = (videosArr) => {
+    console.log(videosArr);
     let arr = [] ;  
     videosArr.map(video => arr.push({
         dates: {
@@ -30,7 +31,8 @@ let makeVideosList = (videosArr) => {
         game: video.game,
         title: video.title,
         id: video._id,
-        views: video.views
+        views: video.views,
+        length: video.length
     }))
     return arr;
 };

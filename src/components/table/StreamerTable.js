@@ -3,6 +3,7 @@ import './table.css';
 import './streamerTable.css';
 import splitNumbers from 'js/splitNumbers';
 import dateConverter from 'js/dateConverter';
+import videoTimeConverter from 'js/videoTimeConverter';
 
 const StreamerTable = ({videos}) => {
 return(
@@ -17,12 +18,14 @@ return(
               <th className="table_cell headCell">Игра</th>
               <th className="table_cell headCell">Описание</th>
               <th className="table_cell headCell">Дата</th>
+              <th className="table_cell headCell">Длинна видео</th>
               <th className="table_cell headCell"></th>
               <th className="table_cell headCell"></th>
               <th className="table_cell headCell">Зрителей</th>
               <th className="lastStubCol"></th>
             </tr>
             <tr>
+              <th></th>
               <th></th>
               <th></th>
               <th></th>
@@ -40,6 +43,7 @@ return(
                 <td className="table_cell">{video.game}</td>
                 <td className="table_cell">{video.title}</td>
                 <td className="table_cell">{dateConverter(video.dates.published_at)}</td>
+                <td className="table_cell">{videoTimeConverter(video.length)}</td>
                 <td className="table_cell">{splitNumbers(Math.round(video.views * 0.8))}</td>
                 <td className="table_cell">{splitNumbers(Math.round(video.views * 0.5))}</td>
                 <td className="table_cell">{splitNumbers(video.views)}</td>
