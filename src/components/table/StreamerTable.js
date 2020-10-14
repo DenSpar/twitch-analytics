@@ -17,7 +17,7 @@ return(
               <th className="firstStubCol"></th>
               <th className="table_cell headCell">Игра</th>
               <th className="table_cell headCell">Описание</th>
-              <th className="table_cell headCell">Дата</th>
+              <th className="table_cell headCell">Дата и время начала записи</th>
               <th className="table_cell headCell">Длинна видео</th>
               <th className="table_cell headCell"></th>
               <th className="table_cell headCell"></th>
@@ -44,8 +44,8 @@ return(
                 <td className="table_cell">{video.title}</td>
                 <td className="table_cell">{dateConverter(video.dates.published_at)}</td>
                 <td className="table_cell">{videoTimeConverter(video.length)}</td>
-                <td className="table_cell">{splitNumbers(Math.round(video.views * 0.8))}</td>
-                <td className="table_cell">{splitNumbers(Math.round(video.views * 0.5))}</td>
+                <td className="table_cell">----</td>
+                <td className="table_cell">----</td>
                 <td className="table_cell">{splitNumbers(video.views)}</td>
               </tr>
             ))}

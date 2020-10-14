@@ -45,6 +45,7 @@ let getStreamsChannelByID = (numID) => {
             if(err) {
                 console.log(err);
             } else {
+                // console.log("stream: ", res.stream);
                 resolve(res.stream)
             };
         })
@@ -72,6 +73,9 @@ const StreamerDescription = ({streamer}) => {
                     <p className="streamerDescription">подписчиков: <strong>{splitNumbers(streamer.followers)}</strong></p>
                     <p className="streamerDescription">просмотров: <strong>{splitNumbers(streamer.views)}</strong></p>
                     <p className="streamerDescription">всего видео: <strong>{streamer.totalVideos}</strong></p>
+                    {onAir && 
+                        <p className="streamerDescription">сейчас смотрят: <strong>{onAir.viewers}</strong></p>
+                    }
                 </div>
             </div>
         </div>
