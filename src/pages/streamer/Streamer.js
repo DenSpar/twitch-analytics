@@ -45,21 +45,14 @@ let getStreamsChannelByID = (numID) => {
             if(err) {
                 console.log(err);
             } else {
-                // console.log("stream: ", res.stream);
+                console.log("stream: ", res.stream);
                 resolve(res.stream)
             };
         })
     })
 };
 
-const StreamerDescription = ({streamer}) => {    
-    const [onAir, setOnAir] = useState(false);
-
-    useEffect(() => {
-        getStreamsChannelByID(streamerID)
-        .then(data => setOnAir(data));
-    }, []);
-    
+const StreamerDescription = ({streamer, onAir}) => {
     if(Object.keys(streamer).length === 0) {return null} 
     else return (
         <div className="block contentSizeBlock">
@@ -89,6 +82,7 @@ const Streamer = () => {
     const [streamer, setStreamer] = useState({});
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [onAir, setOnAir] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -100,11 +94,16 @@ const Streamer = () => {
         });
     }, []);
 
+    useEffect(() => {
+        getStreamsChannelByID(streamerID)
+        .then(data => setOnAir(data));
+    }, []);
+
     return(
         <Fragment>
             {loading && <Preloader />}
-            <StreamerDescription streamer={streamer} />
-            <StreamerTable videos={videos}/>
+            <StreamerDescription streamer={streamer} onAir={onAir} />
+            <StreamerTable videos={videos} onAir={onAir}/>
         </Fragment>
     );
 };

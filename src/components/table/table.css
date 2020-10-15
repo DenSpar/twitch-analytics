@@ -50,6 +50,7 @@
     line-height: 21px;
     color: #727E8C;
     padding: 5px 10px 5px;
+    vertical-align: middle;
 }
 
 .table_name {
