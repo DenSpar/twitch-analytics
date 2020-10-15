@@ -1,26 +1,41 @@
 .table {
     border-collapse: collapse;    
     margin: 10px 0;
-    max-width: 70%;
     min-width: 50%;
+}
+
+.searchTable {
+    max-width: 70%;
+}
+
+.videoTable {
+    width: 100%;
 }
 
 .border-left {
     border-left: 0.5px solid #C7CFD6;
 }
-
 .border-right {
     border-right: 0.5px solid #C7CFD6;
 }
-
-.headCell {
-    text-align: start;
+.headRow {
     border-bottom: 0.5px solid #C7CFD6;
     border-top: 0.5px solid #C7CFD6;
 }
 
+.headCell {
+    text-align: start;
+}
+
 .table_row {
     height: 56px;
+}
+.mainTableRow {
+    cursor: pointer;
+}
+.mainTableRow:hover {
+    background: #FAFBFB;
+    border-radius: 4px;
 }
 
 .logoCollumn {
@@ -35,6 +50,7 @@
     line-height: 21px;
     color: #727E8C;
     padding: 5px 10px 5px;
+    vertical-align: middle;
 }
 
 .table_name {
@@ -47,15 +63,6 @@
     margin: 0;
 }
 
-.table_onAir {
-    font-size: 14px;
-    color: white;
-    font: bold;
-    background-color: red;
-    border-radius: 4px;
-    padding: 0 3px;
-}
-
 .buttonAdd {
     font-size: 24px;
     font: bold;    
@@ -64,6 +71,7 @@
     padding: 0 7px;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 .buttonAdd:hover {
   background-color:rgb(106, 106, 218);  

@@ -30,7 +30,7 @@ let getStreamsChannelByID = (numID, obj) => {
             } else {
                 // console.log('stream', res);
                 obj.stream = res.stream;
-                resolve()
+                resolve(obj)
             };
         })
     })
@@ -38,13 +38,13 @@ let getStreamsChannelByID = (numID, obj) => {
 
 let getChannelsVideoByID = (numID, obj) => {
     return new Promise((resolve, reject) => {
-        api.channels.videos({ channelID: numID, limit:10 }, (err, res) => {
+        api.channels.videos({ channelID: numID, limit:1 }, (err, res) => {
             //найти видео канала(по номеру)
             if(err) {
                 console.log(err);
             } else {
                 // console.log('videos', res);
-                obj.videos = res.videos;
+                obj.lastVideo = res.videos[0];
                 obj.totalVideos = res._total;
                 resolve()
             };
@@ -53,7 +53,7 @@ let getChannelsVideoByID = (numID, obj) => {
 };
 
 let getStreamer = (numID) => {
-    let streamer = {};
+    let streamer = {stream: false};
     return new Promise ((resolve, reject) => {
         Promise.all([
             getChannelByID(numID, streamer),

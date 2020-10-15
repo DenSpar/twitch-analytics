@@ -1,17 +1,10 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/getStreamer';
 import {AlertContext} from 'context/alert/alertContext';
 import splitNumbers from 'js/splitNumbers';
-
-const OnAir = ({stream}) => {
-  if (stream) {
-    return(
-      <span className="table_onAir" >В ЭФИРЕ</span>
-    )
-  } else {return null}
-};
+import OnAir from 'components/onAir/OnAir';
 
 const isInTable = (newStreamer, tableState) => {
   let isIn = false;
@@ -27,15 +20,25 @@ const isInTable = (newStreamer, tableState) => {
 const Table = ({streamers, border = '', target = 'main'}) => {
   console.log(streamers);
 
-  let tableTarget = {};
+  let tableFor = {};
   target === 'search' 
-  ? tableTarget = {main: false, search: true} 
-  : tableTarget = {main: true, search: false}
-  // eslint-disable-next-line
-  const [tableFor, setTableFor] = useState(tableTarget);
+  ? tableFor = {main: false, search: true} 
+  : tableFor = {main: true, search: false}
   
   const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
+
+  const openStreamerPage = (streamer) => {
+    //условие проверки - костыль, потом удалить tableFor.search
+    if (tableFor.search || !streamer) return null
+    else {
+      let streamerURL = new URL(window.location.href);
+      streamerURL.searchParams.set('streamerID', streamer.id);
+      streamerURL.pathname = 'streamer';
+      document.location.href = streamerURL;
+    };
+  };
+
   const addChannel = (streamer) => {
     console.log(streamer.name, streamer._id);
     getStreamer(streamer._id)
@@ -50,7 +53,6 @@ const Table = ({streamers, border = '', target = 'main'}) => {
           return [...prevState, newStreamer]
         };
       });
-      
     });    
   };
 
@@ -58,21 +60,22 @@ const Table = ({streamers, border = '', target = 'main'}) => {
     <Fragment>
       {!streamers.length ? null : (
         <table className={"table " + border}>
-          <thead>
+          <thead className="headRow">
             <tr>
               <th className="table_cell headCell logoCollumn"></th>
-              <th className="table_cell headCell">name</th>
+              <th className="table_cell headCell">Никнейм</th>
               <th className="table_cell headCell">
-                {tableFor.main ? "videos" : "description"}
+                {tableFor.main ? "Видео" : "Описание"}
               </th>
-              <th className="table_cell headCell">followers</th>
-              <th className="table_cell headCell">views</th>
+              <th className="table_cell headCell">Подписчиков</th>
+              <th className="table_cell headCell">Просмотров</th>
               {tableFor.search && (<th className="table_cell headCell"></th>)}
             </tr>
           </thead>
           <tbody>
             {streamers.map((streamer, num) => (
-              <tr className="table_row" key={num}>
+              <tr className={tableFor.main && streamer ? "table_row mainTableRow" : "table_row"}
+              key={num} onClick={() => openStreamerPage(streamer)}>
                 <td className="table_cell">
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
                 </td>
@@ -81,21 +84,21 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                   <OnAir stream={streamer.stream}/>
                 </td>
                 <td className="table_cell">
-                  {
-                    tableFor.main
-                    ? streamer.totalVideos
-                    : (
-                      streamer.description.trim()
-                      ? streamer.description
-                      : (<em>описание отсутсвует</em>)
-                      )
-                  }
+                  {tableFor.main
+                  ? streamer.totalVideos
+                  : (
+                    streamer.description.trim()
+                    ? streamer.description
+                    : (<em>описание отсутсвует</em>)
+                  )}
                 </td>
                 <td className="table_cell">{splitNumbers(streamer.followers)}</td>
                 <td className="table_cell">{splitNumbers(streamer.views)}</td>
-                {tableFor.search && (<td>
-                  <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
-                </td>)}
+                {tableFor.search && (
+                  <td>
+                    <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -104,4 +107,4 @@ const Table = ({streamers, border = '', target = 'main'}) => {
     </Fragment>
 )};
 
-  export default Table;
+export default Table;
