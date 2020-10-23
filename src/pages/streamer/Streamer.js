@@ -6,6 +6,43 @@ import splitNumbers from 'js/splitNumbers';
 import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
 
+var api = require('twitch-api-v5');
+api.clientID = '08i240lntql615wx8iozx8rq23krxr';
+
+let getChannelByID = (numID) => {
+    return new Promise((resolve, reject) => {
+        api.channels.channelByID({ channelID: numID }, (err, res) => {
+            //поиск канала по номеру
+            if(err) {
+                console.log(err);
+            } else {
+                let obj = {
+                    name: res.display_name,
+                    logo: res.logo,
+                    followers: splitNumbers(res.followers),
+                    views: splitNumbers(res.views),
+                    totalVideos: 0
+                };
+                resolve(obj);
+            };
+        })
+    })
+};
+
+let getStreamsChannelByID = (numID) => {
+    return new Promise((resolve, reject) => {
+        api.streams.channel({ channelID: numID }, (err, res) => {
+            //проверка, если канал(по номеру) сейчас стримит
+            if(err) {
+                console.log(err);
+            } else {
+                console.log("stream: ", res.stream);
+                resolve(res.stream)
+            };
+        })
+    })
+};
+
 let makeStreamerDescription = (objData, totVideos) => {
     let newStreamerObj = {
         logo: objData.logo,
@@ -34,22 +71,6 @@ let makeVideosList = (videosArr) => {
         length: video.length
     }))
     return arr;
-};
-
-var api = require('twitch-api-v5');
-api.clientID = '08i240lntql615wx8iozx8rq23krxr';
-let getStreamsChannelByID = (numID) => {
-    return new Promise((resolve, reject) => {
-        api.streams.channel({ channelID: numID }, (err, res) => {
-            //проверка, если канал(по номеру) сейчас стримит
-            if(err) {
-                console.log(err);
-            } else {
-                console.log("stream: ", res.stream);
-                resolve(res.stream)
-            };
-        })
-    })
 };
 
 const StreamerDescription = ({streamer, onAir}) => {
@@ -88,8 +109,28 @@ const Streamer = () => {
         setLoading(true);
         getAllChannelsVideoByID(streamerID)
         .then(data => {
-            setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
-            setVideos(makeVideosList(data.videos));
+            console.log("data", data);
+            if (data._total) {
+                setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
+                setVideos(makeVideosList(data.videos));
+            } else {
+                getChannelByID(streamerID)
+                .then(streamerDescr => setStreamer(streamerDescr));                
+                let videosStub = {
+                    dates: {
+                        published_at: "",
+                        recorded_at: "",
+                        created_at: "",
+                        delete_at: ""
+                    },
+                    game: "Видео скрыты для просмотра или еще не созданы",
+                    title: "",
+                    id: "",
+                    views: "",
+                    length: ""
+                };
+                setVideos([videosStub]);
+            };
             setLoading(false);
         });
     }, []);
