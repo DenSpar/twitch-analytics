@@ -6,11 +6,7 @@ import Preloader from 'components/preloader/Preloader';
 import SearchChannel from 'components/searchChannel/SearchChannel';
 import StreamersContext from 'context/streamersContext';
 import splitInto2 from 'js/splitInto2';
-
-//delete after
 // import splitInto3 from 'js/splitInto3';
-// import getStat from 'js/getStat';
-// getStat();
 
 const Dashboard = () => {
     const [streamers, setStreamers] = useState([]);

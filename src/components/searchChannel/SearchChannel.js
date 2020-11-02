@@ -3,22 +3,7 @@ import Table from 'components/table/Table';
 import './searchChannel.css';
 import Preloader from 'components/preloader/Preloader';
 import {AlertContext} from 'context/alert/alertContext';
-
-var api = require('twitch-api-v5');
-api.clientID = '08i240lntql615wx8iozx8rq23krxr';
-
-let searchChannelByName = (name, limit=10) => {
-  return new Promise((resolve, reject) => {
-    api.search.channels({ query: name, limit: limit }, (err, res) => {
-      //поиск канала по имени
-      if(err) {
-          console.log(err);
-      } else {
-          resolve(res);
-      };
-    });
-  });
-};
+import searchChannelByName from 'js/twitchApiRequsts/searchChannelByName';
 
 const SearchChannel = () => {
   const [searchState, setSearchState] = useState({channels:[]});
