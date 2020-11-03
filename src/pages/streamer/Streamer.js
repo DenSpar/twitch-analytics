@@ -19,6 +19,7 @@ let channelInfo = (numID) => {
                 views: splitNumbers(res.views),
                 totalVideos: 0
             };
+            document.title = obj.name;
             resolve(obj);
         })
     })
