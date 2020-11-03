@@ -191,6 +191,7 @@ const Dev = () => {
             <input type='textarea' onChange={event => reqURL = event.target.value} />
             <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров</p>
             <p>https://stat.metacorp.gg/api/streamer/1234 - пока возвращает 1234</p>
+            <p>https://stat.metacorp.gg/api/twitch/81623587 - вернет объект streamer</p>
         </form>
     </div>
 )};

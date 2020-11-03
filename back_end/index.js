@@ -1,11 +1,11 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const tryImport = require('./test.js');
+const getStreamer = require('./twitchApiRequests/getStreamer.js');
+const getList = require('./getList.js');
 var app = express();
 const jsonParser = express.json();
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
-console.log(tryImport());
 
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 let dbClient;
@@ -14,15 +14,16 @@ mongoClient.connect(function(err, client){
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
     app.listen(3000, function(){
-        console.log("Сервер ожидает подключения...");
+        console.log("mongoDB connect");
     });
 });
 
 // обработка запроса на список стримеров
 app.get('/api/streamers', function(req, res) {
     const streamersList = app.locals.streamers;
-    streamersList.find().toArray(function(err, results){            
-        res.send({ list: results });
+    streamersList.find().toArray(function(err, results){
+        getList(results)
+        .then(list => res.send(list))
     });
 });
 
@@ -30,6 +31,15 @@ app.get('/api/streamers', function(req, res) {
 app.get('/api/streamer/:id', function(req, res) {
     const id = req.params.id;
     res.send({ id: id });
+});
+
+// тест, проверка работы запросов к твичу
+app.get('/api/twitch/:id', function(req, res) {
+    const id = req.params.id;
+    getStreamer(id)
+    .then(channel => {
+        res.send(channel)
+    })
 });
 
 // подтверждение подписки на вебхук
