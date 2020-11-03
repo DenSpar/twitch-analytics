@@ -1,4 +1,5 @@
 export default function videoTimeConverter(length) {
+    if (length === '') {return ''};
     let hours = 0;
     let mins = 0;
     if (length > 3599) {

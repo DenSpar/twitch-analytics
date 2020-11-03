@@ -5,6 +5,8 @@ import Alert from 'components/alert/Alert';
 import {AlertState} from 'context/alert/AlertState';
 import Streamer from 'pages/streamer/Streamer';
 import Dashboard from './pages/dashboard/DashBoard';
+import Dev from './pages/Dev';
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Switch>
             <Route path='/' exact component={Dashboard} />
             <Route path='/streamer' component={Streamer} />
+            <Route path='/dev' component={Dev} />
           </Switch>
         </BrowserRouter>
       </div>

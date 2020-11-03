@@ -1,10 +1,29 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import './streamer.css';
 import StreamerTable from 'components/table/StreamerTable';
-import getAllChannelsVideoByID from 'js/getAllVideos';
+import getChannelById from 'js/twitchApiRequsts/getChannelById';
+import getChannelsVideoById from 'js/twitchApiRequsts/getChannelsVideoById';
+import getStreamsChannelById from 'js/twitchApiRequsts/getStreamsChannelById';
 import splitNumbers from 'js/splitNumbers';
 import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
+
+let channelInfo = (numID) => {
+    return new Promise((resolve, reject) => {
+        getChannelById(numID)
+        .then(res => {
+            let obj = {
+                name: res.display_name,
+                logo: res.logo,
+                followers: splitNumbers(res.followers),
+                views: splitNumbers(res.views),
+                totalVideos: 0
+            };
+            document.title = obj.name;
+            resolve(obj);
+        })
+    })
+};
 
 let makeStreamerDescription = (objData, totVideos) => {
     let newStreamerObj = {
@@ -34,22 +53,6 @@ let makeVideosList = (videosArr) => {
         length: video.length
     }))
     return arr;
-};
-
-var api = require('twitch-api-v5');
-api.clientID = '08i240lntql615wx8iozx8rq23krxr';
-let getStreamsChannelByID = (numID) => {
-    return new Promise((resolve, reject) => {
-        api.streams.channel({ channelID: numID }, (err, res) => {
-            //проверка, если канал(по номеру) сейчас стримит
-            if(err) {
-                console.log(err);
-            } else {
-                console.log("stream: ", res.stream);
-                resolve(res.stream)
-            };
-        })
-    })
 };
 
 const StreamerDescription = ({streamer, onAir}) => {
@@ -86,17 +89,37 @@ const Streamer = () => {
 
     useEffect(() => {
         setLoading(true);
-        getAllChannelsVideoByID(streamerID)
+        getChannelsVideoById(streamerID, 100)
         .then(data => {
-            setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
-            setVideos(makeVideosList(data.videos));
+            console.log("data", data);
+            if (data._total) {
+                setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
+                setVideos(makeVideosList(data.videos));
+            } else {
+                channelInfo(streamerID)
+                .then(streamerDescr => setStreamer(streamerDescr));                
+                let videosStub = {
+                    dates: {
+                        published_at: "",
+                        recorded_at: "",
+                        created_at: "",
+                        delete_at: ""
+                    },
+                    game: "Видео скрыты для просмотра или еще не созданы",
+                    title: "",
+                    id: "",
+                    views: "",
+                    length: ""
+                };
+                setVideos([videosStub]);
+            };
             setLoading(false);
         });
     }, []);
 
     useEffect(() => {
-        getStreamsChannelByID(streamerID)
-        .then(data => setOnAir(data));
+        getStreamsChannelById(streamerID)
+        .then(data => setOnAir(data.stream));
     }, []);
 
     return(

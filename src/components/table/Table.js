@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
-import getStreamer from 'js/getStreamer';
+import getStreamer from 'js/twitchApiRequsts/getStreamer';
 import {AlertContext} from 'context/alert/alertContext';
 import splitNumbers from 'js/splitNumbers';
 import OnAir from 'components/onAir/OnAir';

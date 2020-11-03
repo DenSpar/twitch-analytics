@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 export default (num) => {
     if (!num) {return null}
     else {
