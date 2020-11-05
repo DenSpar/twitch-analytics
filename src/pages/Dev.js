@@ -123,7 +123,7 @@ const Dev = () => {
         <h1>LOCAL HOST</h1>
         <p>отправить запрос на вебхук</p>
         <form onSubmit={subscribe}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
+            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }} />
             <div className="flex">
                 <div>
                     <p> 46947742(RIKKIDI) </p>
@@ -172,7 +172,7 @@ const Dev = () => {
         <br/>
         <br/><p>записать стату по стриму</p>
         <form onSubmit={recHandler}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
+            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
         </form>
         <br/>
         <br/>
@@ -180,7 +180,7 @@ const Dev = () => {
         <br/>
         <br/><p>тест получить инфо о канале</p>
         <form onSubmit={channelHandler}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
+            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
         </form>
         <br/>
         <br/>
@@ -188,10 +188,11 @@ const Dev = () => {
         <br/>
         <p>дернуть ручку на metacorp</p>
         <form onSubmit={submitHandlerAPI}>            
-            <input type='textarea' onChange={event => reqURL = event.target.value} />
-            <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров</p>
-            <p>https://stat.metacorp.gg/api/streamer/1234 - пока возвращает 1234</p>
-            <p>https://stat.metacorp.gg/api/twitch/81623587 - вернет объект streamer</p>
+            <input type='textarea' onChange={event => reqURL = event.target.value} style={{ width: '350px' }}/>
+            <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров для дашборда</p>
+            <p>https://stat.metacorp.gg/api/streamer/1234 - пока возвращает объект из коллекции БД</p>
+            <p>https://stat.metacorp.gg/api/update - запускает скрипт сбора статы</p>
+            <p>https://stat.metacorp.gg/api/showlist - вернет коллекцию стримеров из БД</p>
         </form>
     </div>
 )};

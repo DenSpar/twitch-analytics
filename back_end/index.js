@@ -1,9 +1,11 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const getStreamer = require('./twitchApiRequests/getStreamer.js');
-const getList = require('./getList.js');
+
 var app = express();
 const jsonParser = express.json();
+
+const getList = require('./getList.js');
+const updateStreamersStat = require('./updateStreamersStat.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -21,25 +23,34 @@ mongoClient.connect(function(err, client){
 // обработка запроса на список стримеров
 app.get('/api/streamers', function(req, res) {
     const streamersList = app.locals.streamers;
-    streamersList.find().toArray(function(err, results){
-        getList(results)
+    streamersList.find().toArray(function(err, streamers){
+        getList(streamers)
         .then(list => res.send(list))
     });
 });
 
 // обработка запроса на стату стримера
 app.get('/api/streamer/:id', function(req, res) {
-    const id = req.params.id;
-    res.send({ id: id });
+    const id = Number(req.params.id);
+    const streamersList = app.locals.streamers;
+    streamersList.findOne({twitchID: id}, function(err, streamer){
+        if(err) return console.log(err);
+        res.send(result)
+    });
 });
 
-// тест, проверка работы запросов к твичу
-app.get('/api/twitch/:id', function(req, res) {
-    const id = req.params.id;
-    getStreamer(id)
-    .then(channel => {
-        res.send(channel)
-    })
+// тест, проверка работы обновления статы
+app.get('/api/update', function(req, res) {
+    updateStreamersStat();
+    res.send({message:'смотри логи'});
+});
+
+// вывод содержимого коллекции list
+app.get('/api/showlist', function(req, res) {
+    const streamersList = app.locals.streamers;
+    streamersList.find().toArray(function(err, streamers){
+        res.send(streamers)
+    });
 });
 
 // подтверждение подписки на вебхук
