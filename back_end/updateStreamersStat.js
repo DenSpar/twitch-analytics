@@ -48,27 +48,25 @@ let updateStats = (date) => {
                     {returnOriginal: false },function(err, result){
                     if(err) return console.log(err);
                 });
-
-                console.log('статистика стримера ' + newName + '(' + streamer.twitchID + ') обновленна');
             })
         })
-    });    
+    });   
+    console.log('статистика стримеров обновленна') 
     return null
 };
 
 module.exports = function updateStreamersStat() {
-    // let startTime = new Date();
-    // console.log('startTime.getHours', startTime.getHours());
-    // if (startTime.getHours() === 12 ) {updateStats(currentDate)}
+    let startTime = new Date();
+    console.log('startTime.getHours', startTime.getHours());
+    if (startTime.getHours() === 8 ) {updateStats(startTime)}
     console.log("стартовал таймер обновления подписчиков и просмотров");
-    // setInterval(() => {
+
+    setInterval(() => {
         let currentDate = new Date();
-        if (currentDate.getHours() 
-        // === 12
-        ) {
+        if (currentDate.getHours() === 8) {
             return updateStats(currentDate)
         }
-    // } ,3600000)
+    } ,3600000)
     ;
 };
 
@@ -77,4 +75,4 @@ process.on("SIGINT", () => {
     process.exit();
 });
 
-// удалить app
+// попробовать удалить app
