@@ -5,6 +5,7 @@ var app = express();
 const jsonParser = express.json();
 
 const getList = require('./getList.js');
+const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
@@ -15,6 +16,7 @@ mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
+    app.locals.stats = client.db("streamers").collection("stats");
     app.listen(3000, function(){
         console.log("mongoDB connect");
     });
@@ -29,8 +31,8 @@ app.get('/api/streamers', function(req, res) {
     });
 });
 
-// обработка запроса на стату стримера
-app.get('/api/streamer/:id', function(req, res) {
+// тест, обработка запроса стримера из БД
+app.get('/api/streamers/:id', function(req, res) {
     const id = Number(req.params.id);
     const streamersList = app.locals.streamers;
     streamersList.findOne({twitchID: id}, function(err, streamer){
@@ -40,10 +42,10 @@ app.get('/api/streamer/:id', function(req, res) {
 });
 
 // тест, проверка работы обновления статы
-app.get('/api/update', function(req, res) {
+// app.get('/api/update', function(req, res) {
     updateStreamersStat();
-    res.send({message:'смотри логи'});
-});
+    // res.send({message:'смотри логи'});
+// });
 
 // вывод содержимого коллекции list
 app.get('/api/showlist', function(req, res) {

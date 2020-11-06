@@ -190,7 +190,7 @@ const Dev = () => {
         <form onSubmit={submitHandlerAPI}>            
             <input type='textarea' onChange={event => reqURL = event.target.value} style={{ width: '350px' }}/>
             <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров для дашборда</p>
-            <p>https://stat.metacorp.gg/api/streamer/1234 - пока возвращает объект из коллекции БД</p>
+            <p>https://stat.metacorp.gg/api/streamers/1234 - пока возвращает объект из коллекции БД</p>
             <p>https://stat.metacorp.gg/api/update - запускает скрипт сбора статы</p>
             <p>https://stat.metacorp.gg/api/showlist - вернет коллекцию стримеров из БД</p>
         </form>
