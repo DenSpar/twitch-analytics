@@ -1,6 +1,4 @@
-const sendRequest = require('./sendRequest.js');
-const clientId = require('./twitchApiRequests/clientId.js').clientId;
-const getAccessToken = require('./twitchApiRequests/getAccessToken.js');
+const getWebHooks = require('./twitchApiRequests/getWebHooks.js');
 
 let makeSubsArr = (arr) => {
     let resArr = [];
@@ -15,44 +13,34 @@ let makeSubsArr = (arr) => {
 
 module.exports = function checkWebHooks(streamersIdArr) {
     return new Promise (function(resolve, reject) {
-        getAccessToken()
-        .then(accessToken => {
-            // получить вебхук-подписки
-            let getListSubsURL = 'https://api.twitch.tv/helix/webhooks/subscriptions';
-            let reqHeaders = {
-                Authorization: 'Bearer ' + accessToken.access_token,
-                'Client-Id': clientId
-            };
-            sendRequest('GET', getListSubsURL, null, reqHeaders)
-            .then(subsList => {
-                if (subsList.total === 0) {resolve({message: 'нет активных подписок'})}
-                else {                    
-                    let subsArr = makeSubsArr(subsList.data);
-                    let resObj = {
-                        ok: [],
-                        needRefresh: [],
-                        over: []
-                    };
-                    streamersIdArr.map(streamerId => {
-                        let isSub = false;
-                        for (let i = 0; i < subsArr.length; i++) {
-                            if (subsArr[i].id = streamerId) {
-                                if (subsArr[i].secLeft > 150 || subsArr[i].secLeft > 260000) {
-                                    resObj.ok.push(subsArr[i]);
-                                } else {
-                                    resObj.needRefresh.push(subsArr[i]);
-                                };
-                                isSub = true;
-                                subsArr.splice(i, 1);
-                                break
-                            };
-                        };
-                        if (!isSub) {resObj.over.push(streamerId);};
-                    });
-                    resolve(resObj);
+        getWebHooks()
+        .then(subsList => {
+            if (subsList.total === 0) {resolve({message: 'нет активных подписок'})}
+            else {                    
+                let subsArr = makeSubsArr(subsList.data);
+                let resObj = {
+                    ok: [],
+                    needRefresh: [],
+                    over: []
                 };
-            });
-            // .then(webhookSubs => resolve(webhookSubs));
+                streamersIdArr.map(streamerId => {
+                    let isSub = false;
+                    for (let i = 0; i < subsArr.length; i++) {
+                        if (subsArr[i].id = streamerId) {
+                            if (subsArr[i].secLeft > 150 || subsArr[i].secLeft > 260000) {
+                                resObj.ok.push(subsArr[i]);
+                            } else {
+                                resObj.needRefresh.push(subsArr[i]);
+                            };
+                            isSub = true;
+                            subsArr.splice(i, 1);
+                            break
+                        };
+                    };
+                    if (!isSub) {resObj.over.push(streamerId);};
+                });
+                resolve(resObj);
+            };
         });
     })    
 };
