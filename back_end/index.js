@@ -5,8 +5,9 @@ var app = express();
 const jsonParser = express.json();
 
 const getList = require('./getList.js');
-const getStreamer = require('./twitchApiRequests/getStreamer.js');
+// const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat.js');
+const checkWebHooks = require('./checkWebHooks.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -21,6 +22,9 @@ mongoClient.connect(function(err, client){
         console.log("mongoDB connect");
     });
 });
+
+// автоматическое обновление статы
+updateStreamersStat();
 
 // обработка запроса на список стримеров
 app.get('/api/streamers', function(req, res) {
@@ -41,12 +45,6 @@ app.get('/api/streamers/:id', function(req, res) {
     });
 });
 
-// тест, проверка работы обновления статы
-// app.get('/api/update', function(req, res) {
-    updateStreamersStat();
-    // res.send({message:'смотри логи'});
-// });
-
 // вывод содержимого коллекции list
 app.get('/api/showlist', function(req, res) {
     const streamersList = app.locals.streamers;
@@ -55,12 +53,22 @@ app.get('/api/showlist', function(req, res) {
     });
 });
 
+// тест, показать список активных подписок
+app.get('/api/checkwebhooks', function(req, res) {
+    // res.send(checkWebHooks())
+    const streamersList = app.locals.streamers;
+    streamersList.find().toArray(function(err, streamers){
+        checkWebHooks([streamers[0].twitchID, streamers[1].twitchID, streamers[2].twitchID])
+        .then(result => res.send(result));
+    });    
+});
+
 // подтверждение подписки на вебхук
 app.get('/api/webhooks', function(req, res) {
     console.log("webhook get-request");
     // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
     if (req.query['hub.challenge']) {
-        console.log("подписка на " + req.query['hub.topic']);
+        console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
         res.send(req.query['hub.challenge'])
     }
     else {console.log("неизвестный реквест :(")};

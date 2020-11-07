@@ -57,15 +57,19 @@ let updateStats = (date) => {
 
 module.exports = function updateStreamersStat() {
     let startTime = new Date();
-    console.log('startTime.getHours', startTime.getHours());
-    if (startTime.getHours() === 8 ) {updateStats(startTime)}
-    console.log("стартовал таймер обновления подписчиков и просмотров");
+    console.log('обновление статы стримеров: сейчас ' + startTime.getHours() + ' часов, жду 12');
+    if (startTime.getHours() === 12 ) {updateStats(startTime)}
+    console.log("обновление статы стримеров: стартовал таймер");
 
     setInterval(() => {
         let currentDate = new Date();
-        if (currentDate.getHours() === 8) {
+        console.log('обновление статы стримеров: сейчас ' + currentDate.getHours() + ' часов, жду 12');
+        if (currentDate.getHours() === 12) {
+            console.log('обновление статы стримеров: дождался, 12');
             return updateStats(currentDate)
-        }
+        } else {
+            console.log('обновление статы стримеров: сейчас ' + currentDate.getHours() + ' часов, жду 12');
+        };
     } ,3600000)
     ;
 };

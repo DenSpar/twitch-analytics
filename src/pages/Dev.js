@@ -9,30 +9,6 @@ let getAccessToken = () => {
     return sendRequest('POST', getAccessTokenURL)
 };
 
-// function dateDif(dateStr) {
-//     let date = new Date(Date.parse(dateStr));
-//     var dif = Math.ceil(Math.abs(date.getTime() - new Date()) / 1000);
-//     return dif;
-// };
-// function videoTimeConverter(length) {
-//     if (length === '') {return ''};
-//     let hours = 0;
-//     let mins = 0;
-//     if (length > 3599) {
-//         hours = Math.floor(length / 3600);
-//         length = length % 3600;
-//     };
-//     if (length > 59) {
-//         mins = Math.floor(length / 60);
-//         if (mins < 10 ) {mins = "0" + mins};
-//         length = length % 60;
-//     } else {mins = "0" + mins};
-//     let secs = length; 
-//     if (secs < 10) {secs = "0" + secs};
-//     return (hours + ":" + mins + ":" + secs)
-// };
-// console.log("dif date ", videoTimeConverter(dateDif("2020-11-02T04:58:37Z")));
-
 const Dev = () => {
     let streamerID = 0;
     const subscribe = (event) => {
@@ -41,7 +17,6 @@ const Dev = () => {
         if (streamerID !==0 ) {
             getAccessToken()
             .then(accessToken => {
-                console.log('полученный токен: ', accessToken);
                 // подписаться на стримы
                 let subscribeOnStreamURL = 'https://api.twitch.tv/helix/webhooks/hub';
                 let reqHeaders = {
@@ -52,7 +27,7 @@ const Dev = () => {
                     'hub.callback': 'https://stat.metacorp.gg/api/webhooks',
                     'hub.mode': 'subscribe',
                     'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + streamerID,
-                    'hub.lease_seconds': 10000
+                    'hub.lease_seconds': 300
                 };
                 sendRequest('POST', subscribeOnStreamURL, reqBody, reqHeaders)
                 .then(r => {
@@ -120,7 +95,6 @@ const Dev = () => {
 
     return (
     <div>
-        <h1>LOCAL HOST</h1>
         <p>отправить запрос на вебхук</p>
         <form onSubmit={subscribe}>            
             streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }} />
@@ -189,10 +163,10 @@ const Dev = () => {
         <p>дернуть ручку на metacorp</p>
         <form onSubmit={submitHandlerAPI}>            
             <input type='textarea' onChange={event => reqURL = event.target.value} style={{ width: '350px' }}/>
-            <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров для дашборда</p>
-            <p>https://stat.metacorp.gg/api/streamers/1234 - пока возвращает объект из коллекции БД</p>
-            <p>https://stat.metacorp.gg/api/update - запускает скрипт сбора статы</p>
+            <p>https://stat.metacorp.gg/api/streamers - вернет список для дашборда</p>
+            <p>https://stat.metacorp.gg/api/streamers/1234 - возвращает объект из коллекции БД</p>
             <p>https://stat.metacorp.gg/api/showlist - вернет коллекцию стримеров из БД</p>
+            <p>https://stat.metacorp.gg/api/checkwebhooks - дернет ручку checkWebHooks</p>
         </form>
     </div>
 )};
