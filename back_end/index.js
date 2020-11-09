@@ -5,9 +5,11 @@ var app = express();
 const jsonParser = express.json();
 
 const getList = require('./getList.js');
-// const getStreamer = require('./twitchApiRequests/getStreamer.js');
+const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat.js');
-const checkWebHooks = require('./checkWebHooks.js');
+const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
+const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
+const updateWebHooks = require('./updateWebHooks.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -20,11 +22,12 @@ mongoClient.connect(function(err, client){
     app.locals.stats = client.db("streamers").collection("stats");
     app.listen(3000, function(){
         console.log("mongoDB connect");
+        // автоматическое обновление статы
+        updateStreamersStat();
+        // автоматическое продление подписки
+        updateWebHooks();
     });
 });
-
-// автоматическое обновление статы
-updateStreamersStat();
 
 // обработка запроса на список стримеров
 app.get('/api/streamers', function(req, res) {
@@ -53,12 +56,23 @@ app.get('/api/showlist', function(req, res) {
     });
 });
 
+// тест, подписаться на стримера
+app.get('/api/subwebhook/:id', function(req, res) {
+    const id = Number(req.params.id);
+    subscribe2WebHook(id)
+    .then(response => {
+        console.log(response);
+        res.send({message: response})
+    })
+});
+
 // тест, показать список активных подписок
 app.get('/api/checkwebhooks', function(req, res) {
-    // res.send(checkWebHooks())
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
-        checkWebHooks([streamers[0].twitchID, streamers[1].twitchID, streamers[2].twitchID])
+        let streamersIdArr = [];
+        streamers.map(streamer => streamersIdArr.push(streamer.twitchID));
+        checkWebHooks(streamersIdArr)
         .then(result => res.send(result));
     });    
 });

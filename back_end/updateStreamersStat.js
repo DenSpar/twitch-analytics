@@ -11,9 +11,9 @@ mongoClient.connect(function(err, client){
     app.locals.streamers = client.db("streamers").collection("list");
 });
 
-let updateStats = (date) => {
-    const streamersList = app.locals.streamers;
+let getNewStat = (date) => {
     let localDate = date.toLocaleDateString();
+    const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
         streamers.map(streamer => {
             getChannelById(streamer.twitchID)
@@ -55,23 +55,20 @@ let updateStats = (date) => {
     return null
 };
 
-module.exports = function updateStreamersStat() {
-    let startTime = new Date();
-    console.log('обновление статы стримеров: сейчас ' + startTime.getHours() + ' часов, жду 12');
-    if (startTime.getHours() === 12 ) {updateStats(startTime)}
-    console.log("обновление статы стримеров: стартовал таймер");
-
-    setInterval(() => {
-        let currentDate = new Date();
+let updateScript = () => {
+    let currentDate = new Date();
+    if (currentDate.getHours() === 12) {
+        console.log('обновление статы стримеров: обновление ...');
+        return getNewStat(currentDate)
+    } else {
         console.log('обновление статы стримеров: сейчас ' + currentDate.getHours() + ' часов, жду 12');
-        if (currentDate.getHours() === 12) {
-            console.log('обновление статы стримеров: дождался, 12');
-            return updateStats(currentDate)
-        } else {
-            console.log('обновление статы стримеров: сейчас ' + currentDate.getHours() + ' часов, жду 12');
-        };
-    } ,3600000)
-    ;
+    };
+};
+
+module.exports = function updateStreamersStat() {
+    updateScript();
+    console.log("обновление статы стримеров: стартовал таймер");
+    setInterval(() => { updateScript(); }, 3600000);
 };
 
 process.on("SIGINT", () => {

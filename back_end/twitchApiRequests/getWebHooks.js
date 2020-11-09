@@ -7,7 +7,7 @@ module.exports = function getWebHooks() {
         getAccessToken()
         .then(accessToken => {
             // получить вебхук-подписки
-            let getListSubsURL = 'https://api.twitch.tv/helix/webhooks/subscriptions';
+            let getListSubsURL = 'https://api.twitch.tv/helix/webhooks/subscriptions?first=100';
             let reqHeaders = {
                 Authorization: 'Bearer ' + accessToken.access_token,
                 'Client-Id': clientId
