@@ -5,11 +5,13 @@ var app = express();
 const jsonParser = express.json();
 
 const getList = require('./getList.js');
-const getStreamer = require('./twitchApiRequests/getStreamer.js');
+// const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat.js');
 const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
+const recStreamStat = require('./recStreamStat.js');
+const saveStreamStat = require('./saveStreamStat.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -29,7 +31,7 @@ mongoClient.connect(function(err, client){
     });
 });
 
-// обработка запроса на список стримеров
+// вернет список стримеров для дашборда
 app.get('/api/streamers', function(req, res) {
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
@@ -38,13 +40,14 @@ app.get('/api/streamers', function(req, res) {
     });
 });
 
-// тест, обработка запроса стримера из БД
+// вернет стримера из БД коллекции list
 app.get('/api/streamers/:id', function(req, res) {
     const id = Number(req.params.id);
     const streamersList = app.locals.streamers;
     streamersList.findOne({twitchID: id}, function(err, streamer){
         if(err) return console.log(err);
-        res.send(result)
+        if (streamer) {res.send(streamer)}
+        else {res.send({message: 'нет такого стримера'})}
     });
 });
 
@@ -53,6 +56,14 @@ app.get('/api/showlist', function(req, res) {
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
         res.send(streamers)
+    });
+});
+
+// вывод содержимого коллекции stats
+app.get('/api/showstats', function(req, res) {
+    const statsList = app.locals.stats;
+    statsList.find().toArray(function(err, stats){
+        res.send(stats)
     });
 });
 
@@ -89,14 +100,14 @@ app.get('/api/webhooks', function(req, res) {
 });
 
 // получение уведомления о начале/окончание стрима
-app.post('/api/webhooks', jsonParser, function (req, res) {  
-    console.log("webhook post-request");     
+app.post('/api/webhooks', jsonParser, function (req, res) {
     if(!req.body) return res.sendStatus(400);
     // console.log('req.body', req.body);
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log(stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим');
-    } else {console.log('стрим закончился');}
+        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим');
+        recStreamStat (stream.user_id, stream.title);
+    } else {console.log('webhook - стрим закончился');}
     res.sendStatus(202);
 });
 
@@ -130,3 +141,28 @@ process.on("SIGINT", () => {
 //     user_id: '112619759',
 //     user_name: 'modestal',
 //     viewer_count: 0 } ] }
+
+
+// //удалить коллекцию
+// app.get('/api/delstats', function(req, res) {
+//     const statsList = app.locals.stats;
+//     statsList.drop(function(err, result){              
+//         res.send({message: 'удалена коллекция'})
+//     });
+// });
+
+// //тест, что будет если искать по признаку в пустой коллекцие
+// app.get('/api/pushstats', function(req, res) {
+//     let testStat = {
+//         created_at: "2020-11-11T09:25:39Z",
+//         maxViewers: 771,
+//         med50Viewers: 622,
+//         midViewers: 629,
+//         minutes1Viewer: 1,
+//         streamLength: "4:01:17",
+//         streamerID: 32536070,
+//         streamerName: "y0nd",
+//     };
+//     saveStreamStat(testStat);
+//     res.send({message: '202, ok'})
+// });

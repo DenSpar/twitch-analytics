@@ -147,8 +147,9 @@ const Dev = () => {
             <p>https://stat.metacorp.gg/api/streamers - вернет список для дашборда</p>
             <p>https://stat.metacorp.gg/api/streamers/1234 - возвращает объект из коллекции БД</p>
             <p>https://stat.metacorp.gg/api/showlist - вернет коллекцию стримеров из БД</p>
-            <p>https://stat.metacorp.gg/api/checkwebhooks - дернет ручку checkWebHooks</p>
-            <p>https://stat.metacorp.gg/api/subwebhook/:id - подписаться на стримера</p>
+            <p>https://stat.metacorp.gg/api/showstats - вернет коллекцию статистик из БД</p>
+            <p>https://stat.metacorp.gg/api/checkwebhooks - проверит все подписки и вернет отчет</p>
+            <p>https://stat.metacorp.gg/api/subwebhook/:id - подписаться на вебхуки по стримам</p>
         </form>
     </div>
 )};
