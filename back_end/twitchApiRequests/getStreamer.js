@@ -1,6 +1,7 @@
 const getChannelById = require('./getChannelById.js');
 const getChannelsVideoById = require('./getChannelsVideoById.js');
 const getStreamsChannelById = require('./getStreamsChannelById.js');
+const splitNumbers = require('../splitNumbers.js');
 
 let channelInfo = (numID, obj) => {
     return new Promise((resolve, reject) => {
@@ -42,7 +43,8 @@ let getDaysDiff = (dateStr) => {
     let date = new Date(dateStr).getTime();
     let currentDate = new Date().getTime();
     let timeDiff = (currentDate - date) / 1000;
-    let daysDiff = Math.floor(timeDiff / 86400)
+    let daysDiff = Math.floor(timeDiff / 86400);
+    // daysDiff = 'за ' + daysDiff + ' д.'
     return daysDiff
 };
 
@@ -55,7 +57,6 @@ let getFollowersDiff = (actual, streamerFromDB) => {
         let stats = streamerFromDB.followers;
 
         if (stats.length === 1) {
-            obj.diff = obj.actual - Object.values(stats[0])[0];
             let dateStr = Object.keys(stats[0])[0];
             obj.inDays = getDaysDiff(dateStr);
         } else {
@@ -70,7 +71,7 @@ let getFollowersDiff = (actual, streamerFromDB) => {
                 }
             };
         };
-    } else {obj.diff = '-'};
+    } else {obj.inDays = null};
     
     return obj
 };
@@ -99,8 +100,17 @@ let getViewsDiff = (actual, streamerFromDB) => {
                 }
             };
         };
-    } else {obj.diff = '-'};
+    } else {obj.inDays = null};
     
+    return obj
+};
+
+let preparing4Send = (obj) => {
+    obj.actual = splitNumbers(obj.actual);
+    if(obj.diff) {
+        if (obj.diff[0] === '-') { obj.diff = splitNumbers(obj.diff); }
+        else { obj.diff = '+' + splitNumbers(obj.diff); };
+    };
     return obj
 };
 
@@ -114,7 +124,9 @@ module.exports = function getStreamer(streamerFromDB) {
         ])
         .then(() => {
             finalObj.followers = getFollowersDiff(finalObj.followers, streamerFromDB);
+            finalObj.followers = preparing4Send(finalObj.followers);
             finalObj.views = getViewsDiff(finalObj.views, streamerFromDB);
+            finalObj.views = preparing4Send(finalObj.views);
             resolve(finalObj)
         });
     })

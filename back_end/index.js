@@ -92,22 +92,23 @@ app.get('/api/webhooks', function(req, res) {
     console.log("webhook get-request");
     // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
     if (req.query['hub.challenge']) {
-        console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
         res.send(req.query['hub.challenge'])
+        console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
     }
     else {console.log("неизвестный реквест :(")};
 });
 
 // получение уведомления о начале/окончание стрима
 app.post('/api/webhooks', jsonParser, function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    // console.log('req.body', req.body);
+    if(!req.body) {return res.sendStatus(400)}
+    else {res.sendStatus(202)};
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим');
+        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим #' + stream.id);
         recStreamStat (stream.user_id, stream.title, stream.id);
     } else {console.log('webhook - стрим закончился');}
-    res.sendStatus(202);
+    
+    console.log("тест, появится запись в консоли после отправки ответа");
 });
 
 // прослушиваем прерывание работы программы (ctrl-c)
@@ -148,20 +149,4 @@ process.on("SIGINT", () => {
 //     statsList.drop(function(err, result){              
 //         res.send({message: 'удалена коллекция'})
 //     });
-// });
-
-// //тест, что будет если искать по признаку в пустой коллекцие
-// app.get('/api/pushstats', function(req, res) {
-//     let testStat = {
-//         created_at: "2020-11-11T09:25:39Z",
-//         maxViewers: 771,
-//         med50Viewers: 622,
-//         midViewers: 629,
-//         minutes1Viewer: 1,
-//         streamLength: "4:01:17",
-//         streamerID: 32536070,
-//         streamerName: "y0nd",
-//     };
-//     saveStreamStat(testStat);
-//     res.send({message: '202, ok'})
 // });
