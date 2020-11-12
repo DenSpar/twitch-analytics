@@ -16,14 +16,20 @@ let filterDeadChannels = (channels) => {
     return onlyUndead
 };
 
-module.exports = function getList(list) {
+module.exports = function getList(listFromDB) {
     return (
         new Promise ((resolve, reject) => (
             Promise.all(
-                list.map(channel => (getStreamer(channel.twitchID)))
+                listFromDB.map(channel => (getStreamer(channel)))
             )
             .then(allChannels => filterDeadChannels(allChannels))
-            .then(onlyLiveChannels => resolve(onlyLiveChannels))        
+            .then(onlyLiveChannels => {
+                onlyLiveChannels.map(channel => {
+                    delete channel.lastVideo;
+                    delete channel.description;
+                });
+                resolve(onlyLiveChannels)
+            })        
         ))
         .catch(err => console.log(err))
     )

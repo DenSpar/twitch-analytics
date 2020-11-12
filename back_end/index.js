@@ -11,7 +11,6 @@ const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat.js');
-const saveStreamStat = require('./saveStreamStat.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -106,7 +105,7 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
         console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим');
-        recStreamStat (stream.user_id, stream.title);
+        recStreamStat (stream.user_id, stream.title, stream.id);
     } else {console.log('webhook - стрим закончился');}
     res.sendStatus(202);
 });

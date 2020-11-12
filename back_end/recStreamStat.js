@@ -32,10 +32,10 @@ let checkStream = (numID, obj) => {
 
             // delete
             console.log(
-                obj.streamerName + "(" + obj.streamerID + ")",
-                ", maxViewers :" + obj.maxViewers,
-                ", stat.length :" + obj.stat.length,
-                ", created at :" + obj.created_at                
+                obj.streamerName,
+                ", id:" + obj.streamID,
+                ", mins:" + obj.stat.length,
+                ", start:" + obj.created_at                
             );
             // delete
 
@@ -53,7 +53,7 @@ let checkStream = (numID, obj) => {
     })
 };
 
-module.exports = function recStreamStat (numID, title) {
+module.exports = function recStreamStat (numID, title, streamID) {
     getStreamsChannelById(numID)
     .then(stream => {
         console.log("начинаю записывать стату по стриму");
@@ -65,7 +65,8 @@ module.exports = function recStreamStat (numID, title) {
                 stat:[],
                 created_at: stream.stream.created_at,
                 game: stream.stream.game,
-                title: title
+                title: title,
+                streamID: streamID
             };
             checkStream(numID, statObj);
         } else {console.log("что-то не так: стрима - нет");}

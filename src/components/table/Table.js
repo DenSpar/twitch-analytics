@@ -92,8 +92,8 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                     : (<em>описание отсутсвует</em>)
                   )}
                 </td>
-                <td className="table_cell">{splitNumbers(streamer.followers)}</td>
-                <td className="table_cell">{splitNumbers(streamer.views)}</td>
+                <td className="table_cell">{splitNumbers(streamer.followers.actual)}</td>
+                <td className="table_cell">{splitNumbers(streamer.views.actual)}</td>
                 {tableFor.search && (
                   <td>
                     <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>

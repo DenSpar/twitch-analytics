@@ -3,45 +3,8 @@ import sendRequest from 'js/sendRequest';
 import recStreamStat from 'js/recStreamStat';
 import getStreamer from 'js/twitchApiRequsts/getStreamer';
 
-let getAccessToken = () => {
-    // получение токена доступа
-    let getAccessTokenURL = 'https://id.twitch.tv/oauth2/token?client_id=08i240lntql615wx8iozx8rq23krxr&client_secret=7h54c7iuzllmyvr02tw8ysyx5hplhi&grant_type=client_credentials';
-    return sendRequest('POST', getAccessTokenURL)
-};
-
 const Dev = () => {
     let streamerID = 0;
-    
-    const getListSubs = () => {
-        let makeSubsArr = (arr) => {
-            let resArr = [];
-            // eslint-disable-next-line
-            arr.map(sub => {
-                resArr.push({
-                    id: Number(sub.topic.match(/\d+$/)[0]),
-                    secLeft: Math.round((new Date(sub.expires_at).getTime() - new Date().getTime())/1000)
-                })
-            })
-            return resArr
-        };
-
-        getAccessToken()
-        .then(accessToken => {
-            // получить вебхук-подписки
-            let getListSubsURL = 'https://api.twitch.tv/helix/webhooks/subscriptions?first=100';
-            let reqHeaders = {
-                Authorization: 'Bearer ' + accessToken.access_token,
-                'Client-Id': '08i240lntql615wx8iozx8rq23krxr'
-            };
-            sendRequest('GET', getListSubsURL, null, reqHeaders)
-            .then(r => {
-                let obj = {
-                    total: r.total,
-                    list: makeSubsArr(r.data)
-                };
-                console.log('активные подписки: ', obj)});
-        });
-    };
 
     const recHandler = (event) => {
         event.preventDefault();
@@ -122,11 +85,6 @@ const Dev = () => {
         <br/>
         <br/>
         <br/>
-        <p>получить список активных вебхуков</p>
-        <button onClick={() => getListSubs()}>get</button>
-        <br/>
-        <br/>
-        <br/>
         <br/><p>записать стату по стриму</p>
         <form onSubmit={recHandler}>            
             streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
@@ -134,7 +92,7 @@ const Dev = () => {
         <br/>
         <br/>
         <br/>
-        <br/><p>тест получить инфо о канале</p>
+        <br/><p>тест получить инфо о канале? getStreamer из twitch</p>
         <form onSubmit={channelHandler}>            
             streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
         </form>
