@@ -12,6 +12,10 @@ const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat.js');
 
+const alreadyExistStream = require('./CollectionLiveStreams/alreadyExistStream.js');
+const deleteLiveStream = require('./CollectionLiveStreams/deleteLiveStream.js');
+const addLiveStream = require('./CollectionLiveStreams/addLiveStream.js');
+
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
@@ -21,6 +25,7 @@ mongoClient.connect(function(err, client){
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
     app.locals.stats = client.db("streamers").collection("stats");
+    app.locals.lives = client.db("streamers").collection("lives");
     app.listen(3000, function(){
         console.log("mongoDB connect");
         // автоматическое обновление статы
@@ -66,7 +71,56 @@ app.get('/api/showstats', function(req, res) {
     });
 });
 
-// тест, подписаться на стримера
+// вывод содержимого коллекции lives
+app.get('/api/showlives', function(req, res) {
+    const livesList = app.locals.lives;
+    livesList.find().toArray(function(err, lives){
+        res.send(lives)
+    });
+});
+
+// вернет стрим из БД коллекции lives
+app.get('/api/checkstream/:id', function(req, res) {
+    const id = Number(req.params.id);
+    let stream = {streamID: id, streamerID: 111, streamerName:'1 name'};
+    alreadyExistStream(stream)
+    .then(answer => res.send({message: answer}))
+});
+
+//удалить коллекцию lives
+app.get('/api/deletestream/:id', function(req, res) {
+    const id = Number(req.params.id);
+    deleteLiveStream(id)
+    .then(answer => res.send({message: answer}))
+});
+
+// тест, запушит стрим в коллекцию lives
+app.get('/api/addstream/:num', function(req, res) {
+    const num = Number(req.params.num);
+    let streams = [{streamID: 1111, streamerID: 111, streamerName:'1 name'},
+    {streamID: 2222, streamerID: 222, streamerName:'2 name'},
+    {streamID: 3333, streamerID: 333, streamerName:'3 name'}];
+    addLiveStream(streams[num])
+    .then(answer => res.send({message: answer}))
+});
+
+//удалить коллекцию stats
+app.get('/api/delstats', function(req, res) {
+    const statsList = app.locals.stats;
+    statsList.drop(function(err, result){              
+        res.send({message: 'удалена коллекция stats'})
+    });
+});
+
+//удалить коллекцию lives
+app.get('/api/dellives', function(req, res) {
+    const livesList = app.locals.lives;
+    livesList.drop(function(err, result){              
+        res.send({message: 'удалена коллекция lives'})
+    });
+});
+
+// подписаться на стримера
 app.get('/api/subwebhook/:id', function(req, res) {
     const id = Number(req.params.id);
     subscribe2WebHook(id)
@@ -76,7 +130,7 @@ app.get('/api/subwebhook/:id', function(req, res) {
     })
 });
 
-// тест, показать список активных подписок
+// показать список активных подписок
 app.get('/api/checkwebhooks', function(req, res) {
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
@@ -107,8 +161,6 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
         console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим #' + stream.id);
         recStreamStat (stream.user_id, stream.title, stream.id);
     } else {console.log('webhook - стрим закончился');}
-    
-    console.log("тест, появится запись в консоли после отправки ответа");
 });
 
 // прослушиваем прерывание работы программы (ctrl-c)
@@ -141,12 +193,3 @@ process.on("SIGINT", () => {
 //     user_id: '112619759',
 //     user_name: 'modestal',
 //     viewer_count: 0 } ] }
-
-
-// //удалить коллекцию
-// app.get('/api/delstats', function(req, res) {
-//     const statsList = app.locals.stats;
-//     statsList.drop(function(err, result){              
-//         res.send({message: 'удалена коллекция'})
-//     });
-// });
