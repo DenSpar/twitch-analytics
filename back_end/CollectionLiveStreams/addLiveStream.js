@@ -14,7 +14,7 @@ module.exports = function addLiveStream (stream) {
     return new Promise (function(resolve, reject) {
         let response = '';
         const livesList = app.locals.lives;        
-        livesList.insertOne(stream, function(err, result){               
+        livesList.insertOne(stream, function(err, result){
             if(err) return console.log(err);
             response = 'стрим №' + stream.streamID + ' записан в БД';
             console.log (response);

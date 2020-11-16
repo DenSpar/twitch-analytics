@@ -15,6 +15,7 @@ const recStreamStat = require('./recStreamStat/recStreamStat.js');
 const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
+// const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -32,6 +33,8 @@ mongoClient.connect(function(err, client){
         updateStreamersStat();
         // автоматическое продление подписки
         updateWebHooks();
+        // автоматическое проверка и запись статы текущих стримов
+        // refreshLiveStreams
     });
 });
 
@@ -158,8 +161,18 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     else {res.sendStatus(202)};
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим #' + stream.id);
-        recStreamStat (stream.user_id, stream.user_name, stream.title, stream.id);
+        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
+        let newStream = {
+            streamID: stream.id,
+            streamerID: stream.user_id,
+            streamerName: stream.user_name,
+            title: stream.title
+        };
+        alreadyExistStream(newStream)
+        .then(isStreamExist => {
+            if(isStreamExist) {console.log('стрим №' + stream.id + ' уже записывается')}
+            else {recStreamStat (newStream);}
+        })
     } else {console.log('webhook - стрим закончился');}
 });
 

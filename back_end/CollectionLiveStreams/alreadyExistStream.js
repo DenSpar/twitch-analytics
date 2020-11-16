@@ -3,6 +3,7 @@ const express = require('express');
 var app = express();
 
 const updateLiveStream = require('./updateLiveStream.js');
+const addLiveStream = require('./addLiveStream.js');
 
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
@@ -33,6 +34,7 @@ module.exports = function alreadyExistStream (srcStream) {
             }
             else {
                 console.log('в БД нет стрима №' + srcStream.streamID);
+                addLiveStream(srcStream);
                 response = false;
             };
             resolve(response);
