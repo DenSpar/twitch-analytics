@@ -2,6 +2,7 @@ const getStreamsChannelById = require('../twitchApiRequests/getStreamsChannelByI
 const quickSort = require('../quickSort.js');
 const videoTimeConverter = require('../videoTimeConverter.js');
 const saveStreamStat = require('./saveStreamStat.js');
+const alreadyExistStream = require('../collectionLiveStreams/alreadyExistStream.js');
 
 let deleteNulls = (obj) => {
     let firstViewer = 1;
@@ -77,27 +78,34 @@ let checkStream = (numID, obj) => {
     })
 };
 
-module.exports = function recStreamStat (numID, title, streamID) {
-    getStreamsChannelById(numID)
-    .then(stream => {
-        console.log("начинаю записывать стату по стриму #" + streamID);
-        if (stream.stream) {
-            let statObj = {
-                streamerName: stream.stream.channel.display_name,
-                streamerID: stream.stream.channel._id,
-                maxViewers: stream.stream.viewers,
-                stat:[],
-                stream: {created_at: stream.stream.created_at},
-                record: {start_at: new Date().toISOString()},
-                games: {now: stream.stream.game, all: [stream.stream.game]},
-                title: title,
-                streamID: Number(streamID),
-                notes: []
-            };
-            let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
-            if (difStartStreamAndRec > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
-            checkStream(numID, statObj);
-        } else {console.log("что-то не так: стрима #" + streamID +  " - нет");}
+module.exports = function recStreamStat (streamerID, streamerName, title, streamID) {
+    let obj4check = {streamerID: streamerID, streamerName: streamerName, streamID: streamID};
+    alreadyExistStream(obj4check)
+    .then(isStreamExist => {
+        if(isStreamExist) {console.log( 'стрим №' + streamID + ' уже записывается')}
+        else {
+            getStreamsChannelById(streamerID)
+            .then(stream => {
+                console.log("начинаю записывать стату по стриму #" + streamID);
+                if (stream.stream) {
+                    let statObj = {
+                        streamerName: stream.stream.channel.display_name,
+                        streamerID: stream.stream.channel._id,
+                        maxViewers: stream.stream.viewers,
+                        stat:[],
+                        stream: {created_at: stream.stream.created_at},
+                        record: {start_at: new Date().toISOString()},
+                        games: {now: stream.stream.game, all: [stream.stream.game]},
+                        title: title,
+                        streamID: Number(streamID),
+                        notes: []
+                    };
+                    let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
+                    if (difStartStreamAndRec > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
+                    checkStream(streamerID, statObj);
+                } else {console.log("что-то не так: стрима #" + streamID +  " - нет");}
+            })
+        };
     })
 };
 

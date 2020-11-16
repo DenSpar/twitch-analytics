@@ -159,7 +159,7 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
         console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим #' + stream.id);
-        recStreamStat (stream.user_id, stream.title, stream.id);
+        recStreamStat (stream.user_id, stream.user_name, stream.title, stream.id);
     } else {console.log('webhook - стрим закончился');}
 });
 
