@@ -1,7 +1,7 @@
 .table {
     border-collapse: collapse;    
     margin: 10px 0;
-    min-width: 50%;
+    width: 50%;
 }
 
 .searchTable {
