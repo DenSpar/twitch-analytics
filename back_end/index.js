@@ -6,15 +6,15 @@ const jsonParser = express.json();
 
 const getList = require('./getList.js');
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
-const updateStreamersStat = require('./updateStreamersStat.js');
+const updateStreamersStat = require('./updateStreamersStat/updateStreamersStat.js');
 const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
-const recStreamStat = require('./recStreamStat.js');
+const recStreamStat = require('./recStreamStat/recStreamStat.js');
 
-const alreadyExistStream = require('./CollectionLiveStreams/alreadyExistStream.js');
-const deleteLiveStream = require('./CollectionLiveStreams/deleteLiveStream.js');
-const addLiveStream = require('./CollectionLiveStreams/addLiveStream.js');
+const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
+const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
+const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -87,7 +87,7 @@ app.get('/api/checkstream/:id', function(req, res) {
     .then(answer => res.send({message: answer}))
 });
 
-//удалить коллекцию lives
+// удалит стрим №
 app.get('/api/deletestream/:id', function(req, res) {
     const id = Number(req.params.id);
     deleteLiveStream(id)

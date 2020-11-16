@@ -1,6 +1,6 @@
-const getStreamsChannelById = require('./twitchApiRequests/getStreamsChannelById.js');
-const quickSort = require('./quickSort.js');
-const videoTimeConverter = require('./videoTimeConverter.js');
+const getStreamsChannelById = require('../twitchApiRequests/getStreamsChannelById.js');
+const quickSort = require('../quickSort.js');
+const videoTimeConverter = require('../videoTimeConverter.js');
 const saveStreamStat = require('./saveStreamStat.js');
 
 let deleteNulls = (obj) => {
@@ -94,7 +94,7 @@ module.exports = function recStreamStat (numID, title, streamID) {
                 streamID: Number(streamID),
                 notes: []
             };
-            let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime - new Date(statObj.stream.created_at).getTime)/1000;
+            let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
             if (difStartStreamAndRec > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
             checkStream(numID, statObj);
         } else {console.log("что-то не так: стрима #" + streamID +  " - нет");}
@@ -103,33 +103,41 @@ module.exports = function recStreamStat (numID, title, streamID) {
 
 // сейчас записывает так:
 // {
-//     name: "steel",
+//     name: "Stray228",
 //     streams: [
-//         {
-//             created_at: "2020-11-12T18:03:54Z",
-//             game: "Grand Theft Auto V",
-//             maxViewers: 1705,
-//             med50Viewers: 1393,
-//             midViewers: 1326,
-//             minutes1Viewer: 2,
-//             startRecord: "11/12/2020, 6:04:46 PM",
-//             streamID: 39962535756,
-//             streamLength: "6:16:46",
-//             title: "СЭМ ПАБЛО ВЕРНУЛСЯ"
-//         },
-//         {
-//             created_at: "2020-11-12T18:03:54Z",
-//             game: "Just Chatting",
-//             maxViewers: 968,
-//             med50Viewers: 701,
-//             midViewers: 711,
-//             minutes1Viewer: 1,
-//             startRecord: "11/12/2020, 11:54:44 PM",
-//             streamID: 39962535756,
-//             streamLength: "6:16:59",
-//             title: "СЭМ ПАБЛО ВЕРНУЛСЯ"
-//         }
+//         {games: ["Dota 2"],
+//         maxViewers: 10279,
+//         med50Viewers: 8336,
+//         midViewers: 8101,
+//         minutes1Viewer: 1,
+//         notes: [],
+//         record: {start_at: "2020-11-13T18:08:20.784Z", length: "5:55:48"},
+//         stream: {created_at: "2020-11-13T18:06:48Z", length: "5:57:21"},
+//         streamID: 39973754108,
+//         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
+
+//         {games: ["Dota 2"],
+//         maxViewers: 12102,
+//         med50Viewers: 9478,
+//         midViewers: 9379,
+//         minutes1Viewer: 2,
+//         notes: [],
+//         record:{length: "6:11:58", start_at: "2020-11-15T17:52:20.337Z"},
+//         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:12:43"},
+//         streamID: 40001177404,
+//         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
+
+//         {games: ["Dota 2"],
+//         maxViewers: 12102,
+//         med50Viewers: 9478,
+//         midViewers: 9366,
+//         minutes1Viewer: 1,
+//         notes: [],
+//         record: {length: "6:10:57", start_at: "2020-11-15T17:53:55.730Z"},
+//         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:13:18"},
+//         streamID: 40001177404,
+//         title: "Битва за рейтинг и общение на различные темы(развиваемся), присоединяйся "}
 //     ],
-//     twitchID: 195675197,
-//     _id: "5fadd1578b244248a25f2b18"
+//     twitchID: 40488774,
+//     _id: "5faf1ef8d124e0bedd6d2b1a"
 // }

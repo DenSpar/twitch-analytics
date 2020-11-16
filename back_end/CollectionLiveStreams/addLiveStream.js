@@ -22,3 +22,8 @@ module.exports = function addLiveStream (stream) {
         });
     });
 };
+
+process.on("SIGINT", () => {
+    dbClient.close();
+    process.exit();
+});

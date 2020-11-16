@@ -44,7 +44,6 @@ let getDaysDiff = (dateStr) => {
     let currentDate = new Date().getTime();
     let timeDiff = (currentDate - date) / 1000;
     let daysDiff = Math.floor(timeDiff / 86400);
-    // daysDiff = 'за ' + daysDiff + ' д.'
     return daysDiff
 };
 
@@ -68,6 +67,7 @@ let getFollowersDiff = (actual, streamerFromDB) => {
                     obj.diff = obj.actual - Object.values(stats[i])[0];
                     let dateStr = Object.keys(stats[i])[0];
                     obj.inDays = getDaysDiff(dateStr);
+                    break;
                 }
             };
         };
@@ -108,8 +108,10 @@ let getViewsDiff = (actual, streamerFromDB) => {
 let preparing4Send = (obj) => {
     obj.actual = splitNumbers(obj.actual);
     if(obj.diff) {
-        if (obj.diff[0] === '-') { obj.diff = splitNumbers(obj.diff); }
+        if (obj.diff < 0) { obj.diff = splitNumbers(obj.diff); }
         else { obj.diff = '+' + splitNumbers(obj.diff); };
+
+        obj.inDays = 'за ' + obj.inDays + ' д.'
     };
     return obj
 };

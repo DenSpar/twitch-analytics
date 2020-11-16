@@ -27,3 +27,8 @@ module.exports = function deleteLiveStream (streamID) {
         });
     });
 };
+
+process.on("SIGINT", () => {
+    dbClient.close();
+    process.exit();
+});

@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const getChannelById = require('./twitchApiRequests/getChannelById.js');
+const getChannelById = require('../twitchApiRequests/getChannelById.js');
 const express = require('express');
 var app = express();
 

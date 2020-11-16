@@ -2,6 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const updateLiveStream = require('./updateLiveStream.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
@@ -20,8 +22,8 @@ module.exports = function alreadyExistStream (srcStream) {
             console.log(findStream);
             if (findStream) {
                 if (findStream.streamID !== srcStream.streamID) {
-                        console.log('в БД записан устаревший стрим, заменяю актуальным ...');                        
-                        // здесь будет скрипт обновления записи стрима
+                        console.log('в БД записан устаревший стрим, заменяю актуальным ...');
+                        updateLiveStream(srcStream);
                         response = false;
                     }
                 else {
@@ -36,5 +38,9 @@ module.exports = function alreadyExistStream (srcStream) {
             resolve(response);
         });
     });
-    
 };
+
+process.on("SIGINT", () => {
+    dbClient.close();
+    process.exit();
+});
