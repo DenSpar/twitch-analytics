@@ -18,7 +18,7 @@ module.exports = function deleteLiveStream (streamID) {
             if(err) return console.log(err);    
             let stream = result.value;
             if (stream) {
-                response = 'стрим №' + streamID +' удален';
+                response = 'стрим №' + streamID +' удален из текущих стримов';
             } else {
                 response = 'стрим №' + streamID + ' не найден, нечего удалять';
             };

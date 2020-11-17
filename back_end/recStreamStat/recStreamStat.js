@@ -2,6 +2,7 @@ const getStreamsChannelById = require('../twitchApiRequests/getStreamsChannelByI
 const quickSort = require('../quickSort.js');
 const videoTimeConverter = require('../videoTimeConverter.js');
 const saveStreamStat = require('./saveStreamStat.js');
+const deleteLiveStream = require('../collectionLiveStreams/deleteLiveStream.js');
 
 let deleteNulls = (obj) => {
     let firstViewer = 1;
@@ -47,6 +48,7 @@ let endStream = (obj) => {
     obj.stream.length = videoTimeConverter(dateDif(obj.stream.created_at));
     obj.record.length = videoTimeConverter(dateDif(obj.record.start_at));
     obj.games = obj.games.all;
+    deleteLiveStream(obj.streamID);
     saveStreamStat(obj);
 };
 

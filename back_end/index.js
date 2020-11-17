@@ -15,7 +15,7 @@ const recStreamStat = require('./recStreamStat/recStreamStat.js');
 const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
-// const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
+const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -34,7 +34,7 @@ mongoClient.connect(function(err, client){
         // автоматическое продление подписки
         updateWebHooks();
         // автоматическое проверка и запись статы текущих стримов
-        // refreshLiveStreams
+        refreshLiveStreams();
     });
 });
 
@@ -163,8 +163,8 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
         let stream = req.body.data[0];
         console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
         let newStream = {
-            streamID: stream.id,
-            streamerID: stream.user_id,
+            streamID: Number(stream.id),
+            streamerID: Number(stream.user_id),
             streamerName: stream.user_name,
             title: stream.title
         };

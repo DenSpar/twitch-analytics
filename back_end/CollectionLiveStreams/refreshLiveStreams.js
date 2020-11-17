@@ -41,7 +41,7 @@ module.exports = function refreshLiveStreams () {
         streamers.map(streamer => {
             getStreamsChannelById(streamer.twitchID)
             .then(isStream => {
-                if (isStream) {
+                if (isStream.stream) {
                     let newStream = {
                         streamerID: streamer.twitchID,
                         streamID: isStream.stream._id,
@@ -50,7 +50,7 @@ module.exports = function refreshLiveStreams () {
                     };
                     addLiveStream(newStream);
                     recStreamStat(newStream);
-                } else { return null }
+                };
             })
         })
     })

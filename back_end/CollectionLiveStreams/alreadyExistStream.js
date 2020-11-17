@@ -20,7 +20,6 @@ module.exports = function alreadyExistStream (srcStream) {
         const livesList = app.locals.lives;
         livesList.findOne({streamerID: srcStream.streamerID}, function(err, findStream){
             if(err) return console.log(err);
-            console.log(findStream);
             if (findStream) {
                 if (findStream.streamID !== srcStream.streamID) {
                         console.log('в БД записан устаревший стрим, заменяю актуальным ...');
