@@ -121,7 +121,7 @@ let getOnlineInfo = (srcObj, finObj) => {
         else { finObj.maxOnline = splitNumbers(srcObj.maxOnline) };
     };
     if (srcObj.hasOwnProperty('midOnline')) {
-        if(srcObj.midOnline === 0) {
+        if(srcObj.midOnline.value === 0) {
             finObj.midOnline = {
                 value: 'статистика еще не собрана',
                 inDays: null

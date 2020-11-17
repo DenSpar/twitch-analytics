@@ -53,6 +53,11 @@
     vertical-align: middle;
 }
 
+.cellContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 .table_name {
     margin: auto;
 }
