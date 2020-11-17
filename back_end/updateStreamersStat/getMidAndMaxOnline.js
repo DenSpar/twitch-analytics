@@ -34,31 +34,34 @@ module.exports = function getMidAndMaxOnline(streamerID) {
         statsList.findOne({twitchID: streamerID}, function(err, streamerStat){
             if(err) return console.log(err);
             
-            if(streamerStat.streams.length === 1) {
-                obj.maxOnline = stream[0].maxViewers;
-                obj.midOnline.value = stream[0].midViewers;
-                obj.midOnline.inDays = getDaysDiff(stream[0].record.start_at);
-            };
-
-            if(streamerStat.streams.length > 1) {
-                arrMidOnline = [];
-                streamerStat.streams.map(stream => {
-                    let newDaysDiff = getDaysDiff(stream.record.start_at);
-                    if(newDaysDiff <= 30) {
-                        if(obj.maxOnline < stream.maxViewers) { obj.maxOnline = stream.maxViewers };
-                        arrMidOnline.push(stream.midViewers);
-                        obj.midOnline.inDays = newDaysDiff;
-                    } else { break };
-                });
-                if(arrMidOnline.length !== 0) {
-                    obj.midOnline.value = Math.round(arrMidOnline.reduce((prev, viewers) => prev + viewers, 0) / arrMidOnline.length);
-                } else {
-                    let indexOfLastStream = streamerStat.streams.length - 1;
-                    obj.maxOnline = stream[indexOfLastStream].maxViewers;
-                    obj.midOnline.value = stream[indexOfLastStream].midViewers;
-                    obj.midOnline.inDays = getDaysDiff(stream[indexOfLastStream].record.start_at);
+            if (streamerStat) {
+                let streams = streamerStat.streams;
+                if(streams.length === 1) {
+                    obj.maxOnline = streams[0].maxViewers;
+                    obj.midOnline.value = streams[0].midViewers;
+                    obj.midOnline.inDays = getDaysDiff(streams[0].record.start_at);
                 };
-            };
+
+                if(streams.length > 1) {
+                    arrMidOnline = [];
+                    for (let i = 0; i < streams.length; i++) {
+                        let newDaysDiff = getDaysDiff(streams[i].record.start_at);
+                        if(newDaysDiff <= 30) {
+                            if(obj.maxOnline < streams[i].maxViewers) { obj.maxOnline = streams[i].maxViewers };
+                            arrMidOnline.push(streams[i].midViewers);
+                            obj.midOnline.inDays = newDaysDiff;
+                        } else { break };
+                    };
+                    if(arrMidOnline.length !== 0) {
+                        obj.midOnline.value = Math.round(arrMidOnline.reduce((prev, viewers) => prev + viewers, 0) / arrMidOnline.length);
+                    } else {
+                        let indexOfLastStream = streams.length - 1;
+                        obj.maxOnline = stream[indexOfLastStream].maxViewers;
+                        obj.midOnline.value = stream[indexOfLastStream].midViewers;
+                        obj.midOnline.inDays = getDaysDiff(stream[indexOfLastStream].record.start_at);
+                    };
+                };
+            };            
             resolve(obj);
         })
     })

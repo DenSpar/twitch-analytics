@@ -118,15 +118,21 @@ let preparing4Send = (obj) => {
 let getOnlineInfo = (srcObj, finObj) => {
     if (srcObj.hasOwnProperty('maxOnline')) {
         if(srcObj.maxOnline === 0) { finObj.maxOnline = 'статистика еще не собрана'}
-        else { finObj.maxOnline = srcObj.maxOnline };
-        if(srcObj.midOnline === 0) {
-            finObj.midOnline = 'статистика еще не собрана';
-            finObj.inDays = null;
-        } else {
-            finObj.midOnline = srcObj.midOnline;
-            finObj.inDays = 'за ' + srcObj.inDays + ' д.';
-        };
+        else { finObj.maxOnline = splitNumbers(srcObj.maxOnline) };
     };
+    if (srcObj.hasOwnProperty('midOnline')) {
+        if(srcObj.midOnline === 0) {
+            finObj.midOnline = {
+                value: 'статистика еще не собрана',
+                inDays: null
+            };
+        } else {
+            finObj.midOnline = {
+                value: splitNumbers(srcObj.midOnline.value),
+                inDays: 'за ' + srcObj.midOnline.inDays + ' д.'
+            };
+        };
+    }
 };
 
 module.exports = function getStreamer(streamerFromDB) {

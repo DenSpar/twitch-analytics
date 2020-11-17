@@ -109,8 +109,6 @@ const Dev = () => {
             <p>https://stat.metacorp.gg/api/showlives - вернет коллекцию текущих стримов из БД</p>
             <p>https://stat.metacorp.gg/api/checkstream/:id - вернет стрим из БД коллекции lives, поиск по айди стримера</p>
             <p>https://stat.metacorp.gg/api/deletestream/:id - удалит стрим №</p>
-            <p>https://stat.metacorp.gg/api/delstats - удалить коллекцию stats</p>
-            <p>https://stat.metacorp.gg/api/dellives - удалить коллекцию lives</p>
             <p>https://stat.metacorp.gg/api/checkwebhooks - проверит все подписки и вернет отчет</p>
             <p>https://stat.metacorp.gg/api/subwebhook/:id - подписаться на вебхуки по стримам</p>
         </form>

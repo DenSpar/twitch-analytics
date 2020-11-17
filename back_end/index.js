@@ -97,16 +97,6 @@ app.get('/api/deletestream/:id', function(req, res) {
     .then(answer => res.send({message: answer}))
 });
 
-// тест, запушит стрим в коллекцию lives
-app.get('/api/addstream/:num', function(req, res) {
-    const num = Number(req.params.num);
-    let streams = [{streamID: 1111, streamerID: 111, streamerName:'1 name'},
-    {streamID: 2222, streamerID: 222, streamerName:'2 name'},
-    {streamID: 3333, streamerID: 333, streamerName:'3 name'}];
-    addLiveStream(streams[num])
-    .then(answer => res.send({message: answer}))
-});
-
 // подписаться на стримера
 app.get('/api/subwebhook/:id', function(req, res) {
     const id = Number(req.params.id);
