@@ -90,7 +90,7 @@ app.get('/api/checkstream/:id', function(req, res) {
     .then(answer => res.send({message: answer}))
 });
 
-// удалит стрим №
+// удалит стрим № из списка живых стримов
 app.get('/api/deletestream/:id', function(req, res) {
     const id = Number(req.params.id);
     deleteLiveStream(id)
@@ -105,22 +105,6 @@ app.get('/api/addstream/:num', function(req, res) {
     {streamID: 3333, streamerID: 333, streamerName:'3 name'}];
     addLiveStream(streams[num])
     .then(answer => res.send({message: answer}))
-});
-
-//удалить коллекцию stats
-app.get('/api/delstats', function(req, res) {
-    const statsList = app.locals.stats;
-    statsList.drop(function(err, result){              
-        res.send({message: 'удалена коллекция stats'})
-    });
-});
-
-//удалить коллекцию lives
-app.get('/api/dellives', function(req, res) {
-    const livesList = app.locals.lives;
-    livesList.drop(function(err, result){              
-        res.send({message: 'удалена коллекция lives'})
-    });
 });
 
 // подписаться на стримера
@@ -206,3 +190,19 @@ process.on("SIGINT", () => {
 //     user_id: '112619759',
 //     user_name: 'modestal',
 //     viewer_count: 0 } ] }
+
+// //удалить коллекцию stats
+// app.get('/api/delstats', function(req, res) {
+//     const statsList = app.locals.stats;
+//     statsList.drop(function(err, result){              
+//         res.send({message: 'удалена коллекция stats'})
+//     });
+// });
+
+// //удалить коллекцию lives
+// app.get('/api/dellives', function(req, res) {
+//     const livesList = app.locals.lives;
+//     livesList.drop(function(err, result){              
+//         res.send({message: 'удалена коллекция lives'})
+//     });
+// });

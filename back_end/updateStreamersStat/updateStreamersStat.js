@@ -1,7 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
-const getChannelById = require('../twitchApiRequests/getChannelById.js');
 const express = require('express');
 var app = express();
+
+const getChannelById = require('../twitchApiRequests/getChannelById.js');
+const getMidAndMaxOnline = require('./getMidAndMaxOnline.js');
 
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
@@ -44,14 +46,20 @@ let getNewStat = (date) => {
                     updatesOBJ.name = newName;
                 };
 
-                streamersList.findOneAndUpdate({twitchID: streamer.twitchID}, { $set: updatesOBJ },
-                    {returnOriginal: false },function(err, result){
-                    if(err) return console.log(err);
-                });
+                getMidAndMaxOnline(streamer.twitchID)
+                .then(MidAndMaxOnline => {
+                    updatesOBJ.maxOnline = MidAndMaxOnline.maxOnline;
+                    updatesOBJ.midOnline = MidAndMaxOnline.midOnline;
+
+                    streamersList.findOneAndUpdate({twitchID: streamer.twitchID}, { $set: updatesOBJ },
+                        {returnOriginal: false },function(err, result){
+                        if(err) return console.log(err);
+                    });
+                    console.log('статистика стримеров обновленна')
+                })
             })
         })
-    });   
-    console.log('статистика стримеров обновленна') 
+    });
     return null
 };
 
@@ -75,5 +83,3 @@ process.on("SIGINT", () => {
     dbClient.close();
     process.exit();
 });
-
-// попробовать удалить app

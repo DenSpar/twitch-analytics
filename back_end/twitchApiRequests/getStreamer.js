@@ -110,10 +110,23 @@ let preparing4Send = (obj) => {
     if(obj.diff) {
         if (obj.diff < 0) { obj.diff = splitNumbers(obj.diff); }
         else { obj.diff = '+' + splitNumbers(obj.diff); };
-
         obj.inDays = 'за ' + obj.inDays + ' д.'
     };
     return obj
+};
+
+let getOnlineInfo = (srcObj, finObj) => {
+    if (srcObj.hasOwnProperty('maxOnline')) {
+        if(srcObj.maxOnline === 0) { finObj.maxOnline = 'статистика еще не собрана'}
+        else { finObj.maxOnline = srcObj.maxOnline };
+        if(srcObj.midOnline === 0) {
+            finObj.midOnline = 'статистика еще не собрана';
+            finObj.inDays = null;
+        } else {
+            finObj.midOnline = srcObj.midOnline;
+            finObj.inDays = 'за ' + srcObj.inDays + ' д.';
+        };
+    };
 };
 
 module.exports = function getStreamer(streamerFromDB) {
@@ -129,11 +142,9 @@ module.exports = function getStreamer(streamerFromDB) {
             finalObj.followers = preparing4Send(finalObj.followers);
             finalObj.views = getViewsDiff(finalObj.views, streamerFromDB);
             finalObj.views = preparing4Send(finalObj.views);
+            getOnlineInfo(streamerFromDB, finalObj);
             resolve(finalObj)
         });
     })
     .catch(err => console.log(err));
 };
-
-// 3) средний онлайн за месяц
-// 4) максимальный онлайн за месяц
