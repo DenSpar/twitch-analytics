@@ -3,83 +3,8 @@ import sendRequest from 'js/sendRequest';
 import recStreamStat from 'js/recStreamStat';
 import getStreamer from 'js/twitchApiRequsts/getStreamer';
 
-let getAccessToken = () => {
-    // получение токена доступа
-    let getAccessTokenURL = 'https://id.twitch.tv/oauth2/token?client_id=08i240lntql615wx8iozx8rq23krxr&client_secret=7h54c7iuzllmyvr02tw8ysyx5hplhi&grant_type=client_credentials';
-    return sendRequest('POST', getAccessTokenURL)
-};
-
-// function dateDif(dateStr) {
-//     let date = new Date(Date.parse(dateStr));
-//     var dif = Math.ceil(Math.abs(date.getTime() - new Date()) / 1000);
-//     return dif;
-// };
-// function videoTimeConverter(length) {
-//     if (length === '') {return ''};
-//     let hours = 0;
-//     let mins = 0;
-//     if (length > 3599) {
-//         hours = Math.floor(length / 3600);
-//         length = length % 3600;
-//     };
-//     if (length > 59) {
-//         mins = Math.floor(length / 60);
-//         if (mins < 10 ) {mins = "0" + mins};
-//         length = length % 60;
-//     } else {mins = "0" + mins};
-//     let secs = length; 
-//     if (secs < 10) {secs = "0" + secs};
-//     return (hours + ":" + mins + ":" + secs)
-// };
-// console.log("dif date ", videoTimeConverter(dateDif("2020-11-02T04:58:37Z")));
-
 const Dev = () => {
     let streamerID = 0;
-    const subscribe = (event) => {
-        event.preventDefault();
-
-        if (streamerID !==0 ) {
-            getAccessToken()
-            .then(accessToken => {
-                console.log('полученный токен: ', accessToken);
-                // подписаться на стримы
-                let subscribeOnStreamURL = 'https://api.twitch.tv/helix/webhooks/hub';
-                let reqHeaders = {
-                    Authorization: 'Bearer ' + accessToken.access_token,
-                    'Client-Id': '08i240lntql615wx8iozx8rq23krxr'
-                };
-                let reqBody = {
-                    'hub.callback': 'https://stat.metacorp.gg/api/webhooks',
-                    'hub.mode': 'subscribe',
-                    'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + streamerID,
-                    'hub.lease_seconds': 10000
-                };
-                sendRequest('POST', subscribeOnStreamURL, reqBody, reqHeaders)
-                .then(r => {
-                    console.log('req body: ', reqBody);
-                    console.log('ответ от подписки: ', r);
-                    streamerID = 0;
-                });
-            });
-        } else {
-          console.log('ID стримера не указан');
-        };        
-    };
-
-    const getListSubs = () => {
-        getAccessToken()
-        .then(accessToken => {
-            console.log('полученный токен: ', accessToken);
-            // получить вебхук-подписки
-            let getListSubsURL = 'https://api.twitch.tv/helix/webhooks/subscriptions';
-            let reqHeaders = {
-                Authorization: 'Bearer ' + accessToken.access_token,
-                'Client-Id': '08i240lntql615wx8iozx8rq23krxr'
-            };
-            sendRequest('GET', getListSubsURL, null, reqHeaders)
-            .then(r => console.log('ответ от подписки: ', r));
-        });
-    };
 
     const recHandler = (event) => {
         event.preventDefault();
@@ -120,11 +45,7 @@ const Dev = () => {
 
     return (
     <div>
-        <h1>LOCAL HOST</h1>
-        <p>отправить запрос на вебхук</p>
-        <form onSubmit={subscribe}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
-            <div className="flex">
+        <div className="flex">
                 <div>
                     <p> 46947742(RIKKIDI) </p>
                     <p> 32536070(y0nd) </p>
@@ -161,36 +82,35 @@ const Dev = () => {
                     <p> 218598381(SOSEDATEL) </p>
                 </div>
             </div>
-        </form>
-        <br/>
-        <br/>
-        <br/>
-        <p>получить список активных вебхуков</p>
-        <button onClick={() => getListSubs()}>get</button>
         <br/>
         <br/>
         <br/>
         <br/><p>записать стату по стриму</p>
         <form onSubmit={recHandler}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
+            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
         </form>
         <br/>
         <br/>
         <br/>
-        <br/>
-        <br/><p>тест получить инфо о канале</p>
+        <br/><p>тест получить инфо о канале? getStreamer из twitch</p>
         <form onSubmit={channelHandler}>            
-            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} />
+            streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
         </form>
-        <br/>
         <br/>
         <br/>
         <br/>
         <p>дернуть ручку на metacorp</p>
         <form onSubmit={submitHandlerAPI}>            
-            <input type='textarea' onChange={event => reqURL = event.target.value} />
-            <p>https://stat.metacorp.gg/api/streamers - вернет список стримеров</p>
-            <p>https://stat.metacorp.gg/api/streamer/1234 - пока возвращает 1234</p>
+            <input type='textarea' onChange={event => reqURL = event.target.value} style={{ width: '350px' }}/>
+            <p>https://stat.metacorp.gg/api/streamers - вернет список для дашборда</p>
+            <p>https://stat.metacorp.gg/api/streamers/1234 - возвращает объект из коллекции БД</p>
+            <p>https://stat.metacorp.gg/api/showlist - вернет коллекцию стримеров из БД</p>
+            <p>https://stat.metacorp.gg/api/showstats - вернет коллекцию статистик из БД</p>
+            <p>https://stat.metacorp.gg/api/showlives - вернет коллекцию текущих стримов из БД</p>
+            <p>https://stat.metacorp.gg/api/checkstream/:id - вернет стрим из БД коллекции lives, поиск по айди стримера</p>
+            <p>https://stat.metacorp.gg/api/deletestream/:id - удалит стрим №</p>
+            <p>https://stat.metacorp.gg/api/checkwebhooks - проверит все подписки и вернет отчет</p>
+            <p>https://stat.metacorp.gg/api/subwebhook/:id - подписаться на вебхуки по стримам</p>
         </form>
     </div>
 )};

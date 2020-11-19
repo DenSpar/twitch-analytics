@@ -3,7 +3,6 @@ import './table.css';
 import StreamersContext from 'context/streamersContext';
 import getStreamer from 'js/twitchApiRequsts/getStreamer';
 import {AlertContext} from 'context/alert/alertContext';
-import splitNumbers from 'js/splitNumbers';
 import OnAir from 'components/onAir/OnAir';
 
 const isInTable = (newStreamer, tableState) => {
@@ -69,6 +68,12 @@ const Table = ({streamers, border = '', target = 'main'}) => {
               </th>
               <th className="table_cell headCell">Подписчиков</th>
               <th className="table_cell headCell">Просмотров</th>
+              {tableFor.main && (
+                <Fragment>
+                  <th className="table_cell headCell">Max онлайн</th>
+                  <th className="table_cell headCell">Средний онлайн</th>
+                </Fragment>
+              )}              
               {tableFor.search && (<th className="table_cell headCell"></th>)}
             </tr>
           </thead>
@@ -92,8 +97,36 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                     : (<em>описание отсутсвует</em>)
                   )}
                 </td>
-                <td className="table_cell">{splitNumbers(streamer.followers)}</td>
-                <td className="table_cell">{splitNumbers(streamer.views)}</td>
+                <td className="table_cell">
+                  <div className="cellContainer">
+                    <span>{streamer.followers.actual}</span>
+                    <span>{streamer.followers.diff}</span>
+                    <span>{streamer.followers.inDays}</span>
+                  </div>
+                </td>
+                <td className="table_cell">
+                  <div className="cellContainer">
+                    <span>{streamer.views.actual}</span>
+                    <span>{streamer.views.diff}</span>
+                    <span>{streamer.views.inDays}</span>
+                  </div>
+                </td>
+                {tableFor.main && (
+                  <Fragment>
+                    <td className="table_cell">
+                      <div className="cellContainer">
+                        <span>{streamer.maxOnline}</span>
+                        <span>{streamer.midOnline.inDays}</span>
+                      </div>
+                    </td>
+                    <td className="table_cell">
+                      <div className="cellContainer">
+                        <span>{streamer.midOnline.value}</span>
+                        <span>{streamer.midOnline.inDays}</span>
+                      </div>
+                    </td>
+                  </Fragment>
+                )}
                 {tableFor.search && (
                   <td>
                     <button className="buttonAdd" onClick={() => addChannel(streamer)}>+</button>
