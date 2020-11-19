@@ -14,13 +14,12 @@ let makeVideosList = (videosArr) => {
         id: video._id,
         views: video.views,
         length: video.length
-    }))
+    }));
     return arr;
 };
 
 let getChannelDescriptionAndVideos = (streamerID, finObj) => {
     let descriptionObj = finObj.description;
-    let videosArr = finObj.videos;
     return new Promise((resolve, reject) => {
         getChannelsVideoById(streamerID, 100)
         .then(data => {
@@ -31,7 +30,8 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                 descriptionObj.followers.actual = channelDescr.followers;
                 descriptionObj.views.actual = channelDescr.views;
                 descriptionObj.totalVideos = data._total;
-                videosArr = makeVideosList(data.videos);
+                finObj.videos = makeVideosList(data.videos);
+                resolve();
             } else {
                 getChannelById(streamerID)
                 .then(channelDescr => {
@@ -49,10 +49,10 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                         views: "",
                         length: ""
                     };
-                    videosArr = [videosStub];
+                    finObj.videos = [videosStub];
+                    resolve();
                 })
             };
-            resolve();
         });
     });
 };
