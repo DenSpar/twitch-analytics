@@ -1,4 +1,4 @@
-const getStreamer = require('./twitchApiRequests/getStreamer.js');
+const getStreamer4Dashboard = require('./getStreamer4Dashboard.js');
 
 let filterDeadChannels = (channels) => {
     let onlyUndead = [];
@@ -20,7 +20,7 @@ module.exports = function getList(listFromDB) {
     return (
         new Promise ((resolve, reject) => (
             Promise.all(
-                listFromDB.map(channel => (getStreamer(channel)))
+                listFromDB.map(channel => (getStreamer4Dashboard(channel)))
             )
             .then(allChannels => filterDeadChannels(allChannels))
             .then(onlyLiveChannels => {

@@ -37,7 +37,7 @@ return(
               <th className="table_cell headCell">Описание</th>
               <th className="table_cell headCell">Дата и время начала записи</th>
               <th className="table_cell headCell">Длинна видео</th>
-              <th className="table_cell headCell">Зрителей</th>
+              <th className="table_cell headCell">Просмотров</th>
               <th className="lastStubCol"></th>
             </tr>
           </thead>

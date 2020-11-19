@@ -4,7 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 var app = express();
 const jsonParser = express.json();
 
-const getList = require('./getList.js');
+const getList = require('./forDashboard/getList.js');
+const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat/updateStreamersStat.js');
 const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
@@ -14,7 +15,7 @@ const recStreamStat = require('./recStreamStat/recStreamStat.js');
 
 const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
-const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
+// const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
 const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
@@ -53,8 +54,11 @@ app.get('/api/streamers/:id', function(req, res) {
     const streamersList = app.locals.streamers;
     streamersList.findOne({twitchID: id}, function(err, streamer){
         if(err) return console.log(err);
-        if (streamer) {res.send(streamer)}
-        else {res.send({message: 'нет такого стримера'})}
+        if (streamer) {
+            getStreamer4Page(streamer)
+            .then(streamerObj => res.send(streamerObj)
+        )}
+        else { res.send({message: 'нет такого стримера'}) }
     });
 });
 
@@ -80,14 +84,6 @@ app.get('/api/showlives', function(req, res) {
     livesList.find().toArray(function(err, lives){
         res.send(lives)
     });
-});
-
-// вернет стрим из БД коллекции lives
-app.get('/api/checkstream/:id', function(req, res) {
-    const id = Number(req.params.id);
-    let stream = {streamID: id, streamerID: 111, streamerName:'1 name'};
-    alreadyExistStream(stream)
-    .then(answer => res.send({message: answer}))
 });
 
 // удалит стрим № из списка живых стримов

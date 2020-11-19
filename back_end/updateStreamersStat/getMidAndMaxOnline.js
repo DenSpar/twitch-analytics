@@ -1,6 +1,3 @@
-// 3) средний онлайн за месяц
-// 4) максимальный онлайн за месяц
-
 const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();

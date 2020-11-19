@@ -15,7 +15,6 @@ mongoClient.connect(function(err, client){
 
 module.exports = function alreadyExistStream (srcStream) {
     return new Promise (function(resolve, reject) {
-        //streamerID, streamID
         let response;
         const livesList = app.locals.lives;
         livesList.findOne({streamerID: srcStream.streamerID}, function(err, findStream){

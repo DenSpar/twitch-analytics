@@ -68,7 +68,8 @@ const StreamerDescription = ({streamer, onAir}) => {
                     <p className="streamerName"><strong>{streamer.name}</strong></p>
                     <p className="streamerDescription">подписчиков: <strong>{splitNumbers(streamer.followers)}</strong></p>
                     <p className="streamerDescription">просмотров: <strong>{splitNumbers(streamer.views)}</strong></p>
-                    <p className="streamerDescription">всего видео: <strong>{streamer.totalVideos}</strong></p>
+                    <p className="streamerDescription">видео в архиве: <strong>{streamer.totalVideos}</strong></p>
+                    <p className="streamerDescription">стримов записано: <strong>{"количество стримов"}</strong></p>
                     {onAir && 
                         <p className="streamerDescription">сейчас смотрят: <strong>{onAir.viewers}</strong></p>
                     }
@@ -91,7 +92,6 @@ const Streamer = () => {
         setLoading(true);
         getChannelsVideoById(streamerID, 100)
         .then(data => {
-            console.log("data", data);
             if (data._total) {
                 setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
                 setVideos(makeVideosList(data.videos));
