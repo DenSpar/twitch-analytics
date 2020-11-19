@@ -5,10 +5,17 @@ const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getStreamsList = require('./getStreamsList.js');
 
+let dateConverter = (dateStr) => {
+    if (dateStr === '') {return ''};
+    let date = new Date(Date.parse(dateStr));
+    let newDateStr = date.toLocaleDateString('ru-Ru', { timeZone: 'Europe/Moscow' }) + ' ' + date.toLocaleTimeString('ru-Ru', { timeZone: 'Europe/Moscow' });
+    return newDateStr
+};
+
 let makeVideosList = (videosArr) => {
     let arr = [] ;  
     videosArr.map(video => arr.push({
-        published_at: video.published_at,
+        published_at: dateConverter(video.published_at),
         game: video.game,
         title: video.title,
         id: video._id,
