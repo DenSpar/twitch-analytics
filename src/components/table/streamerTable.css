@@ -3,6 +3,10 @@
     margin: 20px auto 40px 13px;
 }
 
+.textAlign_center {
+    text-align: center;
+}
+
 .tableTitle {
     font-family: Rubik;
     font-style: normal;
@@ -12,6 +16,13 @@
     color: #475F7B;
     margin: 10px 20px;
     cursor: pointer;
+}
+.tableTitle:hover {
+    color: #5A8DEE;
+}
+
+.tableTitle_active {
+    color: #5A8DEE;
 }
 
 .firstStubCol {
