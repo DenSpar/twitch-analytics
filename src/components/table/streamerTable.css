@@ -1,11 +1,17 @@
+.tableTitle_container {
+    display: flex;
+    margin: 20px auto 40px 13px;
+}
+
 .tableTitle {
-    margin: 20px auto 40px 33px;
     font-family: Rubik;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 21px;
     color: #475F7B;
+    margin: 10px 20px;
+    cursor: pointer;
 }
 
 .firstStubCol {
@@ -20,4 +26,8 @@
     height: 21px;
     border-radius: 50%;
     margin-top: 5px;
+}
+
+.table_cell_gameName {
+    margin: 0;
 }

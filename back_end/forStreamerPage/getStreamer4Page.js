@@ -4,6 +4,8 @@ const getDiff = require('../preparingStreamers4Send/getDiff.js');
 const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getStreamsList = require('./getStreamsList.js');
+const videoTimeConverter = require('../videoTimeConverter.js');
+const splitNumbers = require('../preparingStreamers4Send/splitNumbers.js');
 
 let dateConverter = (dateStr) => {
     if (dateStr === '') {return ''};
@@ -19,8 +21,8 @@ let makeVideosList = (videosArr) => {
         game: video.game,
         title: video.title,
         id: video._id,
-        views: video.views,
-        length: video.length
+        views: splitNumbers(video.views),
+        length: videoTimeConverter(video.length)
     }));
     return arr;
 };
