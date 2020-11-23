@@ -93,9 +93,9 @@ const StreamerDescription = ({streamer, onAir}) => {
                     </div>
                     <div className="streamerDescription_column">
                         <div className="streamerDescription_onlinesContainer">
-                            <p className="streamerDescription">количество онлайн-зрителей </p>
+                            <p className="streamerDescription">онлайн-зрителей на стриме</p>
                             <p className="streamerDescription">{' ' + streamer.onlineViewers.inDays + ' :'}</p>
-                            <p className="streamerDescription leftMargin">максимальное:<strong className="streamerDescription_value">{streamer.onlineViewers.max}</strong></p>
+                            <p className="streamerDescription leftMargin">макс.:<strong className="streamerDescription_value">{streamer.onlineViewers.max}</strong></p>
                             <p className="streamerDescription leftMargin">среднее:<strong className="streamerDescription_value">{streamer.onlineViewers.middle}</strong></p>
                         </div>
                         {onAir && 
@@ -115,9 +115,6 @@ const StreamerDescription = ({streamer, onAir}) => {
 
 let nowURL = new URL(window.location.href);
 const streamerID = nowURL.searchParams.get('streamerID');
-// удалить условие
-if (nowURL.hostname === 'localhost') { console.log ('на localhost'); }
-else { sendRequest('GET', 'https://stat.metacorp.gg/api/streamers/' + streamerID) };
 
 const Streamer = () => {
     const [streamer, setStreamer] = useState({});
@@ -126,13 +123,12 @@ const Streamer = () => {
     const [loading, setLoading] = useState(false);
     const [onAir, setOnAir] = useState(false);
 
-    useEffect(() => {
-        setLoading(true);
+    let testStreamer = () => {
         console.log('denly', denly);
         setTimeout(() => {
             setStreamer(denly.description);
             setLoading(false);
-            document.title = streamer.name;
+            document.title = denly.description.name;
             
             setTimeout(() => {
                 setVideos(denly.videos)
@@ -140,6 +136,26 @@ const Streamer = () => {
                 setOnAir(denly.stream)
             }, 1000)
         }, 2000);
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        // удалить условие
+        if (nowURL.hostname === 'localhost') {
+            console.log ('на localhost');
+            testStreamer();
+        }
+        else {
+            sendRequest('GET', 'https://stat.metacorp.gg/api/streamers/' + streamerID)
+            .then(streamer => {
+                setStreamer(streamer.description);
+                setVideos(streamer.videos);
+                setStreams(streamer.streams);
+                setOnAir(streamer.stream);
+                setLoading(false);
+                document.title = streamer.description.name;
+            })
+        };
     }, []);
 
     return(

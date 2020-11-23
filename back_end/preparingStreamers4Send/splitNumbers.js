@@ -1,4 +1,3 @@
-
 module.exports = function (num) {
     if (!num) {return null}
     else {

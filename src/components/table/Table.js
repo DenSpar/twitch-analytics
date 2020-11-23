@@ -115,14 +115,14 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                   <Fragment>
                     <td className="table_cell">
                       <div className="cellContainer">
-                        <span>{streamer.maxOnline}</span>
-                        <span>{streamer.midOnline.inDays}</span>
+                        <span>{streamer.onlineViewers.max}</span>
+                        <span>{streamer.onlineViewers.inDays}</span>
                       </div>
                     </td>
                     <td className="table_cell">
                       <div className="cellContainer">
-                        <span>{streamer.midOnline.value}</span>
-                        <span>{streamer.midOnline.inDays}</span>
+                        <span>{streamer.onlineViewers.middle}</span>
+                        <span>{streamer.onlineViewers.inDays}</span>
                       </div>
                     </td>
                   </Fragment>

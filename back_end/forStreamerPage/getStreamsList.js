@@ -2,6 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const preparingStreamsList = require('./preparingStreamsList.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
@@ -16,7 +18,8 @@ module.exports = function getStreamsList (streamerID, finObj) {
         statsList.findOne({twitchID: streamerID}, function(err, findStreams){
             if(err) return console.log(err);
             if (findStreams) {
-                finObj.streams = findStreams.streams;
+                let streamsList = preparingStreamsList(findStreams.streams);
+                finObj.streams = streamsList;
             } else {
                 finObj.streams = [];
             };

@@ -1,26 +1,22 @@
 const splitNumbers = require('./splitNumbers.js');
 
-module.exports = function getOnlineInfo(finObj, streamerFromDB) {
+module.exports = function getOnlineInfo(streamerFromDB) {
+    let onlineViewers = {};
     if (streamerFromDB.hasOwnProperty('maxOnline')) {
-        if(streamerFromDB.maxOnline === 0) { finObj.maxOnline = 'статистика еще не собрана'}
-        else { finObj.maxOnline = splitNumbers(streamerFromDB.maxOnline) };
-    } else { finObj.maxOnline = 'статистика еще не собрана'};
+        if(streamerFromDB.maxOnline === 0) { onlineViewers.max = 'статистика еще не собрана'}
+        else { onlineViewers.max = splitNumbers(streamerFromDB.maxOnline) };
+    } else { onlineViewers.max = 'статистика еще не собрана'};
     if (streamerFromDB.hasOwnProperty('midOnline')) {
         if(streamerFromDB.midOnline.value === 0) {
-            finObj.midOnline = {
-                value: 'статистика еще не собрана',
-                inDays: null
-            };
+            onlineViewers.middle = 'статистика еще не собрана';
+            onlineViewers.inDays = null;
         } else {
-            finObj.midOnline = {
-                value: splitNumbers(streamerFromDB.midOnline.value),
-                inDays: 'за ' + streamerFromDB.midOnline.inDays + ' д.'
-            };
+            onlineViewers.middle = splitNumbers(streamerFromDB.midOnline.value);
+            onlineViewers.inDays = 'за ' + streamerFromDB.midOnline.inDays + ' д.';
         };
     } else {
-        finObj.midOnline = {
-            value: 'статистика еще не собрана',
-            inDays: null
-        };
+        onlineViewers.middle = 'статистика еще не собрана';
+        onlineViewers.inDays = null;
     };
+    return onlineViewers;
 };

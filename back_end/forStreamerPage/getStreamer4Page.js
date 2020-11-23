@@ -6,13 +6,7 @@ const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getStreamsList = require('./getStreamsList.js');
 const videoTimeConverter = require('../videoTimeConverter.js');
 const splitNumbers = require('../preparingStreamers4Send/splitNumbers.js');
-
-let dateConverter = (dateStr) => {
-    if (dateStr === '') {return ''};
-    let date = new Date(Date.parse(dateStr));
-    let newDateStr = date.toLocaleDateString('ru-Ru', { timeZone: 'Europe/Moscow' }) + ' ' + date.toLocaleTimeString('ru-Ru', { timeZone: 'Europe/Moscow' });
-    return newDateStr
-};
+const dateConverter = require('./dateConverter.js');
 
 let makeVideosList = (videosArr) => {
     let arr = [] ;  
@@ -79,6 +73,7 @@ module.exports = function getStreamer4Page(streamerFromDB) {
         videos: [],
         stream: null
     };
+    finalObj.description.onlineViewers = getOnlineInfo(streamerFromDB);
     return new Promise ((resolve, reject) => {
         Promise.all([
             getChannelDescriptionAndVideos(streamerFromDB.twitchID, finalObj),
@@ -89,7 +84,6 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             finalObj.description.followers = getDiff('followers', finalObj.description.followers.actual, streamerFromDB);
             finalObj.description.views = getDiff('views', finalObj.description.views.actual, streamerFromDB);
             finalObj.description.totalStreams = finalObj.streams.length;
-            getOnlineInfo(finalObj, streamerFromDB);
             resolve(finalObj)
         });
     })
