@@ -106,8 +106,7 @@ const StreamsTable = ({streams}) => {
 };
 
 const StreamerTable = ({videos, streams, onAir}) => {
-  // выбрать какая таблица будет активной при загрузке
-  const [activeTable, setActiveTable] = useState({video: true, streams: true});
+  const [activeTable, setActiveTable] = useState({video: true, streams: false});
 
   const showVideoTable = () => {
     setActiveTable({video: true, streams: false});
