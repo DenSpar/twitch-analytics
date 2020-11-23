@@ -24,11 +24,11 @@
     display: flex;
     flex-wrap: wrap;
     margin-left: 10px;
-    max-width: 440px;
+    max-width: 510px;
 }
 
 .streamerDescription_column {
-    font-family: IBM Plex Sans;
+    font-family: 'IBM Plex Sans', 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
@@ -38,15 +38,14 @@
 }
 
 .streamerName {
-    text-align: center;
     width: 100%;
-    font-family: IBM Plex Sans;
+    font-family: 'Rubik', 'Roboto', sans-serif;
     font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 21px;
-    color: #727E8C;
-    margin: 5px 0 10px;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+    color: #475F7B;
+    margin: 5px 0 10px 30px;
 }
 
 .streamerDescription {
@@ -55,8 +54,15 @@
     margin-top: 4px;
 }
 
-.streamerDescription_value{
+.streamerDescription_value {
     margin-left: 4px;
+    color: #475F7B;
+}
+
+.streamerDescription_valueDiff {
+    font-size: 13px;
+    line-height: 15px;
+    color: #475F7B;
 }
 
 .streamerDescription_valueColumn {

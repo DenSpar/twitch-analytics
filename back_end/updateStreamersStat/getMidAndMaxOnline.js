@@ -40,22 +40,22 @@ module.exports = function getMidAndMaxOnline(streamerID) {
                 };
 
                 if(streams.length > 1) {
-                    arrMidOnline = [];
-                    for (let i = 0; i < streams.length; i++) {
+                    let arrMidOnline = [];
+                    let indexOfLastStream = streams.length - 1;
+                    for (let i = streams.length-1; i >= 0; i--) {
                         let newDaysDiff = getDaysDiff(streams[i].record.start_at);
                         if(newDaysDiff <= 30) {
                             if(obj.maxOnline < streams[i].maxViewers) { obj.maxOnline = streams[i].maxViewers };
                             arrMidOnline.push(streams[i].midViewers);
-                            obj.midOnline.inDays = newDaysDiff;
+                            indexOfLastStream = i;
                         } else { break };
                     };
                     if(arrMidOnline.length !== 0) {
                         obj.midOnline.value = Math.round(arrMidOnline.reduce((prev, viewers) => prev + viewers, 0) / arrMidOnline.length);
+                        obj.midOnline.inDays = getDaysDiff(streams[indexOfLastStream].record.start_at);
                     } else {
-                        let indexOfLastStream = streams.length - 1;
-                        obj.maxOnline = stream[indexOfLastStream].maxViewers;
-                        obj.midOnline.value = stream[indexOfLastStream].midViewers;
-                        obj.midOnline.inDays = getDaysDiff(stream[indexOfLastStream].record.start_at);
+                        obj.midOnline.value = streams[indexOfLastStream].midViewers;
+                        obj.midOnline.inDays = getDaysDiff(streams[indexOfLastStream].record.start_at);
                     };
                 };
             };            
