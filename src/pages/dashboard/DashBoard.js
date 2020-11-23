@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './dashboard.css';
 import Table from 'components/table/Table';
-import getList from 'js/getList';
+import sendRequest from 'js/sendRequest';
+// import getList from 'js/getList';
 import Preloader from 'components/preloader/Preloader';
 import SearchChannel from 'components/searchChannel/SearchChannel';
 import StreamersContext from 'context/streamersContext';
@@ -14,7 +15,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         setLoading(true);
-        getList()
+        sendRequest('GET', 'https://stat.metacorp.gg/api/streamers')
         .then(dataArr => {
             setStreamers(dataArr);
             setLoading(false);

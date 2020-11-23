@@ -1,4 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState
+  // , useEffect 
+} from 'react';
 import './table.css';
 import './streamerTable.css';
 // import videoTimeConverter from 'js/videoTimeConverter';
@@ -66,7 +68,7 @@ const StreamsTable = ({streams}) => {
           <th className="table_cell headCell" rowSpan="2">Описание</th>
           <th className="table_cell headCell" rowSpan="2">Дата и время начала записи</th>
           <th className="table_cell headCell" rowSpan="2">Длинна видео</th>
-          <th className="table_cell headCell border-left border-right textAlign_center" colSpan="3">
+          <th className="table_cell headCell textAlign_center" colSpan="3">
             Количество зрители
           </th>
           <th className="table_cell headCell" rowSpan="2">Примечание</th>
@@ -85,7 +87,9 @@ const StreamsTable = ({streams}) => {
           <tr className="table_row" key={num}>
             <td className="table_cell"></td>
             <td className="table_cell">
-              {stream.games.map((game, gameNum) => <p className="table_cell_gameName" key={gameNum}>{game}</p>)}
+              {stream.games.map((game, gameNum) => <p className="table_cell_gameName" key={gameNum}>
+                &#8226;&#160;{game}
+                </p>)}
             </td>
             <td className="table_cell">{stream.title}</td>
             <td className="table_cell">{stream.stream.created_at}</td>

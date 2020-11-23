@@ -48,7 +48,7 @@ let denly = {
         title:"Приветики конфетики !tg !gta",
         streamID:40008639836,
         notes:["сбор статистики не с начала стрима"],
-        minutes1Viewer:1,
+        minutes1Viewer:2,
         midViewers:690,
         med50Viewers:849},
         {maxViewers:335,
@@ -88,15 +88,23 @@ const StreamerDescription = ({streamer, onAir}) => {
                                 <strong className="streamerDescription_value">{streamer.views.diff + ' ' + streamer.views.inDays}</strong>
                             </div>
                         </div>
-                        <p className="streamerDescription">видео в архиве: <strong className="streamerDescription_value">{streamer.totalVideos}</strong></p>
-                        <p className="streamerDescription">стримов записано: <strong className="streamerDescription_value">{streamer.totalStreams}</strong></p>
+                        <p className="streamerDescription">
+                            видео в архиве: <strong className="streamerDescription_value">{streamer.totalVideos}</strong>
+                        </p>
+                        <p className="streamerDescription">
+                            стримов записано: <strong className="streamerDescription_value">{streamer.totalStreams}</strong>
+                        </p>
                     </div>
                     <div className="streamerDescription_column">
                         <div className="streamerDescription_onlinesContainer">
                             <p className="streamerDescription">онлайн-зрителей на стриме</p>
-                            <p className="streamerDescription">{' ' + streamer.onlineViewers.inDays + ' :'}</p>
-                            <p className="streamerDescription leftMargin">макс.:<strong className="streamerDescription_value">{streamer.onlineViewers.max}</strong></p>
-                            <p className="streamerDescription leftMargin">среднее:<strong className="streamerDescription_value">{streamer.onlineViewers.middle}</strong></p>
+                            <p className="streamerDescription">{streamer.onlineViewers.inDays + ' :'}</p>
+                            <p className="streamerDescription leftMargin">
+                                макс.:<strong className="streamerDescription_value">{streamer.onlineViewers.max}</strong>
+                            </p>
+                            <p className="streamerDescription leftMargin">
+                                среднее:<strong className="streamerDescription_value">{streamer.onlineViewers.middle}</strong>
+                            </p>
                         </div>
                         {onAir && 
                             <p className="streamerDescription">
