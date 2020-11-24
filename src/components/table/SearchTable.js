@@ -16,7 +16,14 @@ const isInTable = (newStreamer, tableState) => {
   return isIn;
 };
 
-const Table = ({streamers, border = '', target = 'main'}) => {
+const greenOrRedDiff = (diff) => {
+  let classes = ["cell_valueDiff"];
+  if (diff[0] === '+') { classes.push("greenDiff") }
+  else { classes.push("redDiff") };
+  return classes.join(' ')
+};
+
+const DashboardTable = ({streamers, border = '', target = 'main'}) => {
   console.log(streamers);
 
   let tableFor = {};
@@ -64,14 +71,14 @@ const Table = ({streamers, border = '', target = 'main'}) => {
               <th className="table_cell headCell logoCollumn"></th>
               <th className="table_cell headCell">Никнейм</th>
               <th className="table_cell headCell">
-                {tableFor.main ? "Видео" : "Описание"}
+                {tableFor.main ? (<Fragment>Cтримов<br />за 7 д.</Fragment>) : "Описание"}
               </th>
-              <th className="table_cell headCell">Подписчиков</th>
-              <th className="table_cell headCell">Просмотров</th>
+              <th className="table_cell headCell">Подписчиков<br />изм. за 7 д.</th>
+              {/* <th className="table_cell headCell">Просмотров изм. за 30 д.</th> */}
               {tableFor.main && (
                 <Fragment>
-                  <th className="table_cell headCell">Max онлайн</th>
-                  <th className="table_cell headCell">Средний онлайн</th>
+                  <th className="table_cell headCell">Max онлайн<br />за 30 д.</th>
+                  <th className="table_cell headCell">Средний онлайн<br />за 30 д.</th>
                 </Fragment>
               )}              
               {tableFor.search && (<th className="table_cell headCell"></th>)}
@@ -100,29 +107,32 @@ const Table = ({streamers, border = '', target = 'main'}) => {
                 <td className="table_cell">
                   <div className="cellContainer">
                     <span>{streamer.followers.actual}</span>
-                    <span>{streamer.followers.diff}</span>
-                    <span>{streamer.followers.inDays}</span>
+                    <span className={greenOrRedDiff(streamer.followers.diff)}>
+                      {streamer.followers.diff}
+                      {/* &nbsp;
+                      {streamer.followers.inDays} */}
+                    </span>
                   </div>
                 </td>
-                <td className="table_cell">
+                {/* <td className="table_cell">
                   <div className="cellContainer">
                     <span>{streamer.views.actual}</span>
-                    <span>{streamer.views.diff}</span>
-                    <span>{streamer.views.inDays}</span>
+                    <span className="cell_valueDiff">{streamer.views.diff}</span>
+                    <span className="cell_valueDiff">{streamer.views.inDays}</span>
                   </div>
-                </td>
+                </td> */}
                 {tableFor.main && (
                   <Fragment>
                     <td className="table_cell">
                       <div className="cellContainer">
                         <span>{streamer.onlineViewers.max}</span>
-                        <span>{streamer.onlineViewers.inDays}</span>
+                        {/* <span className="cell_valueDiff">{streamer.onlineViewers.inDays}</span> */}
                       </div>
                     </td>
                     <td className="table_cell">
                       <div className="cellContainer">
                         <span>{streamer.onlineViewers.middle}</span>
-                        <span>{streamer.onlineViewers.inDays}</span>
+                        {/* <span className="cell_valueDiff">{streamer.onlineViewers.inDays}</span> */}
                       </div>
                     </td>
                   </Fragment>
@@ -140,4 +150,4 @@ const Table = ({streamers, border = '', target = 'main'}) => {
     </Fragment>
 )};
 
-export default Table;
+export default DashboardTable;

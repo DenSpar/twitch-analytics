@@ -24,7 +24,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-left: 10px;
-    max-width: 510px;
+    max-width: 450px;
 }
 
 .streamerDescription_column {
@@ -38,7 +38,6 @@
 }
 
 .streamerName {
-    width: 100%;
     font-family: 'Rubik', 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -46,6 +45,14 @@
     line-height: 26px;
     color: #475F7B;
     margin: 5px 0 10px 30px;
+}
+
+.channelLink {
+    color: #475F7B;
+    margin-left: auto;
+}
+.channelLink:hover {
+    color: #5A8DEE;
 }
 
 .streamerDescription {

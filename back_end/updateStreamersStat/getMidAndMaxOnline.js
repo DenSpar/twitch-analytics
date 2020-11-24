@@ -52,11 +52,10 @@ module.exports = function getMidAndMaxOnline(streamerID) {
                     };
                     if(arrMidOnline.length !== 0) {
                         obj.midOnline.value = Math.round(arrMidOnline.reduce((prev, viewers) => prev + viewers, 0) / arrMidOnline.length);
-                        obj.midOnline.inDays = getDaysDiff(streams[indexOfLastStream].record.start_at);
                     } else {
                         obj.midOnline.value = streams[indexOfLastStream].midViewers;
-                        obj.midOnline.inDays = getDaysDiff(streams[indexOfLastStream].record.start_at);
                     };
+                    obj.midOnline.inDays = getDaysDiff(streams[indexOfLastStream].record.start_at);
                 };
             };            
             resolve(obj);

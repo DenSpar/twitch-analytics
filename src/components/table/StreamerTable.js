@@ -106,14 +106,14 @@ const StreamsTable = ({streams}) => {
 };
 
 const StreamerTable = ({videos, streams, onAir}) => {
-  const [activeTable, setActiveTable] = useState({video: true, streams: false});
-
-  const showVideoTable = () => {
-    setActiveTable({video: true, streams: false});
-  };
+  const [activeTable, setActiveTable] = useState({streams: true, video: false});
 
   const showStreamsTable = () => {
     setActiveTable({video: false, streams: true});
+  };
+
+  const showVideoTable = () => {
+    setActiveTable({video: true, streams: false});
   };
 
   const tableTitleClass = (prop) => {
@@ -128,8 +128,8 @@ const StreamerTable = ({videos, streams, onAir}) => {
       {videos.length === 0 ? null : (
         <div className="block wideBlock">
           <div className="tableTitle_container">
-            <h1 className={tableTitleClass("video")} onClick={() => showVideoTable()}>Архивные видео</h1>
             <h1 className={tableTitleClass("streams")} onClick={() => showStreamsTable()}>Список трансляций</h1>
+            <h1 className={tableTitleClass("video")} onClick={() => showVideoTable()}>Архивные видео</h1>
           </div>
           {activeTable.streams && <StreamsTable streams={streams}/>}
           {activeTable.video && <VideoTable videos={videos} onAir={onAir}/>}

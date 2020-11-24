@@ -58,6 +58,19 @@
     flex-direction: column;
 }
 
+.cell_valueDiff {
+    font-size: 13px;
+    line-height: 15px;
+}
+
+.greenDiff {
+    color:#39DA8A;
+}
+
+.redDiff {
+    color: #FF5B5C;
+}
+
 .table_name {
     margin: auto;
 }
