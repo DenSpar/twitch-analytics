@@ -4,8 +4,10 @@ import OnAir from 'components/onAir/OnAir';
 
 const greenOrRedDiff = (diff) => {
   let classes = ["cell_valueDiff"];
-  if (diff[0] === '+') { classes.push("greenDiff") }
-  else { classes.push("redDiff") };
+  if (diff && diff.length > 1) {
+    if (diff[0] === '+') { classes.push("greenDiff") }
+    else { classes.push("redDiff") };
+  };
   return classes.join(' ')
 };
 
@@ -13,9 +15,7 @@ const DashboardTable = ({streamers, border = ''}) => {
   console.log(streamers);
 
   const openStreamerPage = (streamer) => {
-    //условие проверки - костыль, потом удалить tableFor.search
-    if (!streamer) return null
-    else {
+    if (streamer.id) {
       let streamerURL = new URL(window.location.href);
       streamerURL.searchParams.set('streamerID', streamer.id);
       streamerURL.pathname = 'streamer';
@@ -49,7 +49,7 @@ const DashboardTable = ({streamers, border = ''}) => {
                   <p className="table_name">{streamer.name}</p>
                   <OnAir stream={streamer.stream}/>
                 </td>
-                <td className="table_cell">streamer.totalVideos</td>
+                <td className="table_cell">{streamer.totalVideos}</td>
                 <td className="table_cell">
                   <div className="cellContainer">
                     <span>{streamer.followers.actual}</span>

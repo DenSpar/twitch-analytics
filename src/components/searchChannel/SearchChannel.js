@@ -69,7 +69,7 @@ const SearchChannel = () => {
       </form>
       {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
       {searchState.channels.length !==0 &&
-        <SearchTable streamers={searchState.channels} target={'search'} border={"searchTable"}/>
+        <SearchTable streamers={searchState.channels} />
       }
       {loading && <Preloader />}
       {title.trim() && <SearchTableControlButtons howManyResults={searchState._total}/>}

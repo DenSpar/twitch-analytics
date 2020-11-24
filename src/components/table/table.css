@@ -54,6 +54,7 @@
 }
 
 .cellContainer {
+    /* в дасшборд */
     display: flex;
     flex-direction: column;
 }
