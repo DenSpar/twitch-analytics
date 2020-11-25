@@ -70,6 +70,32 @@ app.get('/api/showlist', function(req, res) {
     });
 });
 
+app.get('/api/addone', function(req, res) {
+    const streamersList = app.locals.streamers;
+    const oneStreamer = {
+        followers: [{"11/25/2020": 19}],
+        maxOnline: 0,
+        midOnline: {inDays: 0, value: 0},
+        name: "russianminecrafttours",
+        twitchID: 593756357,
+        views: [{"11/25/2020": 8989}]
+    }
+    streamersList.insertOne(oneStreamer, function(err, result){          
+        if(err) { return console.log(err); }
+        console.log("добавлен новый стример", result.ops);
+        res.send(result.ops)
+    });
+});
+
+app.get('/api/delone', function(req, res) {
+    const streamersList = app.locals.streamers;
+    streamersList.findOneAndDelete({twitchID: 593756357}, function(err, result){               
+        if(err) return console.log(err);
+        console.log("удален стример");
+        res.send(result)
+    });
+});
+
 // вывод содержимого коллекции stats
 app.get('/api/showstats', function(req, res) {
     const statsList = app.locals.stats;

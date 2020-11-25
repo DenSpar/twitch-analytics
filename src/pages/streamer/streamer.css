@@ -48,11 +48,7 @@
 }
 
 .channelLink {
-    color: #475F7B;
     margin-left: auto;
-}
-.channelLink:hover {
-    color: #5A8DEE;
 }
 
 .streamerDescription {

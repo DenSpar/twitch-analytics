@@ -31,6 +31,7 @@ const VideoTable = ({videos, onAir}) => {
           <th className="firstStubCol"></th>
           <th className="table_cell headCell">Игра</th>
           <th className="table_cell headCell">Описание</th>
+          {/* <th className="table_cell headCell">Ссылка на видео</th> */}
           <th className="table_cell headCell">Дата и время начала записи</th>
           <th className="table_cell headCell">Длинна видео</th>
           <th className="table_cell headCell">Просмотров</th>
@@ -42,7 +43,20 @@ const VideoTable = ({videos, onAir}) => {
           <tr className="table_row" key={num}>
             <td className="table_cell">{onAir && num === 0 ? <RedLamp /> : null}</td>
             <td className="table_cell">{video.game}</td>
-            <td className="table_cell">{video.title}</td>
+            <td className="table_cell">
+              {video.title}
+              {video.url && (<Fragment>
+                &nbsp;
+                <a  className="defaultLink"
+                href={video.url} target="_blank"
+                rel="noreferrer noopener">
+                  ссылка
+                </a>
+              </Fragment>)}
+              </td>
+            {/* <td className="table_cell">
+              <a  className="defaultLink" href={video.url} target="_blank">открыть</a>
+            </td> */}
             <td className="table_cell">{video.published_at}</td>
             <td className="table_cell">
               {//onAir && num === 0 ? <GoOnStreamTimer videoLength={video.length}/> : 

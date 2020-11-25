@@ -16,7 +16,8 @@ let makeVideosList = (videosArr) => {
         title: video.title,
         id: video._id,
         views: splitNumbers(video.views),
-        length: videoTimeConverter(video.length)
+        length: videoTimeConverter(video.length),
+        url: video.url
     }));
     return arr;
 };
