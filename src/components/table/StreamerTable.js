@@ -30,10 +30,14 @@ const VideoTable = ({videos, onAir, views}) => {
       <div className="streamersViews">просмотров:
         <div className="streamersViews_valueColumn">
             <span className="streamersViews_value">{views.actual}</span>
-            &nbsp;
-            <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
-              {views.diff + ' ' + views.inDays}
-            </span>
+            {views.diff.length > 1 && (
+              <Fragment>
+                &nbsp;
+                <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
+                  {views.diff + ' ' + views.inDays}
+                </span>
+              </Fragment>
+            )}
         </div>
       </div>
       <table className="table videoTable">
