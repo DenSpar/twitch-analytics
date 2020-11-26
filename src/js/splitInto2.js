@@ -14,7 +14,7 @@ export default {
       };
       if (arr.length%2 === 1) {
         let emptyRow = {
-          name: null,
+          name: "",
           id: null,
           logo: null,
           followers: {

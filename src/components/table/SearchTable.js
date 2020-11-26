@@ -2,6 +2,7 @@ import React, { Fragment, useContext } from 'react';
 import './table.css';
 import StreamersContext from 'context/streamersContext';
 import {AlertContext} from 'context/alert/alertContext';
+import TrimName from 'components/trimName/TrimName';
 
 const isInTable = (newStreamer, tableState) => {
   let isIn = false;
@@ -71,7 +72,7 @@ const SearchTable = ({streamers}) => {
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
                 </td>
                 <td className="table_cell">
-                  <p className="table_name">{streamer.name}</p>
+                  <TrimName name={streamer.name} />
                 </td>
                 <td className="table_cell">
                   {streamer.description.trim()

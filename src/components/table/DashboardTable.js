@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import './table.css';
 import OnAir from 'components/onAir/OnAir';
 import greenOrRedDiff from 'js/greenOrRedDiff';
+import TrimName from 'components/trimName/TrimName';
 
 const DashboardTable = ({streamers, border = ''}) => {
   console.log(streamers);
@@ -38,8 +39,8 @@ const DashboardTable = ({streamers, border = ''}) => {
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>
                 </td>
                 <td className="table_cell">
-                  <p className="table_name">{streamer.name}</p>
-                  <OnAir stream={streamer.stream}/>
+                  <TrimName name={streamer.name} />
+                  <OnAir stream={streamer.stream} />
                 </td>
                 <td className="table_cell">{streamer.totalVideos}</td>
                 <td className="table_cell">

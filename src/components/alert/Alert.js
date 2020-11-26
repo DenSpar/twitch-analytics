@@ -16,7 +16,7 @@ const Alert = () => {
         >
             <div className={`alert_outerContainer alert-${alert.type || "warning"}`}>
                 <div className='alert_innerContainer flex'>
-                    <p><strong>Внимание!</strong> {alert.text}</p>
+                    <p className="alertText"><strong>Внимание!</strong> {alert.text}</p>
                     <button className='hideAlertBtn' onClick={hide}>&times;</button>
                 </div>
             </div>
