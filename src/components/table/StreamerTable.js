@@ -32,7 +32,7 @@ const VideoTable = ({videos, onAir, views}) => {
             <span className="streamersViews_value">{views.actual}</span>
             {views.diff.length > 1 && (
               <Fragment>
-                &nbsp;
+                &ensp;
                 <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
                   {views.diff + ' ' + views.inDays}
                 </span>

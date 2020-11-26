@@ -41,7 +41,7 @@ const SearchChannel = () => {
 
   const SearchTableControlButtons = ({howManyResults}) => {
     const showMoreChannels = () => {
-      //т.к. в модуле для запросов нет пагинации, то новые результаты поиска буду получать увеличивая лимит
+      //т.к. для запросов нет пагинации, то новые результаты поиска буду получать увеличивая лимит
       searchChannel(title, actualLimit);
     };
   

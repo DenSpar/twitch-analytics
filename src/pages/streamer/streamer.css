@@ -28,7 +28,7 @@
 }
 
 .streamerDescription_column {
-    font-family: 'IBM Plex Sans', 'Roboto', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
@@ -38,7 +38,7 @@
 }
 
 .streamerName {
-    font-family: 'Rubik', 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 22px;
@@ -49,6 +49,9 @@
 
 .channelLink {
     margin-left: auto;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .streamerDescription {

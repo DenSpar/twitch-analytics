@@ -18,7 +18,7 @@ code {
 }
 
 .defaultBtn {
-  font-family: IBM Plex Sans;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

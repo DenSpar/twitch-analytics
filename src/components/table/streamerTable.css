@@ -27,7 +27,7 @@
 .streamersViews {
     display: flex;
     margin: 0 auto 10px 33px;
-    font-family: 'IBM Plex Sans', 'Roboto', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
