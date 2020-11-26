@@ -4,6 +4,7 @@ import React, { Fragment, useState
 import './table.css';
 import './streamerTable.css';
 // import videoTimeConverter from 'js/videoTimeConverter';
+import greenOrRedDiff from 'js/greenOrRedDiff';
 
 const RedLamp = () => (
   <img src="https://www.pngkey.com/png/detail/16-164591_glossy-red-icon-button-clip-art-at-clker.png"
@@ -23,52 +24,62 @@ const RedLamp = () => (
 //   return (<span>{videoTimeConverter(length)}</span>)
 // };
 
-const VideoTable = ({videos, onAir}) => {
+const VideoTable = ({videos, onAir, views}) => {
   return(
-    <table className="table videoTable">
-      <thead className="headRow">
-        <tr>
-          <th className="firstStubCol"></th>
-          <th className="table_cell headCell">Игра</th>
-          <th className="table_cell headCell">Описание</th>
-          {/* <th className="table_cell headCell">Ссылка на видео</th> */}
-          <th className="table_cell headCell">Дата и время начала записи</th>
-          <th className="table_cell headCell">Длинна видео</th>
-          <th className="table_cell headCell">Просмотров</th>
-          <th className="lastStubCol"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {videos.map((video, num) => (
-          <tr className="table_row" key={num}>
-            <td className="table_cell">{onAir && num === 0 ? <RedLamp /> : null}</td>
-            <td className="table_cell">{video.game}</td>
-            <td className="table_cell">
-              {video.title}
-              {video.url && (<Fragment>
-                &nbsp;
-                <a  className="defaultLink"
-                href={video.url} target="_blank"
-                rel="noreferrer noopener">
-                  ссылка
-                </a>
-              </Fragment>)}
-              </td>
-            {/* <td className="table_cell">
-              <a  className="defaultLink" href={video.url} target="_blank">открыть</a>
-            </td> */}
-            <td className="table_cell">{video.published_at}</td>
-            <td className="table_cell">
-              {//onAir && num === 0 ? <GoOnStreamTimer videoLength={video.length}/> : 
-              video.length}
-            </td>
-            <td className="table_cell">
-              {onAir && num === 0 ? onAir.viewers : video.views}
-            </td>
+    <Fragment>
+      <div className="streamersViews">просмотров:
+        <div className="streamersViews_valueColumn">
+            <span className="streamersViews_value">{views.actual}</span>
+            &nbsp;
+            <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
+              {views.diff + ' ' + views.inDays}
+            </span>
+        </div>
+      </div>
+      <table className="table videoTable">
+        <thead className="headRow">
+          <tr>
+            <th className="firstStubCol"></th>
+            <th className="table_cell headCell">Игра</th>
+            <th className="table_cell headCell">Описание</th>
+            <th className="table_cell headCell">Дата и время начала записи</th>
+            <th className="table_cell headCell">Длинна видео</th>
+            <th className="table_cell headCell">Просмотров</th>
+            <th className="lastStubCol"></th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {videos.map((video, num) => (
+            <tr className="table_row" key={num}>
+              <td className="table_cell">{onAir && num === 0 ? <RedLamp /> : null}</td>
+              <td className="table_cell">{video.game}</td>
+              <td className="table_cell">
+                {video.title}
+                { video.url && (
+                    <Fragment>
+                      &nbsp;
+                      <a  className="defaultLink"
+                      href={video.url} target="_blank"
+                      rel="noreferrer noopener">
+                        {video.id}
+                      </a>
+                    </Fragment>
+                  )
+                }
+              </td>
+              <td className="table_cell">{video.published_at}</td>
+              <td className="table_cell">
+                {//onAir && num === 0 ? <GoOnStreamTimer videoLength={video.length}/> : 
+                video.length}
+              </td>
+              <td className="table_cell">
+                {onAir && num === 0 ? onAir.viewers : video.views}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Fragment>
   )
 };
 
@@ -119,7 +130,7 @@ const StreamsTable = ({streams}) => {
   )
 };
 
-const StreamerTable = ({videos, streams, onAir}) => {
+const StreamerTable = ({videos, streams, onAir, views}) => {
   const [activeTable, setActiveTable] = useState({streams: true, video: false});
 
   const showStreamsTable = () => {
@@ -145,8 +156,8 @@ const StreamerTable = ({videos, streams, onAir}) => {
             <h1 className={tableTitleClass("streams")} onClick={() => showStreamsTable()}>Список трансляций</h1>
             <h1 className={tableTitleClass("video")} onClick={() => showVideoTable()}>Архивные видео</h1>
           </div>
-          {activeTable.streams && <StreamsTable streams={streams}/>}
-          {activeTable.video && <VideoTable videos={videos} onAir={onAir}/>}
+          {activeTable.streams && <StreamsTable streams={streams} />}
+          {activeTable.video && <VideoTable videos={videos} onAir={onAir} views={views} />}
         </div>
       )}
     </Fragment>

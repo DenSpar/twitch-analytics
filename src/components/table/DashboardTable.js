@@ -1,15 +1,7 @@
 import React, { Fragment } from 'react';
 import './table.css';
 import OnAir from 'components/onAir/OnAir';
-
-const greenOrRedDiff = (diff) => {
-  let classes = ["cell_valueDiff"];
-  if (diff && diff.length > 1) {
-    if (diff[0] === '+') { classes.push("greenDiff") }
-    else { classes.push("redDiff") };
-  };
-  return classes.join(' ')
-};
+import greenOrRedDiff from 'js/greenOrRedDiff';
 
 const DashboardTable = ({streamers, border = ''}) => {
   console.log(streamers);
@@ -53,7 +45,7 @@ const DashboardTable = ({streamers, border = ''}) => {
                 <td className="table_cell">
                   <div className="cellContainer">
                     <span>{streamer.followers.actual}</span>
-                    <span className={greenOrRedDiff(streamer.followers.diff)}>
+                    <span className={greenOrRedDiff("cell_valueDiff", streamer.followers.diff)}>
                       {streamer.followers.diff}
                       {/* &nbsp;
                       {streamer.followers.inDays} */}
