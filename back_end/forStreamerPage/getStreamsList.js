@@ -17,12 +17,13 @@ module.exports = function getStreamsList (streamerID, finObj) {
         const statsList = app.locals.stats;
         statsList.findOne({twitchID: streamerID}, function(err, findStreams){
             if(err) return console.log(err);
+            let streamsList;
             if (findStreams) {
-                let streamsList = preparingStreamsList(findStreams.streams);
-                finObj.streams = streamsList;
+                streamsList = preparingStreamsList(findStreams.streams);
             } else {
-                finObj.streams = [];
+                streamsList = preparingStreamsList([]);
             };
+            finObj.streams = streamsList;
             resolve();
         });
     });
