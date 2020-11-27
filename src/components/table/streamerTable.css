@@ -1,3 +1,7 @@
+.videoTable {
+    width: 100%;
+}
+
 .tableTitle_container {
     display: flex;
     margin: 30px auto 30px 13px;

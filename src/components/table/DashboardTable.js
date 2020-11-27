@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import './table.css';
+import './commonTable.css';
+import './dashboardTable.css';
 import OnAir from 'components/onAir/OnAir';
 import greenOrRedDiff from 'js/greenOrRedDiff';
 import TrimName from 'components/trimName/TrimName';
@@ -33,7 +34,7 @@ const DashboardTable = ({streamers, border = ''}) => {
           </thead>
           <tbody>
             {streamers.map((streamer, num) => (
-              <tr className="table_row mainTableRow"
+              <tr className="table_row dashboardTableRow"
               key={num} onClick={() => openStreamerPage(streamer)}>
                 <td className="table_cell">
                   <img className="table_img" src={streamer.logo} alt={streamer.name}/>

@@ -1,0 +1,17 @@
+.dashboardTableRow {
+    cursor: pointer;
+}
+.dashboardTableRow:hover {
+    background: #FAFBFB;
+    border-radius: 4px;
+}
+
+.cellContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.cell_valueDiff {
+    font-size: 13px;
+    line-height: 15px;
+}

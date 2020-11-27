@@ -7,14 +7,6 @@
     width: 50%;
 }
 
-.searchTable {
-    max-width: 70%;
-}
-
-.videoTable {
-    width: 100%;
-}
-
 .border-left {
     border-left: 0.5px solid #C7CFD6;
 }
@@ -35,13 +27,6 @@
 .table_row {
     height: 56px;
 }
-.mainTableRow {
-    cursor: pointer;
-}
-.mainTableRow:hover {
-    background: #FAFBFB;
-    border-radius: 4px;
-}
 
 .logoCollumn {
     width: 62px;
@@ -55,18 +40,8 @@
     vertical-align: middle;
 }
 
-.cellContainer {
-    /* в дасшборд */
-    display: flex;
-    flex-direction: column;
-}
-
-.cell_valueDiff {
-    font-size: 13px;
-    line-height: 15px;
-}
-
 .table_name {
+    /* компонент trimName */
     margin: auto;
 }
 
@@ -74,23 +49,4 @@
     max-height: 40px;
     border-radius: 50%;
     margin: 0;
-}
-
-.buttonAdd {
-    font-size: 24px;
-    font: bold;    
-    border-radius: 50%;
-    margin: 5px;
-    padding: 0 7px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-.buttonAdd:hover {
-  background-color:rgb(106, 106, 218);  
-  color: white;
-}
-.buttonAdd:active {
-    background-color:rgb(17, 17, 104);  
-    color: white;
 }

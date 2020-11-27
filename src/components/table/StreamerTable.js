@@ -1,7 +1,7 @@
 import React, { Fragment, useState
   // , useEffect 
 } from 'react';
-import './table.css';
+import './commonTable.css';
 import './streamerTable.css';
 // import videoTimeConverter from 'js/videoTimeConverter';
 import greenOrRedDiff from 'js/greenOrRedDiff';

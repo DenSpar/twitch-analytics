@@ -1,5 +1,6 @@
 import React, { Fragment, useContext } from 'react';
-import './table.css';
+import './commonTable.css';
+import './searchTable.css';
 import StreamersContext from 'context/streamersContext';
 import {AlertContext} from 'context/alert/alertContext';
 import TrimName from 'components/trimName/TrimName';
@@ -35,9 +36,7 @@ const SearchTable = ({streamers}) => {
         inDays: null,
         max: "-",
         middle: "-"
-      },
-      // идет ли стрим
-      stream: null
+      }
     };
     console.log(streamer.name, streamer._id, newStreamer);
     setStreamers(prevState => {
