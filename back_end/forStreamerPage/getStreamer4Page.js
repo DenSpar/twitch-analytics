@@ -34,6 +34,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                 descriptionObj.followers.actual = channelDescr.followers;
                 descriptionObj.views.actual = channelDescr.views;
                 descriptionObj.totalVideos = data._total;
+                descriptionObj.url = channelDescr.url
                 finObj.videos = makeVideosList(data.videos);
                 resolve();
             } else {
@@ -44,6 +45,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                     descriptionObj.followers.actual = channelDescr.followers;
                     descriptionObj.views.actual = channelDescr.views;
                     descriptionObj.totalVideos = 0;
+                    descriptionObj.url = channelDescr.url;
     
                     let videosStub = {
                         published_at: "",
@@ -69,7 +71,8 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             followers: {actual: '', diff: null, inDays: null},
             views: {actual: '', diff: null, inDays: null},
             totalVideos: 0,
-            totalStreams: 0
+            totalStreams: 0,
+            url: null
         },
         videos: [],
         stream: null

@@ -24,8 +24,7 @@ const StreamerDescription = ({streamer, onAir}) => {
                     <div className="flex wideBlock">
                         <p className="streamerName">{streamer.name}</p>
                         <a className="channelLink defaultLink"
-                        // change link
-                        href="http://localhost:3000/streamer?streamerID=46947742"
+                        href={streamer.url}
                         target="_blank"
                         rel="noreferrer noopener">
                             на канал
