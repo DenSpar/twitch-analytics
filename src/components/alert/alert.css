@@ -10,6 +10,12 @@
     margin: 0 auto;
 }
 
+.alertText {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
 .hideAlertBtn {
     margin: auto 0;
     margin-left: auto;

@@ -32,6 +32,7 @@ let getVideosInfo = (numID, obj) => {
 
 module.exports = function getStreamer4Dashboard(streamerFromDB) {
     let finalObj = {stream: null};
+    finalObj.onlineViewers = getOnlineInfo(streamerFromDB);
     return new Promise ((resolve, reject) => {
         Promise.all([
             getChannelInfo(streamerFromDB.twitchID, finalObj),
@@ -41,7 +42,6 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
         .then(() => {
             finalObj.followers = getDiff('followers', finalObj.followers, streamerFromDB);
             finalObj.views = getDiff('views', finalObj.views, streamerFromDB);
-            getOnlineInfo(finalObj, streamerFromDB);
             resolve(finalObj)
         });
     })

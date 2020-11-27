@@ -1,58 +1,14 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import './streamer.css';
 import StreamerTable from 'components/table/StreamerTable';
-import getChannelById from 'js/twitchApiRequsts/getChannelById';
-import getChannelsVideoById from 'js/twitchApiRequsts/getChannelsVideoById';
-import getStreamsChannelById from 'js/twitchApiRequsts/getStreamsChannelById';
-import splitNumbers from 'js/splitNumbers';
 import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
+import sendRequest from 'js/sendRequest';
+import greenOrRedDiff from 'js/greenOrRedDiff';
+import Return2Dashbord from 'components/return2Dashbord/Return2Dashbord';
 
-let channelInfo = (numID) => {
-    return new Promise((resolve, reject) => {
-        getChannelById(numID)
-        .then(res => {
-            let obj = {
-                name: res.display_name,
-                logo: res.logo,
-                followers: splitNumbers(res.followers),
-                views: splitNumbers(res.views),
-                totalVideos: 0
-            };
-            document.title = obj.name;
-            resolve(obj);
-        })
-    })
-};
-
-let makeStreamerDescription = (objData, totVideos) => {
-    let newStreamerObj = {
-        logo: objData.logo,
-        name: objData.display_name,
-        followers: objData.followers,
-        views: objData.views,
-        totalVideos: totVideos
-    };    
-    document.title = newStreamerObj.name;
-    return newStreamerObj
-};
-
-let makeVideosList = (videosArr) => {
-    let arr = [] ;  
-    videosArr.map(video => arr.push({
-        dates: {
-            published_at: video.published_at,
-            recorded_at: video.recorded_at,
-            created_at: video.created_at,
-            delete_at: video.delete_at
-        },
-        game: video.game,
-        title: video.title,
-        id: video._id,
-        views: video.views,
-        length: video.length
-    }))
-    return arr;
+let denly = {
+    "description":{"logo":"https://static-cdn.jtvnw.net/jtv_user_pictures/2ceffe1a-95cd-4928-aa90-d429346ce70c-profile_image-300x300.png","name":"y0nd","followers":{"actual":"2 475 237","diff":"-22 498","inDays":"за 7 д."},"views":{"actual":"84 596 294","diff":"+2 263 237","inDays":"за 28 д."},"totalVideos":42,"totalStreams":12,"onlineViewers":{"max":"1 110","middle":"455","inDays":"за 30 д."}},"videos":[{"published_at":"13.10.2020 23:19:25","game":"Minecraft","title":"Тестовая экскурсия в Майнкрафте :) РОДИНА МАТЬ! Культурное наследние","id":"v769468484","views":"4 381","length":"0:51:56","url":"https://www.twitch.tv/videos/769468484"},{"published_at":"06.10.2020 20:59:40","game":"Just Chatting","title":"ФИНАЛ РОЗЫГРЫША МОНИКОВ ОТ LG: оглашение победителей!","id":"v762459112","views":"4 983","length":"0:45:20"}],"stream":{"viewers":"519"},"streams":[{"maxViewers":"592","stream":{"created_at":"17.11.2020 17:47:35","length":"3:12:32"},"record":{"start_at":"17.11.2020 17:49:06","length":"3:11:00"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40021158204,"notes":[],"minutes1Viewer":1,"midViewers":"416","med50Viewers":"456"},{"maxViewers":"803","stream":{"created_at":"17.11.2020 09:54:03","length":"3:51:32"},"record":{"start_at":"17.11.2020 13:39:32","length":"0:06:03"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40018253212,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"726","med50Viewers":"803"},{"maxViewers":"1 110","stream":{"created_at":"16.11.2020 14:28:12","length":"6:00:30"},"record":{"start_at":"16.11.2020 19:57:31","length":"0:31:11"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40007187340,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"1 049","med50Viewers":"1 045"}]
 };
 
 const StreamerDescription = ({streamer, onAir}) => {
@@ -65,14 +21,62 @@ const StreamerDescription = ({streamer, onAir}) => {
                     <div className="onAir_container">{onAir && <OnAir stream={onAir}/>}</div>
                 </div>
                 <div className="streamerDescription_container">
-                    <p className="streamerName"><strong>{streamer.name}</strong></p>
-                    <p className="streamerDescription">подписчиков: <strong>{splitNumbers(streamer.followers)}</strong></p>
-                    <p className="streamerDescription">просмотров: <strong>{splitNumbers(streamer.views)}</strong></p>
-                    <p className="streamerDescription">видео в архиве: <strong>{streamer.totalVideos}</strong></p>
-                    <p className="streamerDescription">стримов записано: <strong>{"количество стримов"}</strong></p>
-                    {onAir && 
-                        <p className="streamerDescription">сейчас смотрят: <strong>{onAir.viewers}</strong></p>
-                    }
+                    <div className="flex wideBlock">
+                        <p className="streamerName">{streamer.name}</p>
+                        <a className="channelLink defaultLink"
+                        href={streamer.url}
+                        target="_blank"
+                        rel="noreferrer noopener">
+                            на канал
+                        </a>
+                    </div>
+                    <div className="streamerDescription_column">                    
+                        <div className="streamerDescription">подписчиков:
+                            <div className="streamerDescription_valueColumn">
+                                <span className="streamerDescription_value">{streamer.followers.actual}</span>
+                                {streamer.followers.diff.length > 1 && (
+                                    <span className={greenOrRedDiff("streamerDescription_valueDiff", streamer.followers.diff)}>
+                                        {streamer.followers.diff + ' ' + streamer.followers.inDays}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                        {/* <div className="streamerDescription">просмотров:
+                            <div className="streamerDescription_valueColumn">
+                                <span className="streamerDescription_value">{streamer.views.actual}</span>
+                                <span className="streamerDescription_valueDiff">{streamer.views.diff + ' ' + streamer.views.inDays}</span>
+                            </div>
+                        </div> */}
+                        <p className="streamerDescription">
+                            видео в архиве: <span className="streamerDescription_value">{streamer.totalVideos}</span>
+                        </p>
+                        <p className="streamerDescription">
+                            стримов записано: <span className="streamerDescription_value">{streamer.totalStreams}</span>
+                        </p>
+                    </div>
+                    <div className="streamerDescription_column">
+                        <div className="streamerDescription_onlinesContainer">
+                            <p className="streamerDescription">онлайн-зрителей
+                                {streamer.onlineViewers.inDays && 
+                                    <span>&nbsp;{streamer.onlineViewers.inDays}</span>
+                                }
+                                :
+                            </p>
+                            <p className="streamerDescription leftMargin">
+                                макс.:<span className="streamerDescription_value">{streamer.onlineViewers.max}</span>
+                            </p>
+                            <p className="streamerDescription leftMargin">
+                                среднее:<span className="streamerDescription_value">{streamer.onlineViewers.middle}</span>
+                            </p>
+                        </div>
+                        {onAir && 
+                            <p className="streamerDescription">
+                                сейчас смотрят: <span className="streamerDescription_value">
+                                    {onAir.viewers}
+                                </span>
+                            </p>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,48 +89,51 @@ const streamerID = nowURL.searchParams.get('streamerID');
 const Streamer = () => {
     const [streamer, setStreamer] = useState({});
     const [videos, setVideos] = useState([]);
+    const [streams, setStreams] = useState([]);
     const [loading, setLoading] = useState(false);
     const [onAir, setOnAir] = useState(false);
 
-    useEffect(() => {
-        setLoading(true);
-        getChannelsVideoById(streamerID, 100)
-        .then(data => {
-            if (data._total) {
-                setStreamer(makeStreamerDescription(data.videos[0].channel, data._total));
-                setVideos(makeVideosList(data.videos));
-            } else {
-                channelInfo(streamerID)
-                .then(streamerDescr => setStreamer(streamerDescr));                
-                let videosStub = {
-                    dates: {
-                        published_at: "",
-                        recorded_at: "",
-                        created_at: "",
-                        delete_at: ""
-                    },
-                    game: "Видео скрыты для просмотра или еще не созданы",
-                    title: "",
-                    id: "",
-                    views: "",
-                    length: ""
-                };
-                setVideos([videosStub]);
-            };
-            setLoading(false);
-        });
-    }, []);
+    //delete
+        let testStreamer = () => {
+            console.log('denly', denly);
+            setTimeout(() => {
+                setStreamer(denly.description);
+                setLoading(false);
+                document.title = denly.description.name;
+                
+                setTimeout(() => {
+                    setVideos(denly.videos)
+                    setStreams(denly.streams)
+                    setOnAir(denly.stream)
+                }, 1000)
+            }, 2000);
+        };
 
     useEffect(() => {
-        getStreamsChannelById(streamerID)
-        .then(data => setOnAir(data.stream));
+        setLoading(true);
+        // удалить условие
+        if (nowURL.hostname === 'localhost') {
+            console.log ('на localhost');
+            testStreamer();
+        } else {
+            sendRequest('GET', 'https://stat.metacorp.gg/api/streamers/' + streamerID)
+            .then(streamer => {
+                setStreamer(streamer.description);
+                setVideos(streamer.videos);
+                setStreams(streamer.streams);
+                setOnAir(streamer.stream);
+                setLoading(false);
+                document.title = streamer.description.name;
+            })
+        };
     }, []);
 
     return(
         <Fragment>
+            <Return2Dashbord />
             {loading && <Preloader />}
             <StreamerDescription streamer={streamer} onAir={onAir} />
-            <StreamerTable videos={videos} onAir={onAir}/>
+            <StreamerTable videos={videos} streams={streams} onAir={onAir} views={streamer.views}/>
         </Fragment>
     );
 };

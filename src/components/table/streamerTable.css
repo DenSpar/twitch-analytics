@@ -1,11 +1,59 @@
+.videoTable {
+    width: 100%;
+}
+
+.tableTitle_container {
+    display: flex;
+    margin: 30px auto 30px 13px;
+}
+
+.textAlign_center {
+    text-align: center;
+}
+
 .tableTitle {
-    margin: 20px auto 40px 33px;
-    font-family: Rubik;
+    font-family: 'Rubik', 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 21px;
     color: #475F7B;
+    margin: 0 20px;
+    cursor: pointer;
+}
+.tableTitle:hover {
+    color: #5A8DEE;
+}
+.tableTitle_active {
+    color: #5A8DEE;
+}
+
+.streamersViews {
+    display: flex;
+    margin: 0 auto 10px 33px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 17px;
+    color: #727E8C;
+}
+
+.streamersViews_valueColumn {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+}
+
+.streamersViews_value {
+    margin-left: 4px;
+    color: #475F7B;
+}
+
+.streamersViews_valueDiff {
+    font-size: 13px;
+    line-height: 15px;
+    /* color: #475F7B; */
 }
 
 .firstStubCol {
@@ -20,4 +68,8 @@
     height: 21px;
     border-radius: 50%;
     margin-top: 5px;
+}
+
+.table_cell_gameName {
+    margin: 0;
 }

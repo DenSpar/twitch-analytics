@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useContext } from 'react';
-import Table from 'components/table/Table';
+import SearchTable from 'components/table/SearchTable';
 import './searchChannel.css';
 import Preloader from 'components/preloader/Preloader';
 import {AlertContext} from 'context/alert/alertContext';
@@ -41,7 +41,7 @@ const SearchChannel = () => {
 
   const SearchTableControlButtons = ({howManyResults}) => {
     const showMoreChannels = () => {
-      //т.к. в модуле для запросов нет пагинации, то новые результаты поиска буду получать увеличивая лимит
+      //т.к. для запросов нет пагинации, то новые результаты поиска буду получать увеличивая лимит
       searchChannel(title, actualLimit);
     };
   
@@ -69,7 +69,7 @@ const SearchChannel = () => {
       </form>
       {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
       {searchState.channels.length !==0 &&
-        <Table streamers={searchState.channels} target={'search'} border={"searchTable"}/>
+        <SearchTable streamers={searchState.channels} />
       }
       {loading && <Preloader />}
       {title.trim() && <SearchTableControlButtons howManyResults={searchState._total}/>}

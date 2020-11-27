@@ -22,3 +22,11 @@
   width: fit-content;
   align-self: flex-start;
 }
+
+.greenDiff {
+  color:#39DA8A;
+}
+
+.redDiff {
+  color: #FF5B5C;
+}

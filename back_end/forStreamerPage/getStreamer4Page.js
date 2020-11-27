@@ -4,16 +4,20 @@ const getDiff = require('../preparingStreamers4Send/getDiff.js');
 const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getStreamsList = require('./getStreamsList.js');
+const videoTimeConverter = require('../videoTimeConverter.js');
+const splitNumbers = require('../preparingStreamers4Send/splitNumbers.js');
+const dateConverter = require('./dateConverter.js');
 
 let makeVideosList = (videosArr) => {
     let arr = [] ;  
     videosArr.map(video => arr.push({
-        published_at: video.published_at,
+        published_at: dateConverter(video.published_at),
         game: video.game,
         title: video.title,
         id: video._id,
-        views: video.views,
-        length: video.length
+        views: splitNumbers(video.views),
+        length: videoTimeConverter(video.length),
+        url: video.url
     }));
     return arr;
 };
@@ -30,6 +34,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                 descriptionObj.followers.actual = channelDescr.followers;
                 descriptionObj.views.actual = channelDescr.views;
                 descriptionObj.totalVideos = data._total;
+                descriptionObj.url = channelDescr.url
                 finObj.videos = makeVideosList(data.videos);
                 resolve();
             } else {
@@ -40,6 +45,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                     descriptionObj.followers.actual = channelDescr.followers;
                     descriptionObj.views.actual = channelDescr.views;
                     descriptionObj.totalVideos = 0;
+                    descriptionObj.url = channelDescr.url;
     
                     let videosStub = {
                         published_at: "",
@@ -65,11 +71,13 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             followers: {actual: '', diff: null, inDays: null},
             views: {actual: '', diff: null, inDays: null},
             totalVideos: 0,
-            totalStreams: 0
+            totalStreams: 0,
+            url: null
         },
         videos: [],
         stream: null
     };
+    finalObj.description.onlineViewers = getOnlineInfo(streamerFromDB);
     return new Promise ((resolve, reject) => {
         Promise.all([
             getChannelDescriptionAndVideos(streamerFromDB.twitchID, finalObj),
@@ -80,7 +88,6 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             finalObj.description.followers = getDiff('followers', finalObj.description.followers.actual, streamerFromDB);
             finalObj.description.views = getDiff('views', finalObj.description.views.actual, streamerFromDB);
             finalObj.description.totalStreams = finalObj.streams.length;
-            getOnlineInfo(finalObj, streamerFromDB);
             resolve(finalObj)
         });
     })

@@ -65,11 +65,12 @@ let getNewStat = (date) => {
 
 let updateScript = () => {
     let currentDate = new Date();
-    if (currentDate.getHours() === 6) {
+    let hours = currentDate.getHours() + 3;
+    if (hours === 9) {
         console.log('обновление статы стримеров: обновление ...');
         return getNewStat(currentDate)
     } else {
-        console.log('обновление статы стримеров: сейчас ' + currentDate.getHours() + ' часов, жду 6');
+        console.log('обновление статы стримеров: сейчас ' + hours + ' часов, жду 9');
     };
 };
 

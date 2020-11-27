@@ -51,7 +51,7 @@ module.exports = function getDiff(property, actual, streamerFromDB) {
         };
         return preparing4Send(obj);
     } else {
-        obj.actual = 'статистика еще не собрана';
+        obj.actual = '-';
         return obj;
     }    
 };
