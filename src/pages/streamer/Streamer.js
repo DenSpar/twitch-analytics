@@ -5,6 +5,7 @@ import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
 import sendRequest from 'js/sendRequest';
 import greenOrRedDiff from 'js/greenOrRedDiff';
+import Return2Dashbord from 'components/return2Dashbord/Return2Dashbord';
 
 let denly = {
     "description":{"logo":"https://static-cdn.jtvnw.net/jtv_user_pictures/2ceffe1a-95cd-4928-aa90-d429346ce70c-profile_image-300x300.png","name":"y0nd","followers":{"actual":"2 475 237","diff":"-22 498","inDays":"за 7 д."},"views":{"actual":"84 596 294","diff":"+2 263 237","inDays":"за 28 д."},"totalVideos":42,"totalStreams":12,"onlineViewers":{"max":"1 110","middle":"455","inDays":"за 30 д."}},"videos":[{"published_at":"13.10.2020 23:19:25","game":"Minecraft","title":"Тестовая экскурсия в Майнкрафте :) РОДИНА МАТЬ! Культурное наследние","id":"v769468484","views":"4 381","length":"0:51:56","url":"https://www.twitch.tv/videos/769468484"},{"published_at":"06.10.2020 20:59:40","game":"Just Chatting","title":"ФИНАЛ РОЗЫГРЫША МОНИКОВ ОТ LG: оглашение победителей!","id":"v762459112","views":"4 983","length":"0:45:20"}],"stream":{"viewers":"519"},"streams":[{"maxViewers":"592","stream":{"created_at":"17.11.2020 17:47:35","length":"3:12:32"},"record":{"start_at":"17.11.2020 17:49:06","length":"3:11:00"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40021158204,"notes":[],"minutes1Viewer":1,"midViewers":"416","med50Viewers":"456"},{"maxViewers":"803","stream":{"created_at":"17.11.2020 09:54:03","length":"3:51:32"},"record":{"start_at":"17.11.2020 13:39:32","length":"0:06:03"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40018253212,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"726","med50Viewers":"803"},{"maxViewers":"1 110","stream":{"created_at":"16.11.2020 14:28:12","length":"6:00:30"},"record":{"start_at":"16.11.2020 19:57:31","length":"0:31:11"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40007187340,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"1 049","med50Viewers":"1 045"}]
@@ -130,6 +131,7 @@ const Streamer = () => {
 
     return(
         <Fragment>
+            <Return2Dashbord />
             {loading && <Preloader />}
             <StreamerDescription streamer={streamer} onAir={onAir} />
             <StreamerTable videos={videos} streams={streams} onAir={onAir} views={streamer.views}/>

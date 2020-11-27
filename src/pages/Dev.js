@@ -2,6 +2,7 @@ import React from 'react';
 import sendRequest from 'js/sendRequest';
 import recStreamStat from 'js/recStreamStat';
 import getStreamer from 'js/twitchApiRequsts/getStreamer';
+import Return2Dashbord from 'components/return2Dashbord/Return2Dashbord';
 
 const Dev = () => {
     let streamerID = 0;
@@ -45,6 +46,7 @@ const Dev = () => {
 
     return (
     <div>
+        <Return2Dashbord />
         <div className="flex">
                 <div>
                     <p> 46947742(RIKKIDI) </p>
