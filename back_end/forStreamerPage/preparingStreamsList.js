@@ -11,10 +11,11 @@ module.exports = function preparingStreamsList (streamsArr) {
             newStream.midViewers = splitNumbers(newStream.midViewers);
             newStream.record.start_at = dateConverter(newStream.record.start_at);
             newStream.stream.created_at = dateConverter(newStream.stream.created_at);
-            if (newStream.minutes1Viewer > 1) {
-                let newNote = 'первые зрители появились на ' + newStream.minutes1Viewer + ' мин.';
-                newStream.notes.push(newNote);
-            }
+            // если первые зрители появились не на 1 минуте - добавляет в примечание на какой минуте присоединились
+            // if (newStream.minutes1Viewer > 1) {
+            //     let newNote = 'первые зрители появились на ' + newStream.minutes1Viewer + ' мин.';
+            //     newStream.notes.push(newNote);
+            // }
             finalList.push(newStream);
         };
     } else {
