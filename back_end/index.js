@@ -48,7 +48,7 @@ app.get('/api/streamers', function(req, res) {
     });
 });
 
-// вернет стримера из БД коллекции list
+// вернет стримера для страницы
 app.get('/api/streamers/:id', function(req, res) {
     const id = Number(req.params.id);
     const streamersList = app.locals.streamers;

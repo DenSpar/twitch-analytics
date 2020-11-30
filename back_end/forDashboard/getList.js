@@ -25,7 +25,6 @@ module.exports = function getList(listFromDB) {
             .then(allChannels => filterDeadChannels(allChannels))
             .then(onlyLiveChannels => {
                 onlyLiveChannels.map(channel => {
-                    delete channel.lastVideo;
                     delete channel.description;
                 });
                 resolve(onlyLiveChannels)

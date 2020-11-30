@@ -3,12 +3,19 @@ import './streamer.css';
 import StreamerTable from 'components/table/StreamerTable';
 import Preloader from 'components/preloader/Preloader';
 import OnAir from 'components/onAir/OnAir';
+import IsClosed from 'components/isClosed/IsClosed';
 import sendRequest from 'js/sendRequest';
 import greenOrRedDiff from 'js/greenOrRedDiff';
 import Return2Dashbord from 'components/return2Dashbord/Return2Dashbord';
 
 let denly = {
-    "description":{"logo":"https://static-cdn.jtvnw.net/jtv_user_pictures/2ceffe1a-95cd-4928-aa90-d429346ce70c-profile_image-300x300.png","name":"y0nd","followers":{"actual":"2 475 237","diff":"-22 498","inDays":"за 7 д."},"views":{"actual":"84 596 294","diff":"+2 263 237","inDays":"за 28 д."},"totalVideos":42,"totalStreams":12,"onlineViewers":{"max":"1 110","middle":"455","inDays":"за 30 д."}},"videos":[{"published_at":"13.10.2020 23:19:25","game":"Minecraft","title":"Тестовая экскурсия в Майнкрафте :) РОДИНА МАТЬ! Культурное наследние","id":"v769468484","views":"4 381","length":"0:51:56","url":"https://www.twitch.tv/videos/769468484"},{"published_at":"06.10.2020 20:59:40","game":"Just Chatting","title":"ФИНАЛ РОЗЫГРЫША МОНИКОВ ОТ LG: оглашение победителей!","id":"v762459112","views":"4 983","length":"0:45:20"}],"stream":{"viewers":"519"},"streams":[{"maxViewers":"592","stream":{"created_at":"17.11.2020 17:47:35","length":"3:12:32"},"record":{"start_at":"17.11.2020 17:49:06","length":"3:11:00"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40021158204,"notes":[],"minutes1Viewer":1,"midViewers":"416","med50Viewers":"456"},{"maxViewers":"803","stream":{"created_at":"17.11.2020 09:54:03","length":"3:51:32"},"record":{"start_at":"17.11.2020 13:39:32","length":"0:06:03"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40018253212,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"726","med50Viewers":"803"},{"maxViewers":"1 110","stream":{"created_at":"16.11.2020 14:28:12","length":"6:00:30"},"record":{"start_at":"16.11.2020 19:57:31","length":"0:31:11"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40007187340,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"1 049","med50Viewers":"1 045"}]
+    "description":{"isClosed":false,"logo":"https://static-cdn.jtvnw.net/jtv_user_pictures/2ceffe1a-95cd-4928-aa90-d429346ce70c-profile_image-300x300.png","name":"y0nd","followers":{"actual":"2 475 237","diff":"-22 498","inDays":"за 7 д."},"views":{"actual":"84 596 294","diff":"+2 263 237","inDays":"за 28 д."},"totalVideos":42,"totalStreams":12,"onlineViewers":{"max":"1 110","middle":"455","inDays":"за 30 д."}},"videos":[{"published_at":"13.10.2020 23:19:25","game":"Minecraft","title":"Тестовая экскурсия в Майнкрафте :) РОДИНА МАТЬ! Культурное наследние","id":"v769468484","views":"4 381","length":"0:51:56","url":"https://www.twitch.tv/videos/769468484"},{"published_at":"06.10.2020 20:59:40","game":"Just Chatting","title":"ФИНАЛ РОЗЫГРЫША МОНИКОВ ОТ LG: оглашение победителей!","id":"v762459112","views":"4 983","length":"0:45:20"}],"stream":{"viewers":"519"},"streams":[{"maxViewers":"592","stream":{"created_at":"17.11.2020 17:47:35","length":"3:12:32"},"record":{"start_at":"17.11.2020 17:49:06","length":"3:11:00"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40021158204,"notes":[],"minutes1Viewer":1,"midViewers":"416","med50Viewers":"456"},{"maxViewers":"803","stream":{"created_at":"17.11.2020 09:54:03","length":"3:51:32"},"record":{"start_at":"17.11.2020 13:39:32","length":"0:06:03"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40018253212,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"726","med50Viewers":"803"},{"maxViewers":"1 110","stream":{"created_at":"16.11.2020 14:28:12","length":"6:00:30"},"record":{"start_at":"16.11.2020 19:57:31","length":"0:31:11"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40007187340,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"1 049","med50Viewers":"1 045"}]
+};
+let closedChannel = {
+    "description":{"isClosed":true,"logo":null,"name":"closedChannel",
+    "followers":{lastValue: "654 321", date: "17.11.2020"},
+    "views":{lastValue: "123 456", date: "17.11.2020"},
+    "totalVideos":42,"totalStreams":12,"onlineViewers":{"max":"1 110","middle":"455","inDays":"за 30 д."}},"videos":[{"published_at":"13.10.2020 23:19:25","game":"Minecraft","title":"Тестовая экскурсия в Майнкрафте :) РОДИНА МАТЬ! Культурное наследние","id":"v769468484","views":"4 381","length":"0:51:56","url":"https://www.twitch.tv/videos/769468484"},{"published_at":"06.10.2020 20:59:40","game":"Just Chatting","title":"ФИНАЛ РОЗЫГРЫША МОНИКОВ ОТ LG: оглашение победителей!","id":"v762459112","views":"4 983","length":"0:45:20"}],"stream":null,"streams":[{"maxViewers":"592","stream":{"created_at":"17.11.2020 17:47:35","length":"3:12:32"},"record":{"start_at":"17.11.2020 17:49:06","length":"3:11:00"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40021158204,"notes":[],"minutes1Viewer":1,"midViewers":"416","med50Viewers":"456"},{"maxViewers":"803","stream":{"created_at":"17.11.2020 09:54:03","length":"3:51:32"},"record":{"start_at":"17.11.2020 13:39:32","length":"0:06:03"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40018253212,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"726","med50Viewers":"803"},{"maxViewers":"1 110","stream":{"created_at":"16.11.2020 14:28:12","length":"6:00:30"},"record":{"start_at":"16.11.2020 19:57:31","length":"0:31:11"},"games":["Dota 2"],"title":"9к карусели =) заходи, учись, бр0","streamID":40007187340,"notes":["сбор статистики не с начала стрима"],"minutes1Viewer":1,"midViewers":"1 049","med50Viewers":"1 045"}]
 };
 
 const StreamerDescription = ({streamer, onAir}) => {
@@ -17,28 +24,49 @@ const StreamerDescription = ({streamer, onAir}) => {
         <div className="block contentSizeBlock">
             <div className="flex streamer_container">
                 <div className="streamerLogo_container">
-                    <img className="streamerLogo" src={streamer.logo} alt={streamer.name}/>
-                    <div className="onAir_container">{onAir && <OnAir stream={onAir}/>}</div>
+                    {
+                        !streamer.isClosed
+                        ? <img className="streamerLogo" src={streamer.logo} alt={streamer.name}/>
+                        : <div className="streamerLogo" />
+                    }
+                    <div className="onAir_container">
+                        <OnAir stream={onAir} />
+                        <IsClosed isClosed={streamer.isClosed} />
+                    </div>
                 </div>
                 <div className="streamerDescription_container">
                     <div className="flex wideBlock">
                         <p className="streamerName">{streamer.name}</p>
-                        <a className="channelLink defaultLink"
-                        href={streamer.url}
-                        target="_blank"
-                        rel="noreferrer noopener">
-                            на канал
-                        </a>
+                        {streamer.url && 
+                            <a className="channelLink defaultLink"
+                            href={streamer.url}
+                            target="_blank"
+                            rel="noreferrer noopener">
+                                на канал
+                            </a>
+                        }
                     </div>
                     <div className="streamerDescription_column">                    
                         <div className="streamerDescription">подписчиков:
                             <div className="streamerDescription_valueColumn">
-                                <span className="streamerDescription_value">{streamer.followers.actual}</span>
-                                {streamer.followers.diff.length > 1 && (
-                                    <span className={greenOrRedDiff("streamerDescription_valueDiff", streamer.followers.diff)}>
-                                        {streamer.followers.diff + ' ' + streamer.followers.inDays}
-                                    </span>
-                                )}
+                                {
+                                    !streamer.isClosed
+                                    ? (<Fragment>
+                                        <span className="streamerDescription_value">{streamer.followers.actual}</span>
+                                        {streamer.followers.diff.length > 1 && (
+                                            <span className={greenOrRedDiff("streamerDescription_valueDiff", streamer.followers.diff)}>
+                                                {streamer.followers.diff + ' ' + streamer.followers.inDays}
+                                            </span>
+                                        )}
+
+                                    </Fragment>)
+                                    : (<Fragment>
+                                        <span className="streamerDescription_value">{streamer.followers.lastValue}</span>
+                                        <span className="streamerDescription_valueDiff">
+                                            {streamer.followers.date}
+                                        </span>
+                                    </Fragment>)
+                                }
                             </div>
                         </div>
                         {/* <div className="streamerDescription">просмотров:
@@ -108,13 +136,29 @@ const Streamer = () => {
                 }, 1000)
             }, 2000);
         };
+    //delete
+        let testClosedChannel = () => {
+            console.log('closedChannel', closedChannel);
+            setTimeout(() => {
+                setStreamer(closedChannel.description);
+                setLoading(false);
+                document.title = closedChannel.description.name;
+                
+                setTimeout(() => {
+                    setVideos(closedChannel.videos)
+                    setStreams(closedChannel.streams)
+                    setOnAir(closedChannel.stream)
+                }, 1000)
+            }, 2000);
+        };
 
     useEffect(() => {
         setLoading(true);
         // удалить условие
         if (nowURL.hostname === 'localhost') {
             console.log ('на localhost');
-            testStreamer();
+            // testStreamer();
+            testClosedChannel();
         } else {
             sendRequest('GET', 'https://stat.metacorp.gg/api/streamers/' + streamerID)
             .then(streamer => {
