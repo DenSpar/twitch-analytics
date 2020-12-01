@@ -7,6 +7,7 @@ const getStreamsList = require('./getStreamsList.js');
 const videoTimeConverter = require('../videoTimeConverter.js');
 const splitNumbers = require('../preparingStreamers4Send/splitNumbers.js');
 const dateConverter = require('./dateConverter.js');
+const getInfo4ClosedChannel = require('../preparingStreamers4Send/getInfo4ClosedChannel.js');
 
 let makeVideosList = (videosArr) => {
     let arr = [] ;  
@@ -40,12 +41,23 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
             } else {
                 getChannelById(streamerID)
                 .then(channelDescr => {
-                    descriptionObj.logo = channelDescr.logo;
-                    descriptionObj.name = channelDescr.display_name;
-                    descriptionObj.followers.actual = channelDescr.followers;
-                    descriptionObj.views.actual = channelDescr.views;
-                    descriptionObj.totalVideos = 0;
-                    descriptionObj.url = channelDescr.url;
+                    if (channelDescr) {
+                        descriptionObj.logo = channelDescr.logo;
+                        descriptionObj.name = channelDescr.display_name;
+                        descriptionObj.followers.actual = channelDescr.followers;
+                        descriptionObj.views.actual = channelDescr.views;
+                        descriptionObj.totalVideos = 0;
+                        descriptionObj.url = channelDescr.url;
+                        descriptionObj.isClosed = false;
+                    } else {
+                        // descriptionObj.logo = "";
+                        // descriptionObj.name = "";
+                        // descriptionObj.followers.actual = "";
+                        // descriptionObj.views.actual = "";
+                        descriptionObj.totalVideos = 0;
+                        descriptionObj.url = null;
+                        descriptionObj.isClosed = true;
+                    };
     
                     let videosStub = {
                         published_at: "",
@@ -68,8 +80,12 @@ module.exports = function getStreamer4Page(streamerFromDB) {
         description: {
             logo: '',
             name: '',
-            followers: {actual: '', diff: null, inDays: null},
-            views: {actual: '', diff: null, inDays: null},
+            followers: {
+                // actual: '', diff: null, inDays: null
+            },
+            views: {
+                // actual: '', diff: null, inDays: null
+            },
             totalVideos: 0,
             totalStreams: 0,
             url: null
@@ -85,8 +101,13 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             getStreamsList(streamerFromDB.twitchID, finalObj)
         ])
         .then(() => {
-            finalObj.description.followers = getDiff('followers', finalObj.description.followers.actual, streamerFromDB);
-            finalObj.description.views = getDiff('views', finalObj.description.views.actual, streamerFromDB);
+            if (!finalObj.description.isClosed) {
+                finalObj.description.followers = getDiff('followers', finalObj.description.followers.actual, streamerFromDB);
+                finalObj.description.views = getDiff('views', finalObj.description.views.actual, streamerFromDB);
+            } else {
+                getInfo4ClosedChannel(streamerFromDB, finalObj.description);
+            };
+            
             finalObj.description.totalStreams = finalObj.streams.length;
             resolve(finalObj)
         });

@@ -63,17 +63,16 @@
 .streamerDescription_valueColumn {
     display: flex;
     flex-direction: column;
+    color: #475F7B;
 }
 
 .streamerDescription_value {
     margin-left: 4px;
-    color: #475F7B;
 }
 
 .streamerDescription_valueDiff {
     font-size: 13px;
     line-height: 15px;
-    /* color: #475F7B; */
 }
 
 .streamerDescription_onlinesContainer {

@@ -29,15 +29,26 @@ const VideoTable = ({videos, onAir, views}) => {
     <Fragment>
       <div className="streamersViews">просмотров:
         <div className="streamersViews_valueColumn">
-            <span className="streamersViews_value">{views.actual}</span>
-            {views.diff.length > 1 && (
-              <Fragment>
-                &ensp;
-                <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
-                  {views.diff + ' ' + views.inDays}
-                </span>
-              </Fragment>
-            )}
+          {
+            views.actual && (<Fragment>
+              <span className="streamersViews_value">{views.actual}</span>
+              {views.diff.length > 1 && (
+                <Fragment>
+                  &ensp;
+                  <span className={greenOrRedDiff("streamersViews_valueDiff", views.diff)}>
+                    {views.diff + ' ' + views.inDays}
+                  </span>
+                </Fragment>
+              )}
+            </Fragment>)
+          }
+          {
+            views.lastValue && (<Fragment>
+              <span className="streamersViews_value">{views.lastValue}</span>
+              &ensp;
+              <span className="streamersViews_valueDiff">{views.date}</span>
+            </Fragment>)
+          }
         </div>
       </div>
       <table className="table videoTable">
@@ -124,8 +135,16 @@ const StreamsTable = ({streams}) => {
             <td className="table_cell">{stream.stream.created_at}</td>
             <td className="table_cell">{stream.stream.length}</td>
             <td className="table_cell">{stream.maxViewers}</td>
-            <td className="table_cell">{stream.midViewers}</td>
-            <td className="table_cell">{stream.med50Viewers}</td>
+            <td className="table_cell">{
+              stream.midViewers
+              ? stream.midViewers
+              : stream.maxViewers
+            }</td>
+            <td className="table_cell">{
+              stream.med50Viewers
+              ? stream.med50Viewers
+              : stream.maxViewers
+            }</td>
             <td className="table_cell">{stream.notes.join(", ")}</td>
           </tr>
         ))}
