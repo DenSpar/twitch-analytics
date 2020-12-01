@@ -7,10 +7,10 @@ const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlPar
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
-    app.locals.stats = client.db("streamers").collection("stats");
+    app.locals.streamers = client.db("streamers").collection("list");
 });
 
-module.exports = function updateStreamerInList (streamerID, updatesOBJ) {
+module.exports = function updateStreamerInList (streamerID, streamerName, updatesOBJ) {
     return new Promise (function(resolve, reject) {
         let response = '';
         const streamersList = app.locals.streamers;
@@ -18,7 +18,7 @@ module.exports = function updateStreamerInList (streamerID, updatesOBJ) {
             {returnOriginal: false },function(err, result){
 
             if(err) return console.log(err);
-            response = 'статистика стримера ' + result.name + '(' + streamerID + ')' + ' обновленна';
+            response = 'статистика стримера ' + streamerName + '(' + streamerID + ')' + ' обновленна';
             console.log (response);
             resolve({message: response, newStat: result});
         });

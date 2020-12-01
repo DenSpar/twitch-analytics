@@ -48,7 +48,7 @@ const DashboardTable = ({streamers, border = ''}) => {
                   <OnAir stream={streamer.stream} />
                   <IsClosed isClosed={streamer.isClosed} />
                 </td>
-                <td className="table_cell">{streamer.totalVideos}</td>
+                <td className="table_cell">{streamer.streamsIn7Days}</td>
                 <td className="table_cell">
                   <div className="cellContainer">
                     {

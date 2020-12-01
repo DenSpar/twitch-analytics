@@ -1,4 +1,4 @@
-const getStreamerStats = require('./collectionStats/getStreamerStats.js');
+const getStreamerStats = require('../collectionStats/getStreamerStats.js');
 const getDaysDiff = require('../preparingStreamers4Send/getDaysDiff.js');
 
 module.exports = function howManyStreamsIn7Days(streamerID, obj) {

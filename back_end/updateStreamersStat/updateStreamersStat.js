@@ -47,11 +47,10 @@ let getNewStat = (date) => {
                     updatesOBJ.maxOnline = MidAndMaxOnline.maxOnline;
                     updatesOBJ.midOnline = MidAndMaxOnline.midOnline;
 
-                    // let streamerName = '';
-                    // if (updatesOBJ.name) { streamerName = updatesOBJ.name }
-                    // else { streamerName = streamer.name };
-                    // если не получится получить имя из update, то раскомментировать
-                    updateStreamerInList(streamer.twitchID, updatesOBJ);
+                    let streamerName = '';
+                    if (updatesOBJ.name) { streamerName = updatesOBJ.name }
+                    else { streamerName = streamer.name };
+                    updateStreamerInList(streamer.twitchID, streamerName, updatesOBJ);
                 });
             })
         })
@@ -61,13 +60,14 @@ let getNewStat = (date) => {
 
 let updateScript = () => {
     let currentDate = new Date();
-    let hours = currentDate.getHours() + 3;
-    if (hours > 23) { hours = hours - 24; };
-    if (hours === 9) {
+    let hoursNow = currentDate.getHours() + 3;
+    if (hoursNow > 23) { hoursNow = hoursNow - 24; };
+    let hoursWait = 9;
+    if (hoursNow === hoursWait) {
         console.log('обновление статы стримеров: обновление ...');
         return getNewStat(currentDate)
     } else {
-        console.log('обновление статы стримеров: сейчас ' + hours + ' часов, жду 9');
+        console.log('обновление статы стримеров: сейчас ' + hoursNow + ' часов, жду ' + hoursWait);
     };
 };
 

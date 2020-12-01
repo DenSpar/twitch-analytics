@@ -7,7 +7,7 @@ const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlPar
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
-    app.locals.stats = client.db("streamers").collection("stats");
+    app.locals.streamers = client.db("streamers").collection("list");
 });
 
 module.exports = function getAllStreamersFromDB () {
