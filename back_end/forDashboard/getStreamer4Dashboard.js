@@ -1,5 +1,4 @@
 const getChannelById = require('../twitchApiRequests/getChannelById.js');
-const getChannelsVideoById = require('../twitchApiRequests/getChannelsVideoById.js');
 const getDiff = require('../preparingStreamers4Send/getDiff.js');
 const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
@@ -32,15 +31,18 @@ let getChannelInfo = (numID, obj) => {
     })
 };
 
-let getVideosInfo = (numID, obj) => {
-    return new Promise((resolve, reject) => {
-        getChannelsVideoById(numID, 1)
-        .then(res => {
-            obj.totalVideos = res._total;
-            resolve()
-        })
-    })
-};
+// let getVideosInfo = (numID, obj) => {
+//     // функция для получения количества видео у канала
+//     // если понадобится - добавить импорт:
+//     // const getChannelsVideoById = require('../twitchApiRequests/getChannelsVideoById.js');
+//     return new Promise((resolve, reject) => {
+//         getChannelsVideoById(numID, 1)
+//         .then(res => {
+//             obj.totalVideos = res._total;
+//             resolve()
+//         })
+//     })
+// };
 
 module.exports = function getStreamer4Dashboard(streamerFromDB) {
     let finalObj = {stream: null};
@@ -49,7 +51,7 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
         Promise.all([
             getChannelInfo(streamerFromDB.twitchID, finalObj),
             getStreamInfo(streamerFromDB.twitchID, finalObj),
-            getVideosInfo(streamerFromDB.twitchID, finalObj),
+            // getVideosInfo(streamerFromDB.twitchID, finalObj),
             howManyStreamsIn7Days(streamerFromDB.twitchID, finalObj)
         ])
         .then(() => {

@@ -14,7 +14,8 @@ module.exports = function getStreamerFromDB (streamerID) {
     return new Promise (function(resolve, reject) {
         const streamersList = app.locals.streamers;
         streamersList.find({twitchID: streamerID}, function(err, streamer){
-            resolve(streamer);
+            if(err) return console.log(err);
+            resolve({streamer: streamer});
         });
     });
 };
