@@ -1,6 +1,6 @@
 const getAllStreamersFromDB = require('../collectionStreamers/getAllStreamersFromDB.js');
 const getChannelById = require('../twitchApiRequests/getChannelById.js');
-const getStreamersStats = require('../collectionStats/getStreamersStats.js');
+const getStreamerStats = require('../collectionStats/getStreamerStats.js');
 const getMidAndMaxOnline = require('./getMidAndMaxOnline.js');
 const updateStreamerInList = require('../collectionStreamers/updateStreamerInList.js');
 
@@ -41,7 +41,7 @@ let getNewStat = (date) => {
                     };
                 };
 
-                getStreamersStats(streamer.twitchID)
+                getStreamerStats(streamer.twitchID)
                 .then(streamerStat => {
                     let MidAndMaxOnline = getMidAndMaxOnline(streamerStat);
                     updatesOBJ.maxOnline = MidAndMaxOnline.maxOnline;

@@ -10,7 +10,7 @@ mongoClient.connect(function(err, client){
     app.locals.stats = client.db("streamers").collection("stats");
 });
 
-module.exports = function getStreamersStats (streamerID) {
+module.exports = function getStreamerStats (streamerID) {
     return new Promise (function(resolve, reject) {
         const statsList = app.locals.stats;
         statsList.findOne({twitchID: streamerID}, function(err, streamerStat){

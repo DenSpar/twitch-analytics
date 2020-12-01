@@ -4,6 +4,7 @@ const getDiff = require('../preparingStreamers4Send/getDiff.js');
 const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getInfo4ClosedChannel = require('../preparingStreamers4Send/getInfo4ClosedChannel.js');
+const howManyStreamsIn7Days = require('./howManyStreamsIn7Days.js');
 
 let getChannelInfo = (numID, obj) => {
     return new Promise((resolve, reject) => {
@@ -48,7 +49,8 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
         Promise.all([
             getChannelInfo(streamerFromDB.twitchID, finalObj),
             getStreamInfo(streamerFromDB.twitchID, finalObj),
-            getVideosInfo(streamerFromDB.twitchID, finalObj)
+            getVideosInfo(streamerFromDB.twitchID, finalObj),
+            howManyStreamsIn7Days(streamerFromDB.twitchID, finalObj)
         ])
         .then(() => {
             if (!finalObj.isClosed) {
@@ -56,7 +58,7 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
                 finalObj.views = getDiff('views', finalObj.views, streamerFromDB);
             } else {
                 getInfo4ClosedChannel(streamerFromDB, finalObj);
-            };            
+            };
             
             resolve(finalObj)
         });
