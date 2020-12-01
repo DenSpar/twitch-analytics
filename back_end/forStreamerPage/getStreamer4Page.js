@@ -48,6 +48,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                         descriptionObj.views.actual = channelDescr.views;
                         descriptionObj.totalVideos = 0;
                         descriptionObj.url = channelDescr.url;
+                        descriptionObj.isClosed = false;
                     } else {
                         // descriptionObj.logo = "";
                         // descriptionObj.name = "";
@@ -55,6 +56,7 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                         // descriptionObj.views.actual = "";
                         descriptionObj.totalVideos = 0;
                         descriptionObj.url = null;
+                        descriptionObj.isClosed = true;
                     };
     
                     let videosStub = {
@@ -99,11 +101,11 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             getStreamsList(streamerFromDB.twitchID, finalObj)
         ])
         .then(() => {
-            if (!finalObj.closed) {
+            if (!finalObj.description.isClosed) {
                 finalObj.description.followers = getDiff('followers', finalObj.description.followers.actual, streamerFromDB);
                 finalObj.description.views = getDiff('views', finalObj.description.views.actual, streamerFromDB);
             } else {
-                getInfo4ClosedChannel(streamerFromDB, finalObj);
+                getInfo4ClosedChannel(streamerFromDB, finalObj.description);
             };
             
             finalObj.description.totalStreams = finalObj.streams.length;

@@ -16,7 +16,7 @@ let getChannelInfo = (numID, obj) => {
                 obj.followers = res.followers;
                 obj.views = res.views;
                 obj.description = res.description; // для поиска
-                obj.closed = false;
+                obj.isClosed = false;
             } else {
                 obj.id = numID;
                 // obj.name = "";
@@ -24,7 +24,7 @@ let getChannelInfo = (numID, obj) => {
                 // obj.followers = "";
                 // obj.views = "";
                 obj.description = ""; // для поиска
-                obj.closed = true;
+                obj.isClosed = true;
             };
             resolve()
         })
@@ -51,7 +51,7 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
             getVideosInfo(streamerFromDB.twitchID, finalObj)
         ])
         .then(() => {
-            if (!finalObj.closed) {
+            if (!finalObj.isClosed) {
                 finalObj.followers = getDiff('followers', finalObj.followers, streamerFromDB);
                 finalObj.views = getDiff('views', finalObj.views, streamerFromDB);
             } else {

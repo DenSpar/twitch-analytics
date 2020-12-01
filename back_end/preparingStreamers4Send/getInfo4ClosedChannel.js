@@ -1,25 +1,24 @@
 const splitNumbers = require('./splitNumbers.js')
 
-let getLastViewsOrFollowersInfo = () => {
+let getLastViewsOrFollowersInfo = (lastPoint) => {
     let obj = { lastValue: null, date: "" };
-    for (var date in lastViews) {
-        obj.lastValue = splitNumbers(lastViews[key]);
-        obj.date = date;
+    for (var lastDate in lastPoint) {
+        obj.lastValue = splitNumbers(lastPoint[lastDate]);
+        obj.date = new Date(lastDate);
     };
 
-    let date = new Date(obj.date);
     let options = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
     };
-    obj.views.date = date.toLocaleString("ru", options);
+    obj.date = obj.date.toLocaleString("ru", options);
 
     return obj;
 };
 
 module.exports = function getInfo4ClosedChannel (streamerFromDB, obj) {
-    obj.name = streamerFromDBstreamerFromDB.name;
+    obj.name = streamerFromDB.name;
     obj.logo = null;
     let lastViews = streamerFromDB.views[streamerFromDB.views.length-1];
     obj.views = getLastViewsOrFollowersInfo (lastViews);

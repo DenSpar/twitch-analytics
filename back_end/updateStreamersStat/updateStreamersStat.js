@@ -20,30 +20,34 @@ let getNewStat = (date) => {
         streamers.map(streamer => {
             getChannelById(streamer.twitchID)
             .then(channel => {
-                let updateFollowers = [];
-                let updateViews = [];
-                let newName = channel.display_name;
-                
-                let newFollowers = {};
-                newFollowers[localDate] = channel.followers;
-                if (streamer.hasOwnProperty('followers')) {
-                    updateFollowers = streamer.followers;
-                    updateFollowers.push(newFollowers);
-                } else {updateFollowers = [newFollowers]}
+                let updatesOBJ = {};
 
-                let newViews = {};
-                newViews[localDate] = channel.views;
-                if (streamer.hasOwnProperty('views')) {
-                    updateViews = streamer.views;
-                    updateViews.push(newViews);
-                } else {updateViews = [newViews]}
+                if (channel) {
+                    let updateFollowers = [];
+                    let updateViews = [];
+                    let newName = channel.display_name;
+                    
+                    let newFollowers = {};
+                    newFollowers[localDate] = channel.followers;
+                    if (streamer.hasOwnProperty('followers')) {
+                        updateFollowers = streamer.followers;
+                        updateFollowers.push(newFollowers);
+                    } else {updateFollowers = [newFollowers]}
 
-                let updatesOBJ = {
-                    followers: updateFollowers,
-                    views: updateViews
-                };
-                if (streamer.name !== newName || !streamer.name) {
-                    updatesOBJ.name = newName;
+                    let newViews = {};
+                    newViews[localDate] = channel.views;
+                    if (streamer.hasOwnProperty('views')) {
+                        updateViews = streamer.views;
+                        updateViews.push(newViews);
+                    } else {updateViews = [newViews]}
+
+                    updatesOBJ = {
+                        followers: updateFollowers,
+                        views: updateViews
+                    };
+                    if (streamer.name !== newName || !streamer.name) {
+                        updatesOBJ.name = newName;
+                    };
                 };
 
                 getMidAndMaxOnline(streamer.twitchID)
@@ -55,7 +59,7 @@ let getNewStat = (date) => {
                         {returnOriginal: false },function(err, result){
                         if(err) return console.log(err);
                     });
-                    console.log('статистика стримеров обновленна')
+                    console.log('статистика стримера ' + streamer.name + '(' + streamer.twitchID + ')' + ' обновленна');
                 })
             })
         })

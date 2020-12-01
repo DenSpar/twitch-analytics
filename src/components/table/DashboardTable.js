@@ -51,10 +51,20 @@ const DashboardTable = ({streamers, border = ''}) => {
                 <td className="table_cell">{streamer.totalVideos}</td>
                 <td className="table_cell">
                   <div className="cellContainer">
-                    <span>{streamer.followers.actual}</span>
-                    <span className={greenOrRedDiff("cell_valueDiff", streamer.followers.diff)}>
-                      {streamer.followers.diff}
-                    </span>
+                    {
+                      !streamer.isClosed
+                      ? (<Fragment>
+                        <span>{streamer.followers.actual}</span>
+                        <span className={greenOrRedDiff("cell_valueDiff", streamer.followers.diff)}>
+                          {streamer.followers.diff}
+                        </span>
+                      </Fragment>)
+                      : (<Fragment>
+                        <span>{streamer.followers.lastValue}</span>
+                        <span className="cell_valueDiff">{streamer.followers.date}</span>
+                      </Fragment>)
+                    }
+                    
                   </div>
                 </td>
                 <td className="table_cell">
