@@ -135,8 +135,16 @@ const StreamsTable = ({streams}) => {
             <td className="table_cell">{stream.stream.created_at}</td>
             <td className="table_cell">{stream.stream.length}</td>
             <td className="table_cell">{stream.maxViewers}</td>
-            <td className="table_cell">{stream.midViewers}</td>
-            <td className="table_cell">{stream.med50Viewers}</td>
+            <td className="table_cell">{
+              stream.midViewers
+              ? stream.midViewers
+              : stream.maxViewers
+            }</td>
+            <td className="table_cell">{
+              stream.med50Viewers
+              ? stream.med50Viewers
+              : stream.maxViewers
+            }</td>
             <td className="table_cell">{stream.notes.join(", ")}</td>
           </tr>
         ))}

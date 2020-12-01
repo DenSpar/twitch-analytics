@@ -41,9 +41,11 @@ let checkGame = (nowGame, gamesObj) => {
 let endStream = (obj) => {
     console.log(obj.streamerName + "(" + obj.streamerID + ") закончил стрим #" + obj.streamID);
     deleteNulls(obj);
-    obj.midViewers = Math.round(obj.stat.reduce((prev, viewers) => prev + viewers, 0) / obj.stat.length);
-    let sortedArr = quickSort(obj.stat);
-    obj.med50Viewers = sortedArr[Math.ceil(sortedArr.length/2)];
+    if (obj.stat.length > 0) {
+        obj.midViewers = Math.round(obj.stat.reduce((prev, viewers) => prev + viewers, 0) / obj.stat.length);
+        let sortedArr = quickSort(obj.stat);
+        obj.med50Viewers = sortedArr[Math.ceil(sortedArr.length/2)];
+    };
     delete obj.stat;
     obj.stream.length = videoTimeConverter(dateDif(obj.stream.created_at));
     obj.record.length = videoTimeConverter(dateDif(obj.record.start_at));
@@ -67,9 +69,9 @@ let checkStream = (numID, obj) => {
                 console.log(
                     obj.streamerName,
                     ", id:" + obj.streamID,
-                    ", mins:" + obj.stat.length,
-                    ", start:" + obj.stream.created_at,
-                    ", rec:" + obj.record.start_at 
+                    ", mins:" + obj.stat.length
+                    // ", start:" + obj.stream.created_at,
+                    // ", rec:" + obj.record.start_at 
                 );
                 // delete
 
@@ -89,6 +91,8 @@ module.exports = function recStreamStat (newStream) {
                 streamerName: stream.stream.channel.display_name,
                 streamerID: stream.stream.channel._id,
                 maxViewers: stream.stream.viewers,
+                midViewers: stream.stream.viewers,
+                med50Viewers: stream.stream.viewers,
                 stat:[],
                 stream: {created_at: stream.stream.created_at},
                 record: {start_at: new Date().toISOString()},

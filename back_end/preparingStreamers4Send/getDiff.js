@@ -1,12 +1,5 @@
+const getDaysDiff = require('./getDaysDiff.js');
 const splitNumbers = require('./splitNumbers.js')
-
-let getDaysDiff = (dateStr) => {
-    let date = new Date(dateStr).getTime();
-    let currentDate = new Date().getTime();
-    let timeDiff = (currentDate - date) / 1000;
-    let daysDiff = Math.floor(timeDiff / 86400);
-    return daysDiff
-};
 
 let preparing4Send = (obj) => {
     obj.actual = splitNumbers(obj.actual);
