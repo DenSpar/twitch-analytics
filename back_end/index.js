@@ -13,6 +13,9 @@ const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat/recStreamStat.js');
 
+const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
+const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
+
 const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 // const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
@@ -64,36 +67,15 @@ app.get('/api/streamers/:id', function(req, res) {
 
 // вывод содержимого коллекции list
 app.get('/api/showlist', function(req, res) {
-    const streamersList = app.locals.streamers;
-    streamersList.find().toArray(function(err, streamers){
-        res.send(streamers)
-    });
+    getAllStreamersFromDB()
+    .then(streamers => res.send(streamers));
 });
 
-app.get('/api/addone', function(req, res) {
-    const streamersList = app.locals.streamers;
-    const oneStreamer = {
-        followers: [{"11/25/2020": 19}],
-        maxOnline: 0,
-        midOnline: {inDays: 0, value: 0},
-        name: "russianminecrafttours",
-        twitchID: 593756357,
-        views: [{"11/25/2020": 8989}]
-    }
-    streamersList.insertOne(oneStreamer, function(err, result){          
-        if(err) { return console.log(err); }
-        console.log("добавлен новый стример", result.ops);
-        res.send(result.ops)
-    });
-});
-
-app.get('/api/delone', function(req, res) {
-    const streamersList = app.locals.streamers;
-    streamersList.findOneAndDelete({twitchID: 593756357}, function(err, result){               
-        if(err) return console.log(err);
-        console.log("удален стример");
-        res.send(result)
-    });
+// вывод одного стримера из коллекции list
+app.get('/api/streamerfromlist/:id', function(req, res) {
+    const id = Number(req.params.id);
+    getStreamerFromDB(id)
+    .then(streamer => res.send(streamer));
 });
 
 // вывод содержимого коллекции stats
@@ -116,7 +98,7 @@ app.get('/api/showlives', function(req, res) {
 app.get('/api/deletestream/:id', function(req, res) {
     const id = Number(req.params.id);
     deleteLiveStream(id)
-    .then(answer => res.send({message: answer}))
+    .then(answer => res.send({message: answer}));
 });
 
 // подписаться на стримера
@@ -216,5 +198,33 @@ process.on("SIGINT", () => {
 //     const livesList = app.locals.lives;
 //     livesList.drop(function(err, result){              
 //         res.send({message: 'удалена коллекция lives'})
+//     });
+// });
+
+
+// срочно добавленный стример
+// app.get('/api/addone', function(req, res) {
+//     const streamersList = app.locals.streamers;
+//     const oneStreamer = {
+//         followers: [{"11/25/2020": 19}],
+//         maxOnline: 0,
+//         midOnline: {inDays: 0, value: 0},
+//         name: "russianminecrafttours",
+//         twitchID: 593756357,
+//         views: [{"11/25/2020": 8989}]
+//     }
+//     streamersList.insertOne(oneStreamer, function(err, result){          
+//         if(err) { return console.log(err); }
+//         console.log("добавлен новый стример", result.ops);
+//         res.send(result.ops)
+//     });
+// });
+
+// app.get('/api/delone', function(req, res) {
+//     const streamersList = app.locals.streamers;
+//     streamersList.findOneAndDelete({twitchID: 593756357}, function(err, result){               
+//         if(err) return console.log(err);
+//         console.log("удален стример");
+//         res.send(result)
 //     });
 // });
