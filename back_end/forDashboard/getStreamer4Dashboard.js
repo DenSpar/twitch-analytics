@@ -16,7 +16,7 @@ let getChannelInfo = (numID, obj) => {
                 obj.logo = res.logo;
                 obj.followers = res.followers;
                 obj.views = res.views;
-                obj.description = res.description; // для поиска
+                // obj.description = res.description; // для поиска
                 obj.isClosed = false;
             } else {
                 obj.id = numID;
@@ -24,7 +24,7 @@ let getChannelInfo = (numID, obj) => {
                 // obj.logo = "";
                 // obj.followers = "";
                 // obj.views = "";
-                obj.description = ""; // для поиска
+                // obj.description = ""; // для поиска
                 obj.isClosed = true;
             };
             resolve()

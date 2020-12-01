@@ -44,6 +44,7 @@ mongoClient.connect(function(err, client){
 
 // вернет список стримеров для дашборда
 app.get('/api/streamers', function(req, res) {
+    // заменить на функцию
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
         getList(streamers)
@@ -54,6 +55,7 @@ app.get('/api/streamers', function(req, res) {
 // вернет стримера для страницы
 app.get('/api/streamers/:id', function(req, res) {
     const id = Number(req.params.id);
+    // заменить на функцию
     const streamersList = app.locals.streamers;
     streamersList.findOne({twitchID: id}, function(err, streamer){
         if(err) return console.log(err);
