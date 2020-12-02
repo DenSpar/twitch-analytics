@@ -15,15 +15,9 @@ let getChannelInfo = (numID, obj) => {
                 obj.logo = res.logo;
                 obj.followers = res.followers;
                 obj.views = res.views;
-                // obj.description = res.description; // для поиска
                 obj.isClosed = false;
             } else {
                 obj.id = numID;
-                // obj.name = "";
-                // obj.logo = "";
-                // obj.followers = "";
-                // obj.views = "";
-                // obj.description = ""; // для поиска
                 obj.isClosed = true;
             };
             resolve()
@@ -51,6 +45,7 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
         Promise.all([
             getChannelInfo(streamerFromDB.twitchID, finalObj),
             getStreamInfo(streamerFromDB.twitchID, finalObj),
+            // функция для получения количества видео у канала, если понадобится - раскомментировать
             // getVideosInfo(streamerFromDB.twitchID, finalObj),
             howManyStreamsIn7Days(streamerFromDB.twitchID, finalObj)
         ])

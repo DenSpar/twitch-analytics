@@ -8,10 +8,11 @@ const getList = require('./forDashboard/getList.js');
 const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat/updateStreamersStat.js');
-const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
+const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat/recStreamStat.js');
+const addChannel2MainStack = require('./apiHandlers/addChannel2MainStack.js')
 
 const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
 const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
@@ -19,7 +20,7 @@ const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
 const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 // const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
-const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
+const refreshLiveStreams = require('./refreshLiveStreams/refreshLiveStreams.js');
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -112,6 +113,24 @@ app.get('/api/search', function(req, res) {
     } else {
         console.log("поиск каналов по имени - не указано имя поиска");
         res.send({message: "не указано имя поиска"});
+    };
+});
+
+// добавление канала в основной стэк
+app.post('/api/addchannel', function(req, res) {
+    if(!req.body) {return res.sendStatus(400)}
+    else {
+        addChannel2MainStack(req.body);
+        // if (req.body.id) {
+        //     let message
+        //     console.log("добавление канала №" + req.body.id + " в основной стэк");
+        //     addChannel2MainStack();
+            // searchChannelByName(req.query["name"], req.query["limit"])
+            // .then(channels => res.send({channels: channels}))
+        // } else {
+        //     console.log("добавление канала - не указан id");
+        //     res.send({message: "добавление канала - не указан id"});
+        // };
     };
 });
 

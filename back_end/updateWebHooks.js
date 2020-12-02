@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
-const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
+const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 
 let dbClient;

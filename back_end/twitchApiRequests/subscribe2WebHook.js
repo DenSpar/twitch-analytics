@@ -20,9 +20,7 @@ module.exports = function subscribe2WebHook(streamerID, subTime = 864000) {
             };
             sendRequest('POST', subscribeOnStreamURL, reqBody, reqHeaders)
             .then(subsRes => {
-                //delete
-                console.log(subsRes);
-                resolve(subsRes)
+                resolve(subsRes);
             });
         });
     });

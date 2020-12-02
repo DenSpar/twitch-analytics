@@ -50,10 +50,6 @@ let getChannelDescriptionAndVideos = (streamerID, finObj) => {
                         descriptionObj.url = channelDescr.url;
                         descriptionObj.isClosed = false;
                     } else {
-                        // descriptionObj.logo = "";
-                        // descriptionObj.name = "";
-                        // descriptionObj.followers.actual = "";
-                        // descriptionObj.views.actual = "";
                         descriptionObj.totalVideos = 0;
                         descriptionObj.url = null;
                         descriptionObj.isClosed = true;
@@ -80,12 +76,8 @@ module.exports = function getStreamer4Page(streamerFromDB) {
         description: {
             logo: '',
             name: '',
-            followers: {
-                // actual: '', diff: null, inDays: null
-            },
-            views: {
-                // actual: '', diff: null, inDays: null
-            },
+            followers: {},
+            views: {},
             totalVideos: 0,
             totalStreams: 0,
             url: null

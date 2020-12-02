@@ -1,4 +1,4 @@
-const getWebHooks = require('./getWebHooks.js');
+const getWebHooks = require('../twitchApiRequests/getWebHooks.js');
 
 let makeSubsArr = (arr) => {
     let resArr = [];
