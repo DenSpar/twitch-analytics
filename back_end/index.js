@@ -103,6 +103,18 @@ app.get('/api/deletestream/:id', function(req, res) {
     .then(answer => res.send({message: answer}));
 });
 
+// поиск каналов по имени
+app.get('/api/search', function(req, res) {
+    if (req.query["name"]) {
+        console.log("поиск каналов по имени" + req.query["name"] + ", лимит = " + req.query["limit"]);
+        searchChannelByName(req.query["name"], req.query["limit"])
+        .then(channels => res.send({channels: channels}))
+    } else {
+        console.log("поиск каналов по имени - не указано имя поиска");
+        res.send({message: "не указано имя поиска"});
+    };
+});
+
 // подписаться на стримера
 app.get('/api/subwebhook/:id', function(req, res) {
     const id = Number(req.params.id);
