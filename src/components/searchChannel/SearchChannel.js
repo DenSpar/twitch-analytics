@@ -11,7 +11,9 @@ const SearchChannel = () => {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
+  // может вынести просто в переменную?
   const [actualLimit, setActialLimit] = useState(10);
+  //
   const alert = useContext(AlertContext);
 
   let searchChannel = (query, limit) => {
@@ -22,6 +24,7 @@ const SearchChannel = () => {
       console.log ('на localhost');
       searchChannelByName(query, limit)
       .then(searchRes => {
+        console.log(searchRes);
         setSearchState(searchRes);
       })
       .then(() => {
@@ -31,10 +34,12 @@ const SearchChannel = () => {
         setActialLimit(prev => prev+10);
       })
       //delete
+
     } else {
       sendRequest('GET', 'https://stat.metacorp.gg/api/search?name=' + query + '&limit=' + limit)
       .then(searchRes => {
-        setSearchState(searchRes);
+        console.log(searchRes);
+        // setSearchState(searchRes);
       })
       .then(() => {
         setLoading(false);

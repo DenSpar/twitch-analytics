@@ -12,7 +12,8 @@ const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat/recStreamStat.js');
-const addChannel2MainStack = require('./apiHandlers/addChannel2MainStack.js')
+const addChannel2MainStack = require('./apiHandlers/addChannel2MainStack.js');
+const searchChannel = require('./apiHandlers/searchChannel.js')
 
 const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
 const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
@@ -108,7 +109,7 @@ app.get('/api/deletestream/:id', function(req, res) {
 app.get('/api/search', function(req, res) {
     if (req.query["name"]) {
         console.log("поиск каналов по имени" + req.query["name"] + ", лимит = " + req.query["limit"]);
-        searchChannelByName(req.query["name"], req.query["limit"])
+        searchChannel(req.query["name"], req.query["limit"])
         .then(channels => res.send({channels: channels}))
     } else {
         console.log("поиск каналов по имени - не указано имя поиска");
@@ -120,17 +121,9 @@ app.get('/api/search', function(req, res) {
 app.post('/api/addchannel', function(req, res) {
     if(!req.body) {return res.sendStatus(400)}
     else {
-        addChannel2MainStack(req.body);
-        // if (req.body.id) {
-        //     let message
-        //     console.log("добавление канала №" + req.body.id + " в основной стэк");
-        //     addChannel2MainStack();
-            // searchChannelByName(req.query["name"], req.query["limit"])
-            // .then(channels => res.send({channels: channels}))
-        // } else {
-        //     console.log("добавление канала - не указан id");
-        //     res.send({message: "добавление канала - не указан id"});
-        // };
+        res.send({message: req.body});
+        // addChannel2MainStack(req.body)
+        // .then(response => { res.send({message: response}); })
     };
 });
 

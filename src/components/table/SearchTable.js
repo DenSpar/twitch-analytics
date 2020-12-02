@@ -4,6 +4,7 @@ import './searchTable.css';
 import StreamersContext from 'context/streamersContext';
 import {AlertContext} from 'context/alert/alertContext';
 import TrimName from 'components/trimName/TrimName';
+import sendRequest from 'js/sendRequest';
 
 const isInTable = (newStreamer, tableState) => {
   let isIn = false;
@@ -23,31 +24,38 @@ const SearchTable = ({streamers}) => {
   const {setStreamers} = useContext(StreamersContext);
 
   const addChannel = (streamer) => {
-    let newStreamer = {
-      name: streamer.name,
-      id: streamer._id,
-      logo: streamer.logo,
-      followers: {
-        // здесь будет разделение по разрядам
-        actual: String(streamer.followers),
-        diff: "-"
-      },
-      onlineViewers:{
-        inDays: null,
-        max: "-",
-        middle: "-"
-      }
-    };
-    console.log(streamer.name, streamer._id, newStreamer);
-    setStreamers(prevState => {
-      if (isInTable(newStreamer, prevState)) {
-        alert.show('Канал '+ newStreamer.name +' уже в основном стэке');
-        return (prevState);
-      } else {
-        alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
-        return [...prevState, newStreamer]
+    //delete
+    let nowURL = new URL(window.location.href);
+    if (nowURL.hostname === 'localhost') {
+      let newStreamer = {
+        name: streamer.name,
+        id: streamer._id,
+        logo: streamer.logo,
+        followers: {
+          // здесь будет разделение по разрядам
+          actual: String(streamer.followers),
+          diff: "-"
+        },
+        onlineViewers:{
+          inDays: null,
+          max: "-",
+          middle: "-"
+        }
       };
-    });
+      console.log(streamer.name, streamer._id, newStreamer);
+      setStreamers(prevState => {
+        if (isInTable(newStreamer, prevState)) {
+          alert.show('Канал '+ newStreamer.name +' уже в основном стэке');
+          return (prevState);
+        } else {
+          alert.show('Канал '+ newStreamer.name +' добавлен в основной стэк', 'success');
+          return [...prevState, newStreamer]
+        };
+      });
+    } else {
+      sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
+      .then(res => console.log(res));
+    };
   };
 
   return(
