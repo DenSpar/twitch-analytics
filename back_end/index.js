@@ -18,7 +18,7 @@ const searchChannel = require('./apiHandlers/searchChannel.js')
 const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
 const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
 
-const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
+const alreadyExistStream = require('./apiHandlers/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 // const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
 const refreshLiveStreams = require('./refreshLiveStreams/refreshLiveStreams.js');

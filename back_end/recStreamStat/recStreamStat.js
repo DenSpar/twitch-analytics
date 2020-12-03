@@ -66,13 +66,11 @@ let checkStream = (numID, obj) => {
                 };
 
                 // delete
-                console.log(
-                    obj.streamerName,
-                    ", id:" + obj.streamID,
-                    ", mins:" + obj.stat.length
-                    // ", start:" + obj.stream.created_at,
-                    // ", rec:" + obj.record.start_at 
-                );
+                    console.log(
+                        obj.streamerName,
+                        ", id:" + obj.streamID,
+                        ", mins:" + obj.stat.length
+                    );
                 // delete
 
                 setTimeout(checkStream, 60000, numID, obj)
@@ -82,7 +80,6 @@ let checkStream = (numID, obj) => {
 };
 
 module.exports = function recStreamStat (newStream) {
-    //streamerID, title, streamID
     getStreamsChannelById(newStream.streamerID)
     .then(stream => {
         console.log("начинаю записывать стату по стриму #" + newStream.streamID);
@@ -98,12 +95,11 @@ module.exports = function recStreamStat (newStream) {
                 record: {start_at: new Date().toISOString()},
                 games: {now: stream.stream.game, all: [stream.stream.game]},
                 title: newStream.title,
-                // title: stream.stream.channel.status ??
                 streamID: Number(newStream.streamID),
                 notes: []
             };
-            let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
-            if (difStartStreamAndRec > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
+            let difStartAndRecStream = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
+            if (difStartAndRecStream > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
             checkStream(newStream.streamerID, statObj);
         } else {console.log("что-то не так: стрима #" + newStream.streamID +  " - нет");}
     })
