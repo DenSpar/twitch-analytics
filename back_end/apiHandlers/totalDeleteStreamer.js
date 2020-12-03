@@ -1,3 +1,4 @@
+const unsubscribeOfWebHook = require('../twitchApiRequests/unsubscribeOfWebHook.js');
 const deleteStreamerFromDB = require('../collectionStreamers/deleteStreamerFromDB.js');
 const deleteStreamerStats = require('../collectionStats/deleteStreamerStats.js');
 const findLiveStream = require('../collectionLiveStreams/findLiveStream.js');
@@ -23,15 +24,17 @@ module.exports = function totalDeleteStreamer(streamerID) {
     return new Promise (function(resolve, reject) {
         console.log("запущенно полное удаление стримера из БД");
         Promise.all([
+            unsubscribeOfWebHook(sttreamerID), // отписка от вебхука
             deleteStreamerFromDB(streamerID), // удаление из основного списка
             deleteStreamerStats(streamerID), // удаление статы стримера
             checkNowStream(streamerID), // проверка идет ли сейчас стрим на этом канала
         ])
         .then(res => {
             let answer = {
-                delStreamer: res[0],
-                delStats: res[1],
-                nowStream: res[2]
+                unsubWebHook: res[0],
+                delStreamer: res[1],
+                delStats: res[2],
+                nowStream: res[3]
             };
             resolve(answer);
         })

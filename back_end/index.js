@@ -12,8 +12,10 @@ const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat/recStreamStat.js');
+
+const searchChannels = require('./apiHandlers/searchChannels.js');
 const addChannel2MainStack = require('./apiHandlers/addChannel2MainStack.js');
-const searchChannel = require('./apiHandlers/searchChannel.js')
+const totalDeleteStreamer = require('./apiHandlers/totalDeleteStreamer.js');
 
 const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
 const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
@@ -109,7 +111,7 @@ app.get('/api/deletestream/:id', function(req, res) {
 app.get('/api/search', function(req, res) {
     if (req.query["name"]) {
         console.log("поиск каналов по имени" + req.query["name"] + ", лимит = " + req.query["limit"]);
-        searchChannel(req.query["name"], req.query["limit"])
+        searchChannels(req.query["name"], req.query["limit"])
         .then(channels => res.send({channels: channels}))
     } else {
         console.log("поиск каналов по имени - не указано имя поиска");
@@ -125,6 +127,12 @@ app.post('/api/addchannel', function(req, res) {
         // addChannel2MainStack(req.body)
         // .then(response => { res.send({message: response}); })
     };
+});
+
+// тотальное удаление стримера
+app.get('/api/totaldel/:id', function(req, res) {
+    totalDeleteStreamer
+    .then(delAnswer => { res.send({message: delAnswer}); })
 });
 
 // подписаться на стримера
@@ -148,13 +156,18 @@ app.get('/api/checkwebhooks', function(req, res) {
     });    
 });
 
-// подтверждение подписки на вебхук
+// подтверждение подписки/отписки на вебхук
 app.get('/api/webhooks', function(req, res) {
     console.log("webhook get-request");
     // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
     if (req.query['hub.challenge']) {
         res.send(req.query['hub.challenge'])
-        console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        if(req.query['hub.mode'] === 'subscribe') {
+            console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        };
+        if(req.query['hub.mode'] === 'unsubscribe') {
+            console.log("отписка от стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        };
     }
     else {console.log("неизвестный реквест :(")};
 });
