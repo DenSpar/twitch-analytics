@@ -40,10 +40,10 @@ module.exports = function checkWebHooks(streamersIdArr) {
             });
             resolve(resObj);
         });
-    })    
+    })
 };
 
-// должен вернуться ответ типа:
+// от твича должен вернуться ответ типа:
 // {
 //      data: Array(1)
 //         0: {

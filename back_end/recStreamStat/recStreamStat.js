@@ -50,8 +50,8 @@ let endStream = (obj) => {
     obj.stream.length = videoTimeConverter(dateDif(obj.stream.created_at));
     obj.record.length = videoTimeConverter(dateDif(obj.record.start_at));
     obj.games = obj.games.all;
-    deleteLiveStream(obj.streamID);
     saveStreamStat(obj);
+    deleteLiveStream(obj.streamID);
 };
 
 let checkStream = (numID, obj) => {
