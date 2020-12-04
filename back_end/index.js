@@ -110,30 +110,33 @@ app.get('/api/deletestream/:id', function(req, res) {
 // поиск каналов по имени
 app.get('/api/search', function(req, res) {
     if (req.query["name"]) {
-        console.log("поиск каналов по имени" + req.query["name"] + ", лимит = " + req.query["limit"]);
-        searchChannels(req.query["name"], req.query["limit"])
-        .then(channels => res.send({channels: channels}))
+        let name = req.query["name"];
+        let limit = req.query["limit"];
+        if (!limit || limit === "undefined") { limit = 10; };
+        console.log("get-запрос: поиск каналов по имени " + name + ", лимит = " + limit);
+        searchChannels(name, limit)
+        .then(channels => res.send(channels))
     } else {
-        console.log("поиск каналов по имени - не указано имя поиска");
+        console.log("get-запрос: поиск каналов по имени - не указано имя поиска");
         res.send({message: "не указано имя поиска"});
     };
 });
 
 // добавление канала в основной стэк
-app.post('/api/addchannel', function(req, res) {
+app.post('/api/addchannel', jsonParser, function(req, res) {
     if(!req.body) {return res.sendStatus(400)}
     else {
-        res.send({message: req.body});
-        // addChannel2MainStack(req.body)
-        // .then(response => { res.send({message: response}); })
+        addChannel2MainStack(req.body)
+        .then(response => { res.send(response); })
     };
 });
 
-// тотальное удаление стримера
-app.get('/api/totaldel/:id', function(req, res) {
-    totalDeleteStreamer
-    .then(delAnswer => { res.send({message: delAnswer}); })
-});
+// // тотальное удаление стримера
+// app.get('/api/totaldel/:id', function(req, res) {
+//     const id = Number(req.params.id);
+//     totalDeleteStreamer(id)
+//     .then(delAnswer => { res.send(delAnswer); })
+// });
 
 // подписаться на стримера
 app.get('/api/subwebhook/:id', function(req, res) {

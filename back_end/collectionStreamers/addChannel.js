@@ -13,7 +13,7 @@ mongoClient.connect(function(err, client){
 module.exports = function addChannel (channel) {
     return new Promise (function(resolve, reject) {
         let response = '';
-        const streamersList = app.locals.lives;
+        const streamersList = app.locals.streamers;
         streamersList.insertOne(channel, function(err, result){
             if(err) return console.log(err);
             response = 'в основной стэк добавлен канал ' + channel.name + '(' + channel.twitchID + ')';

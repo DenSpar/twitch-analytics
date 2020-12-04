@@ -25,6 +25,7 @@ const SearchTable = ({streamers}) => {
 
   const addChannel = (streamer) => {
     //delete
+    console.log("streamer", streamer);
     let nowURL = new URL(window.location.href);
     if (nowURL.hostname === 'localhost') {
       let newStreamer = {
@@ -32,7 +33,6 @@ const SearchTable = ({streamers}) => {
         id: streamer._id,
         logo: streamer.logo,
         followers: {
-          // здесь будет разделение по разрядам
           actual: String(streamer.followers),
           diff: "-"
         },
@@ -53,7 +53,7 @@ const SearchTable = ({streamers}) => {
         };
       });
     } else {
-      sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
+            sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
       .then(res => console.log(res));
     };
   };

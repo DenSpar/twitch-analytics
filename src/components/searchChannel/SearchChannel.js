@@ -16,7 +16,7 @@ const SearchChannel = () => {
   //
   const alert = useContext(AlertContext);
 
-  let searchChannel = (query, limit) => {
+  let searchChannel = (query, limit=10) => {
     setLoading(true);
     //delete
     let nowURL = new URL(window.location.href);
@@ -25,7 +25,11 @@ const SearchChannel = () => {
       searchChannelByName(query, limit)
       .then(searchRes => {
         console.log(searchRes);
-        setSearchState(searchRes);
+        let newObj = {
+          total: searchRes._total,
+          channels: searchRes.channels
+        };
+        setSearchState(newObj);
       })
       .then(() => {
         setLoading(false);
@@ -39,7 +43,7 @@ const SearchChannel = () => {
       sendRequest('GET', 'https://stat.metacorp.gg/api/search?name=' + query + '&limit=' + limit)
       .then(searchRes => {
         console.log(searchRes);
-        // setSearchState(searchRes);
+        setSearchState(searchRes);
       })
       .then(() => {
         setLoading(false);
@@ -90,12 +94,12 @@ const SearchChannel = () => {
         onChange={event => (setValue(event.target.value))} />
         <button className="defaultBtn searchBtn">Искать</button>
       </form>
-      {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState._total} результатов</p>}
+      {title.trim() && <p className="search_head">по запросу <strong>"{title}"</strong> найденно {searchState.total} результатов</p>}
       {searchState.channels.length !==0 &&
         <SearchTable streamers={searchState.channels} />
       }
       {loading && <Preloader />}
-      {title.trim() && <SearchTableControlButtons howManyResults={searchState._total}/>}
+      {title.trim() && <SearchTableControlButtons howManyResults={searchState.total}/>}
     </Fragment>
   )
 };

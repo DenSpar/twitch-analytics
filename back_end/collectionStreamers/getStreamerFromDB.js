@@ -13,9 +13,9 @@ mongoClient.connect(function(err, client){
 module.exports = function getStreamerFromDB (streamerID) {
     return new Promise (function(resolve, reject) {
         const streamersList = app.locals.streamers;
-        streamersList.find({twitchID: streamerID}, function(err, streamer){
+        streamersList.findOne({twitchID: streamerID}, function(err, streamer){
             if(err) return console.log(err);
-            resolve({streamer: streamer});
+            resolve(streamer);
         });
     });
 };
