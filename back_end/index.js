@@ -164,7 +164,7 @@ app.get('/api/webhooks', function(req, res) {
     console.log("webhook get-request");
     // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
     if (req.query['hub.challenge']) {
-        res.send(req.query['hub.challenge'])
+        res.send(req.query['hub.challenge']);
         if(req.query['hub.mode'] === 'subscribe') {
             console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
         };

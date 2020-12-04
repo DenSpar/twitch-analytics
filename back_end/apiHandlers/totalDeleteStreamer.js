@@ -22,9 +22,9 @@ let checkNowStream = (streamerID) => {
 
 module.exports = function totalDeleteStreamer(streamerID) {
     return new Promise (function(resolve, reject) {
-        console.log("запущенно полное удаление стримера из БД");
+        console.log("запущенно полное удаление стримера №" + streamerID + " из БД");
         Promise.all([
-            unsubscribeOfWebHook(sttreamerID), // отписка от вебхука
+            unsubscribeOfWebHook(streamerID), // отписка от вебхука
             deleteStreamerFromDB(streamerID), // удаление из основного списка
             deleteStreamerStats(streamerID), // удаление статы стримера
             checkNowStream(streamerID), // проверка идет ли сейчас стрим на этом канала
