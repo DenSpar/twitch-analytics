@@ -118,6 +118,7 @@ const Streamer = () => {
     const [onAir, setOnAir] = useState(false);
 
     //delete
+        // eslint-disable-next-line
         let testStreamer = () => {
             console.log('denly', denly);
             setTimeout(() => {
