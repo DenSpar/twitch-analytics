@@ -20,6 +20,16 @@ module.exports = function unsubscribeOfWebHook(streamerID) {
             };
             sendRequest('POST', subscribeOnStreamURL, reqBody, reqHeaders)
             .then(subsRes => {
+                let response = {};
+                if (subsRes === 'запись успешно создана') {
+                    response.message = 'Отписка от webhooks прошла успешно';
+                    response.status = true;
+                } else {
+                    response.message = 'Не удалось отписаться от webhooks';
+                    response.status = false;
+                };
+                console.log ('канал №' + streamerID + ' - ' + response.message);
+                resolve(response);
                 resolve(subsRes);
             });
         });

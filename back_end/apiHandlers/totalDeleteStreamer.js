@@ -12,8 +12,8 @@ let checkNowStream = (streamerID) => {
                 getStreamsChannelById(streamerID)
                 .then(stream => {
                     if(stream) {
-                        resolve(stream); // сделать разные ответы для двух кейсов
-                    } else { resolve(stream); } // сделать разные ответы для двух кейсов
+                        resolve(true);
+                    } else { resolve(false); };
                 });
             } else { resolve(liveStreamInDB); };
         })
@@ -38,7 +38,5 @@ module.exports = function totalDeleteStreamer(streamerID) {
             };
             resolve(answer);
         })
-        
-        // заполнить ансвер
     })
 };

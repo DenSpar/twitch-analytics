@@ -12,17 +12,19 @@ mongoClient.connect(function(err, client){
 
 module.exports = function deleteStreamerStats (streamerID) {
     return new Promise (function(resolve, reject) {
-        let response = '';
+        let response = {};
         const statsList = app.locals.stats;
         statsList.findOneAndDelete({twitchID: streamerID}, function(err, result){               
             if(err) return console.log(err);    
             let streamer = result.value;
             if (streamer) {
-                response = 'статистика стримера №' + streamerID +' удалена';
+                response.message = 'статистика стримера №' + streamerID +' удалена';
+                response.status = true;
             } else {
-                response = 'статистика стримера №' + streamerID + ' не найдена, нечего удалять';
+                response.message = 'статистика стримера №' + streamerID + ' не найдена, нечего удалять';
+                response.status = false;
             };
-            console.log(response);
+            console.log(response.message);
             resolve(response);
         });
     });
