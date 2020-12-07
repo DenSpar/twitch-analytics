@@ -18,10 +18,10 @@ module.exports = function deleteStreamerFromDB (streamerID) {
             if(err) return console.log(err);    
             let streamer = result.value;
             if (streamer) {
-                response.message = 'стример №' + streamerID +' удален из основного списка';
+                response.message = 'Стример №' + streamerID +' удален из основного списка';
                 response.status = true;
             } else {
-                response.message = 'стример №' + streamerID + ' не найден в основном списке, нечего удалять';
+                response.message = 'Стример №' + streamerID + ' не найден в основном списке, нечего удалять';
                 response.status = false;
             };
             console.log(response.message);

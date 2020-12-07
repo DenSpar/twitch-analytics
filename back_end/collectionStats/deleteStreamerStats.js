@@ -18,10 +18,10 @@ module.exports = function deleteStreamerStats (streamerID) {
             if(err) return console.log(err);    
             let streamer = result.value;
             if (streamer) {
-                response.message = 'статистика стримера №' + streamerID +' удалена';
+                response.message = 'Статистика стримера №' + streamerID +' удалена';
                 response.status = true;
             } else {
-                response.message = 'статистика стримера №' + streamerID + ' не найдена, нечего удалять';
+                response.message = 'Статистика стримера №' + streamerID + ' не найдена, нечего удалять';
                 response.status = false;
             };
             console.log(response.message);
