@@ -12,16 +12,19 @@ mongoClient.connect(function(err, client){
 
 module.exports = function addChannel (channel) {
     return new Promise (function(resolve, reject) {
-        let response = '';
+        let response = {};
         const streamersList = app.locals.streamers;
         streamersList.insertOne(channel, function(err, result){
             if(err) return console.log(err);
-            response = 'в основной стэк добавлен канал ' + channel.name + '(' + channel.twitchID + ')';
-            console.log (response);
-            resolve({
-                message:response,
-                result:result
-            });
+            if (result) {
+                response.message = 'Канал ' + channel.name + '(' + channel.twitchID + ') добавлен в основной стэк';
+                response.status = true;
+            } else {
+                response.message = 'Не удалось добавить канал ' + channel.name + '(' + channel.twitchID + ') в основной стэк';
+                response.status = false;
+            };
+            console.log (response.message);
+            resolve(response);
         });
     });
 };

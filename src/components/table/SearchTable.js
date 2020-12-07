@@ -53,7 +53,7 @@ const SearchTable = ({streamers}) => {
         };
       });
     } else {
-            sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
+      sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
       .then(res => console.log(res));
     };
   };

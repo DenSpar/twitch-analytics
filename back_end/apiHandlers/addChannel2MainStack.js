@@ -26,46 +26,42 @@ let refactorChannel = (channel) => {
 
 module.exports = function addChannel2MainStack(channel) {
     return new Promise (function(resolve, reject) {
-        let answer = {};
+        let response = {};
         if (channel) {
             console.log("добавление нового канала " + channel.name + "(" + channel.twitchID + ")");
             refactorChannel(channel);
-            //
-                answer.refactObj = channel;
-            //
             getStreamerFromDB(channel.twitchID)
             .then(channelInDB => {
                 if(channelInDB) {
-                    answer.message = "такой канал уже есть в основном стэке";
-                    console.log(answer.message);
-                    resolve(answer);
+                    response.message = "такой канал уже есть в основном стэке";
+                    console.log(response.message);
+                    resolve(response);
                 } else {
                     getChannelById(channel.twitchID)
                     .then(actualChannel => {
                         channel.name = actualChannel.display_name; // уточнение имени стримера
-                        //
-                            answer.refactObj = channel;
-                        //
                     })
                     .then(() => {
                         Promise.all([
                             addChannel(channel), // добавление канала в основной стэк
                             subscribe2WebHook(channel.twitchID, 60), // подписка на вебхуки
                             checkAndRecStream(channel.twitchID), // проверка, идет ли стрим
+                            getStreamer4Dashboard(streamerFromDB), // получение нового стримера для дашборда
                         ])
                         .then(res => {
-                            answer.addChannel = res[0];
-                            answer.subsWebHook = res[1];
-                            answer.isStreamNow = res[2];
-                            resolve(answer);
+                            response.addChannel = res[0];
+                            response.subsWebHook = res[1];
+                            response.isStreamNow = res[2];
+                            response.newStreamer = res[3];
+                            resolve(response);
                         });
                     })
                 };
                 
             });
         } else {
-            answer.message = "запись в БД не создана - канал не получен";
-            resolve(answer);
+            response.message = "запись в БД не создана - канал не получен";
+            resolve(response);
         };
     })    
 };

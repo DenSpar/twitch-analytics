@@ -130,17 +130,6 @@ module.exports = function recStreamStat (newStream) {
 //         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:12:43"},
 //         streamID: 40001177404,
 //         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
-
-//         {games: ["Dota 2"],
-//         maxViewers: 12102,
-//         med50Viewers: 9478,
-//         midViewers: 9366,
-//         minutes1Viewer: 1,
-//         notes: [],
-//         record: {length: "6:10:57", start_at: "2020-11-15T17:53:55.730Z"},
-//         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:13:18"},
-//         streamID: 40001177404,
-//         title: "Битва за рейтинг и общение на различные темы(развиваемся), присоединяйся "}
 //     ],
 //     twitchID: 40488774,
 //     _id: "5faf1ef8d124e0bedd6d2b1a"

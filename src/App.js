@@ -5,7 +5,7 @@ import Alert from 'components/alert/Alert';
 import {AlertState} from 'context/alert/AlertState';
 import Streamer from 'pages/streamer/Streamer';
 import Dashboard from './pages/dashboard/DashBoard';
-import Dev from './pages/Dev';
+import Dev from './pages/dev/Dev';
 
 
 function App() {

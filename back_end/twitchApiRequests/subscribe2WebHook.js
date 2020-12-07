@@ -20,7 +20,16 @@ module.exports = function subscribe2WebHook(streamerID, subTime = 864000) {
             };
             sendRequest('POST', subscribeOnStreamURL, reqBody, reqHeaders)
             .then(subsRes => {
-                resolve(subsRes);
+                let response = {};
+                if (subsRes === 'запись успешно создана') {
+                    response.message = 'Подписка на webhooks прошла успешно';
+                    response.status = true;
+                } else {
+                    response.message = 'Не удалось подписаться на webhooks';
+                    response.status = false;
+                };
+                console.log ('канал №' + streamerID + ' - ' + response.message);
+                resolve(response);
             });
         });
     });

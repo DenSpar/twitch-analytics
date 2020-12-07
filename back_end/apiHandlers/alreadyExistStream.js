@@ -14,7 +14,7 @@ module.exports = function alreadyExistStream (srcStream) {
                         response = false;
                     }
                 else {
-                    console.log('в БД уже есть стрим №' + srcStream.streamID);
+                    console.log('стрим №' + srcStream.streamID + ' уже есть в БД');
                     response = true;
                 };
             }

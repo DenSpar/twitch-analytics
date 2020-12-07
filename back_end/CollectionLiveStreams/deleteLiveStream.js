@@ -12,15 +12,17 @@ mongoClient.connect(function(err, client){
 
 module.exports = function deleteLiveStream (streamID) {
     return new Promise (function(resolve, reject) {
-        let response = '';
+        let response = {};
         const livesList = app.locals.lives;
         livesList.findOneAndDelete({streamID: streamID}, function(err, result){               
             if(err) return console.log(err);    
             let stream = result.value;
             if (stream) {
-                response = 'стрим №' + streamID +' удален из текущих стримов';
+                response.message = 'стрим №' + streamID +' удален из текущих стримов';
+                response.status = true;
             } else {
-                response = 'стрим №' + streamID + ' не найден, нечего удалять';
+                response.message = 'стрим №' + streamID + ' не найден, нечего удалять';
+                response.status = false;
             };
             console.log(response);
             resolve(response);

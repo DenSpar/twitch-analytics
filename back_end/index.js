@@ -25,6 +25,8 @@ const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 // const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
 const refreshLiveStreams = require('./refreshLiveStreams/refreshLiveStreams.js');
 
+const password2Del = '5f92965aeb64f05d6b77a600';
+
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
@@ -100,13 +102,6 @@ app.get('/api/showlives', function(req, res) {
     });
 });
 
-// удалит стрим № из списка живых стримов
-app.get('/api/deletestream/:id', function(req, res) {
-    const id = Number(req.params.id);
-    deleteLiveStream(id)
-    .then(answer => res.send({message: answer}));
-});
-
 // поиск каналов по имени
 app.get('/api/search', function(req, res) {
     if (req.query["name"]) {
@@ -131,12 +126,31 @@ app.post('/api/addchannel', jsonParser, function(req, res) {
     };
 });
 
-// // тотальное удаление стримера
-// app.get('/api/totaldel/:id', function(req, res) {
-//     const id = Number(req.params.id);
-//     totalDeleteStreamer(id)
-//     .then(delAnswer => { res.send(delAnswer); })
-// });
+// тотальное удаление стримера
+app.post('/api/totaldel/:id', function(req, res) {
+    if(!req.body) {return res.sendStatus(400)}
+    else {
+        if(req.body.password !== password2Del) { res.send({message: "неверный пароль", status: false}); }
+        else {
+            const id = Number(req.params.id);
+            totalDeleteStreamer(id)
+            .then(delAnswer => { res.send(delAnswer); });
+        };
+    };
+});
+
+// удалит стрим № из списка живых стримов
+app.post('/api/deletestream/:id', function(req, res) {
+    if(!req.body) {return res.sendStatus(400)}
+    else {
+        if(req.body.password !== password2Del) { res.send({message: "неверный пароль", status: false}); }
+        else {
+            const id = Number(req.params.id);
+            deleteLiveStream(id)
+            .then(response => res.send(response));
+        };
+    };
+});
 
 // подписаться на стримера
 app.get('/api/subwebhook/:id', function(req, res) {
@@ -181,7 +195,7 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     else {res.sendStatus(202)};
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
+        console.log('получен webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
         let newStream = {
             streamID: Number(stream.id),
             streamerID: Number(stream.user_id),
@@ -191,9 +205,9 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
         alreadyExistStream(newStream)
         .then(isStreamExist => {
             if(isStreamExist) {console.log('стрим №' + stream.id + ' уже записывается')}
-            else {recStreamStat (newStream);}
+            else {recStreamStat(newStream);}
         })
-    } else {console.log('webhook - стрим закончился');}
+    } else {console.log('получен webhook - стрим закончился');}
 });
 
 // прослушиваем прерывание работы программы (ctrl-c)
