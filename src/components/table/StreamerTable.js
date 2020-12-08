@@ -134,7 +134,11 @@ const StreamsTable = ({streams}) => {
             <td className="table_cell">{stream.title}</td>
             <td className="table_cell">{stream.stream.created_at}</td>
             <td className="table_cell">{stream.stream.length}</td>
-            <td className="table_cell">{stream.maxViewers}</td>
+            <td className="table_cell">{
+              stream.maxViewers
+              ? stream.maxViewers
+              : stream.maxViewers = "-"
+            }</td>
             <td className="table_cell">{
               stream.midViewers
               ? stream.midViewers

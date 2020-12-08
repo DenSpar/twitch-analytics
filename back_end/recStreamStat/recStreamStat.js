@@ -90,7 +90,7 @@ module.exports = function recStreamStat (newStream) {
                 maxViewers: stream.stream.viewers,
                 midViewers: stream.stream.viewers,
                 med50Viewers: stream.stream.viewers,
-                stat:[],
+                stat:[stream.stream.viewers],
                 stream: {created_at: stream.stream.created_at},
                 record: {start_at: new Date().toISOString()},
                 games: {now: stream.stream.game, all: [stream.stream.game]},
