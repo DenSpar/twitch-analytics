@@ -98,7 +98,12 @@ const ApiDeleteForm = ({request, apiURL}) => {
         event.preventDefault();
     
         if (num.trim()) {
-            sendRequest('POST', apiURL+num, {password: password})
+            let body = {
+                streamerID: num,
+                password: password
+            };
+            console.log('body ', body);
+            sendRequest('POST', apiURL, body)
             // new Promise (function (resolve, reject) { resolve(asmadey); })
             .then(response => {
                 console.log(response);

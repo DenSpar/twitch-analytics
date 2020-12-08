@@ -18,11 +18,11 @@ module.exports = function checkAndRecStream (channelID) {
                 alreadyExistStream(newStream)
                     .then(isStreamExist => {
                         if(isStreamExist) {
-                            response.message = 'На добавленном канале идет стрим, но запись статистики была запущенна ранее';
+                            response.message = 'На канале №' + channelID + ' идет стрим, но запись статистики была запущенна ранее';
                             response.status = true;
                         } else {
                             recStreamStat(newStream);
-                            response.message = 'На добавленном канале идет стрим - запущена запись статистики';
+                            response.message = 'На канале №' + channelID + ' идет стрим - запущена запись статистики';
                             response.status = true;
                         };
 
@@ -30,10 +30,9 @@ module.exports = function checkAndRecStream (channelID) {
                         resolve(response);
                     })
             } else {
-                response.message = 'На добавленном канале стрим не идет';
+                response.message = 'На канале №' + channelID + ' стрим не идет';
                 response.status = false;
-
-                console.log (response.message);
+                
                 resolve(response);
             };
         })

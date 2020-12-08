@@ -11,13 +11,16 @@ module.exports = function searchChannels(name, limit=10) {
             };
             searchRes.channels.map(channel => {
                 let newChannel = {
-                    followers: splitNumbers(channel.followers),
                     name: channel.name,
                     twitchID: String(channel._id),
-                    views: splitNumbers(channel.views),
                     logo: channel.logo,
                     description: channel.description
                 };
+                if (channel.followers) { newChannel.followers = splitNumbers(channel.followers); }
+                else { newChannel.followers = "0"; };
+                if (channel.views) { newChannel.views = splitNumbers(channel.views); }
+                else { newChannel.views = "0"; };
+
                 obj.channels.push(newChannel);
             })
             resolve(obj);

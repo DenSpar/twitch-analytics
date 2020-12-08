@@ -69,7 +69,7 @@ let checkStream = (numID, obj) => {
                     console.log(
                         obj.streamerName,
                         ", id:" + obj.streamID,
-                        ", mins:" + obj.stat.length
+                        ", mins:" + (obj.stat.length-1)
                     );
                 // delete
 

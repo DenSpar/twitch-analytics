@@ -127,12 +127,14 @@ app.post('/api/addchannel', jsonParser, function(req, res) {
 });
 
 // тотальное удаление стримера
-app.post('/api/totaldel/:id', function(req, res) {
-    if(!req.body) {return res.sendStatus(400)}
+app.post('/api/totaldel', jsonParser, function(req, res) {
+    if(!req.body) { return res.sendStatus(400); }
     else {
-        if(req.body.password !== password2Del) { res.send({message: "неверный пароль", status: false}); }
-        else {
-            const id = Number(req.params.id);
+        if(req.body.password !== password2Del) {
+            console.log("попытка тотального удаления стримера - неверный пароль");
+            res.send({message: "неверный пароль", status: false});
+        } else {
+            const id = Number(req.body.streamerID);
             totalDeleteStreamer(id)
             .then(delAnswer => { res.send(delAnswer); });
         };

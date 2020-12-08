@@ -125,7 +125,7 @@ const SearchTable = ({streamers}) => {
               let streamMessage = res.isStreamNow.message;
               setTimeout(alert.show, timeDelay, streamMessage, "success");
             };
-            return [...prevState, newStreamer]
+            return [...prevState, newStreamer];
           };
         });
       });

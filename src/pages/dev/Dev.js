@@ -1,26 +1,12 @@
 import React from 'react';
 import './dev.css';
 import sendRequest from 'js/sendRequest';
-import recStreamStat from 'js/recStreamStat';
 import Return2Dashbord from 'components/return2Dashbord/Return2Dashbord';
 import ApiButton from './components/ApiButton';
 import ApiButtonAndForm from './components/ApiButtonAndForm';
 import ApiDeleteForm from './components/ApiDeleteForm';
 
 const Dev = () => {
-    let streamerID = 0;
-
-    const recHandler = (event) => {
-        event.preventDefault();
-
-        if (streamerID !==0 ) {
-            recStreamStat(streamerID);
-            streamerID = 0;
-        } else {
-            console.log('ID стримера не указан');
-        }
-    };
-
     let reqURL = '';
     const submitHandlerAPI = (event) => {
         event.preventDefault();
@@ -41,7 +27,7 @@ const Dev = () => {
             <div className="flex">
                 <div className="flex devContainer_column" style={{ width: '200px' }}>
                     <ApiButton request={"список для дашборда"} apiURL={"https://stat.metacorp.gg/api/streamers"}></ApiButton>
-                    <ApiButton request={"проверит вебхуки"} apiURL={"https://stat.metacorp.gg/api/checkwebhooks"} />
+                    <ApiButton request={"проверка вебхуков"} apiURL={"https://stat.metacorp.gg/api/checkwebhooks"} />
                 </div>
                 <div className="flex devContainer_column" style={{ width: '200px' }}>
                     <ApiButton request={"коллекция стримеров"} apiURL={"https://stat.metacorp.gg/api/showlist"} />
@@ -51,8 +37,6 @@ const Dev = () => {
             </div>
             <ApiButtonAndForm request={"получить стример для дашборда, по айди стримера:"}
             apiURL={"https://stat.metacorp.gg/api/streamers/"} />
-            <ApiButtonAndForm request={"стрим из коллекции lives, по айди стримера:"}
-            apiURL={"https://stat.metacorp.gg/api/checkstream/"} />
             <ApiButtonAndForm request={"подписаться на вебхуки по стримам, по айди стримера:"}
             apiURL={"https://stat.metacorp.gg/api/subwebhook/"} />
 
@@ -102,12 +86,6 @@ const Dev = () => {
                 <p className="streamerList_item"> 230768385(follentass) </p>
                 <p className="streamerList_item"> 218598381(SOSEDATEL) </p>
             </div>
-        </div>
-        <div className="devContainer">
-            <p>записать стату по стриму</p>
-            <form onSubmit={recHandler}>
-                streamerID: <input type='textarea' onChange={event => streamerID = event.target.value} style={{ width: '350px' }}/>
-            </form>
         </div>
     </div>
 )};

@@ -24,7 +24,7 @@ module.exports = function deleteLiveStream (streamID) {
                 response.message = 'стрим №' + streamID + ' не найден, нечего удалять';
                 response.status = false;
             };
-            console.log(response);
+            console.log(response.message);
             resolve(response);
         });
     });
