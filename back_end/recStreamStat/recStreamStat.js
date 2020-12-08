@@ -50,8 +50,8 @@ let endStream = (obj) => {
     obj.stream.length = videoTimeConverter(dateDif(obj.stream.created_at));
     obj.record.length = videoTimeConverter(dateDif(obj.record.start_at));
     obj.games = obj.games.all;
-    deleteLiveStream(obj.streamID);
     saveStreamStat(obj);
+    deleteLiveStream(obj.streamID);
 };
 
 let checkStream = (numID, obj) => {
@@ -66,13 +66,11 @@ let checkStream = (numID, obj) => {
                 };
 
                 // delete
-                console.log(
-                    obj.streamerName,
-                    ", id:" + obj.streamID,
-                    ", mins:" + obj.stat.length
-                    // ", start:" + obj.stream.created_at,
-                    // ", rec:" + obj.record.start_at 
-                );
+                    console.log(
+                        obj.streamerName,
+                        ", id:" + obj.streamID,
+                        ", mins:" + (obj.stat.length-1)
+                    );
                 // delete
 
                 setTimeout(checkStream, 60000, numID, obj)
@@ -82,7 +80,6 @@ let checkStream = (numID, obj) => {
 };
 
 module.exports = function recStreamStat (newStream) {
-    //streamerID, title, streamID
     getStreamsChannelById(newStream.streamerID)
     .then(stream => {
         console.log("начинаю записывать стату по стриму #" + newStream.streamID);
@@ -93,17 +90,16 @@ module.exports = function recStreamStat (newStream) {
                 maxViewers: stream.stream.viewers,
                 midViewers: stream.stream.viewers,
                 med50Viewers: stream.stream.viewers,
-                stat:[],
+                stat:[stream.stream.viewers],
                 stream: {created_at: stream.stream.created_at},
                 record: {start_at: new Date().toISOString()},
                 games: {now: stream.stream.game, all: [stream.stream.game]},
                 title: newStream.title,
-                // title: stream.stream.channel.status ??
                 streamID: Number(newStream.streamID),
                 notes: []
             };
-            let difStartStreamAndRec = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
-            if (difStartStreamAndRec > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
+            let difStartAndRecStream = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
+            if (difStartAndRecStream > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
             checkStream(newStream.streamerID, statObj);
         } else {console.log("что-то не так: стрима #" + newStream.streamID +  " - нет");}
     })
@@ -134,17 +130,6 @@ module.exports = function recStreamStat (newStream) {
 //         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:12:43"},
 //         streamID: 40001177404,
 //         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
-
-//         {games: ["Dota 2"],
-//         maxViewers: 12102,
-//         med50Viewers: 9478,
-//         midViewers: 9366,
-//         minutes1Viewer: 1,
-//         notes: [],
-//         record: {length: "6:10:57", start_at: "2020-11-15T17:53:55.730Z"},
-//         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:13:18"},
-//         streamID: 40001177404,
-//         title: "Битва за рейтинг и общение на различные темы(развиваемся), присоединяйся "}
 //     ],
 //     twitchID: 40488774,
 //     _id: "5faf1ef8d124e0bedd6d2b1a"

@@ -1,0 +1,29 @@
+.devContainer {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    width: fit-content;
+    margin-bottom: 20px;
+}
+
+.devContainer_column{
+    flex-direction: column;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.ApiButtonAndForm{
+    margin-top: 15px;
+}
+
+.ApiDeleteForm{
+    margin-top: 15px;
+}
+
+.noMargin{
+    margin: 0;
+}
+
+.streamerList_item{
+    margin: 3px;
+}

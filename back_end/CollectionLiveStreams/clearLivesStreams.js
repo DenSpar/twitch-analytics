@@ -7,16 +7,17 @@ const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlPar
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
-    app.locals.streamers = client.db("streamers").collection("list");
+    app.locals.lives = client.db("streamers").collection("lives");
 });
 
-module.exports = function getStreamerFromDB (streamerID) {
+module.exports = function clearLivesStreams () {
+    // вынести в отдельный модуль
     return new Promise (function(resolve, reject) {
-        const streamersList = app.locals.streamers;
-        streamersList.findOne({twitchID: streamerID}, function(err, streamer){
-            if(err) return console.log(err);
-            resolve(streamer);
+        const livesList = app.locals.lives;
+        livesList.drop(function(err, result){              
+            console.log('удалена коллекция lives')
         });
+        resolve();
     });
 };
 

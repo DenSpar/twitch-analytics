@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
-const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
+const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 
 let dbClient;
@@ -14,7 +14,7 @@ mongoClient.connect(function(err, client){
 });
 
 let updateScript = () => {
-    console.log('обновление подписок: проверяю статус подписок ...');
+    console.log('обновление вебхуков: проверяю статус подписок ...');
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
         let streamersIdArr = [];
@@ -27,9 +27,9 @@ let updateScript = () => {
                 sortedSubs.needRefresh.map(sub => arr2Subscribe.push(sub.id));
             };
             if(arr2Subscribe.length !== 0) {
-                console.log('обновление подписок: актуализирую подписки ...')
+                console.log('обновление вебхуков: актуализирую подписки ...')
                 arr2Subscribe.map(id2Subscribe => subscribe2WebHook(id2Subscribe))
-            } else {console.log('обновление подписок: все подписки действительны, нечего актуализировать')};
+            } else {console.log('обновление вебхуков: все подписки действительны, нечего актуализировать')};
         })
     })
 };

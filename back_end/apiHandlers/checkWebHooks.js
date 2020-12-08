@@ -1,4 +1,4 @@
-const getWebHooks = require('./getWebHooks.js');
+const getWebHooks = require('../twitchApiRequests/getWebHooks.js');
 
 let makeSubsArr = (arr) => {
     let resArr = [];
@@ -40,10 +40,10 @@ module.exports = function checkWebHooks(streamersIdArr) {
             });
             resolve(resObj);
         });
-    })    
+    })
 };
 
-// должен вернуться ответ типа:
+// от твича должен вернуться ответ типа:
 // {
 //      data: Array(1)
 //         0: {

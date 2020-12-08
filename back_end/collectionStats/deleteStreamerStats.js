@@ -7,21 +7,21 @@ const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlPar
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
-    app.locals.lives = client.db("streamers").collection("lives");
+    app.locals.stats = client.db("streamers").collection("stats");
 });
 
-module.exports = function deleteLiveStream (streamID) {
+module.exports = function deleteStreamerStats (streamerID) {
     return new Promise (function(resolve, reject) {
         let response = {};
-        const livesList = app.locals.lives;
-        livesList.findOneAndDelete({streamID: streamID}, function(err, result){               
+        const statsList = app.locals.stats;
+        statsList.findOneAndDelete({twitchID: streamerID}, function(err, result){               
             if(err) return console.log(err);    
-            let stream = result.value;
-            if (stream) {
-                response.message = 'стрим №' + streamID +' удален из текущих стримов';
+            let streamer = result.value;
+            if (streamer) {
+                response.message = 'Статистика стримера №' + streamerID +' удалена';
                 response.status = true;
             } else {
-                response.message = 'стрим №' + streamID + ' не найден, нечего удалять';
+                response.message = 'Статистика стримера №' + streamerID + ' не найдена, нечего удалять';
                 response.status = false;
             };
             console.log(response.message);

@@ -7,15 +7,15 @@ const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlPar
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
-    app.locals.streamers = client.db("streamers").collection("list");
+    app.locals.lives = client.db("streamers").collection("lives");
 });
 
-module.exports = function getStreamerFromDB (streamerID) {
+module.exports = function findLiveStream (streamerID) {
     return new Promise (function(resolve, reject) {
-        const streamersList = app.locals.streamers;
-        streamersList.findOne({twitchID: streamerID}, function(err, streamer){
+        const livesList = app.locals.lives;
+        livesList.findOne({streamerID: streamerID}, function(err, result){
             if(err) return console.log(err);
-            resolve(streamer);
+            resolve(result);
         });
     });
 };

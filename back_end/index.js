@@ -8,18 +8,24 @@ const getList = require('./forDashboard/getList.js');
 const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat/updateStreamersStat.js');
-const checkWebHooks = require('./twitchApiRequests/checkWebHooks.js');
+const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
 const recStreamStat = require('./recStreamStat/recStreamStat.js');
 
+const searchChannels = require('./apiHandlers/searchChannels.js');
+const addChannel2MainStack = require('./apiHandlers/addChannel2MainStack.js');
+const totalDeleteStreamer = require('./apiHandlers/totalDeleteStreamer.js');
+
 const getAllStreamersFromDB = require('./collectionStreamers/getAllStreamersFromDB.js');
 const getStreamerFromDB = require('./collectionStreamers/getStreamerFromDB.js');
 
-const alreadyExistStream = require('./collectionLiveStreams/alreadyExistStream.js');
+const alreadyExistStream = require('./apiHandlers/alreadyExistStream.js');
 const deleteLiveStream = require('./collectionLiveStreams/deleteLiveStream.js');
 // const addLiveStream = require('./collectionLiveStreams/addLiveStream.js');
-const refreshLiveStreams = require('./collectionLiveStreams/refreshLiveStreams.js');
+const refreshLiveStreams = require('./refreshLiveStreams/refreshLiveStreams.js');
+
+const password2Del = '5f92965aeb64f05d6b77a600';
 
 console.log('Server running at http://stat.metacorp.gg:3000/');
 
@@ -96,11 +102,56 @@ app.get('/api/showlives', function(req, res) {
     });
 });
 
+// поиск каналов по имени
+app.get('/api/search', function(req, res) {
+    if (req.query["name"]) {
+        let name = req.query["name"];
+        let limit = req.query["limit"];
+        if (!limit || limit === "undefined") { limit = 10; };
+        console.log("get-запрос: поиск каналов по имени " + name + ", лимит = " + limit);
+        searchChannels(name, limit)
+        .then(channels => res.send(channels))
+    } else {
+        console.log("get-запрос: поиск каналов по имени - не указано имя поиска");
+        res.send({message: "не указано имя поиска"});
+    };
+});
+
+// добавление канала в основной стэк
+app.post('/api/addchannel', jsonParser, function(req, res) {
+    if(!req.body) {return res.sendStatus(400)}
+    else {
+        addChannel2MainStack(req.body)
+        .then(response => { res.send(response); })
+    };
+});
+
+// тотальное удаление стримера
+app.post('/api/totaldel', jsonParser, function(req, res) {
+    if(!req.body) { return res.sendStatus(400); }
+    else {
+        if(req.body.password !== password2Del) {
+            console.log("попытка тотального удаления стримера - неверный пароль");
+            res.send({message: "неверный пароль", status: false});
+        } else {
+            const id = Number(req.body.streamerID);
+            totalDeleteStreamer(id)
+            .then(delAnswer => { res.send(delAnswer); });
+        };
+    };
+});
+
 // удалит стрим № из списка живых стримов
-app.get('/api/deletestream/:id', function(req, res) {
-    const id = Number(req.params.id);
-    deleteLiveStream(id)
-    .then(answer => res.send({message: answer}));
+app.post('/api/deletestream/:id', function(req, res) {
+    if(!req.body) {return res.sendStatus(400)}
+    else {
+        if(req.body.password !== password2Del) { res.send({message: "неверный пароль", status: false}); }
+        else {
+            const id = Number(req.params.id);
+            deleteLiveStream(id)
+            .then(response => res.send(response));
+        };
+    };
 });
 
 // подписаться на стримера
@@ -124,13 +175,18 @@ app.get('/api/checkwebhooks', function(req, res) {
     });    
 });
 
-// подтверждение подписки на вебхук
+// подтверждение подписки/отписки на вебхук
 app.get('/api/webhooks', function(req, res) {
     console.log("webhook get-request");
     // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
     if (req.query['hub.challenge']) {
-        res.send(req.query['hub.challenge'])
-        console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        res.send(req.query['hub.challenge']);
+        if(req.query['hub.mode'] === 'subscribe') {
+            console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        };
+        if(req.query['hub.mode'] === 'unsubscribe') {
+            console.log("отписка от стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+        };
     }
     else {console.log("неизвестный реквест :(")};
 });
@@ -141,7 +197,7 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     else {res.sendStatus(202)};
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log('webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
+        console.log('получен webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
         let newStream = {
             streamID: Number(stream.id),
             streamerID: Number(stream.user_id),
@@ -151,9 +207,9 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
         alreadyExistStream(newStream)
         .then(isStreamExist => {
             if(isStreamExist) {console.log('стрим №' + stream.id + ' уже записывается')}
-            else {recStreamStat (newStream);}
+            else {recStreamStat(newStream);}
         })
-    } else {console.log('webhook - стрим закончился');}
+    } else {console.log('получен webhook - стрим закончился');}
 });
 
 // прослушиваем прерывание работы программы (ctrl-c)
