@@ -127,9 +127,13 @@ const StreamsTable = ({streams}) => {
           <tr className="table_row" key={num}>
             <td className="table_cell"></td>
             <td className="table_cell">
-              {stream.games.map((game, gameNum) => <p className="table_cell_gameName" key={gameNum}>
-                &#8226;&#160;{game}
-                </p>)}
+              {stream.games.map((game, gameNum) => {
+                if(game.trim()) {
+                  return (<p className="table_cell_gameName" key={gameNum}>
+                    &#8226;&#160;{game}
+                  </p>)
+                };
+              })}
             </td>
             <td className="table_cell">{stream.title}</td>
             <td className="table_cell">{stream.stream.created_at}</td>
