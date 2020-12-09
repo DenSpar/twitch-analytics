@@ -4,6 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 var app = express();
 const jsonParser = express.json();
 
+const myLogger = require('./myLogger.js');
+
 const getList = require('./forDashboard/getList.js');
 const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
@@ -47,6 +49,14 @@ mongoClient.connect(function(err, client){
         refreshLiveStreams();
     });
 });
+
+//delete
+    app.get('/api/testlog', function(req, res) {
+        let someTestText = "тестовый лог";
+        myLogger(someTestText, 'TRACE');
+        res.sendStatus(200);
+    });
+//delete
 
 // вернет список стримеров для дашборда
 app.get('/api/streamers', function(req, res) {
