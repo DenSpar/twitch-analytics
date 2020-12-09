@@ -41,9 +41,9 @@ const Dev = () => {
             apiURL={"https://stat.metacorp.gg/api/subwebhook/"} />
 
             <ApiDeleteForm request={"удалит стрим № из коллекции стримов, по айди стрима:"}
-            apiURL={"https://stat.metacorp.gg/api/deletestream/"}/>
+            apiURL={"https://stat.metacorp.gg/api/deletestream"}/>
             <ApiDeleteForm request={"тотальное удаление стримера из всех БД, по айди стримера:"}
-            apiURL={"https://stat.metacorp.gg/api/totaldel/"}/>
+            apiURL={"https://stat.metacorp.gg/api/totaldel"}/>
 
             <form className="ApiButtonAndForm"onSubmit={submitHandlerAPI}>
                 <p className="noMargin">полный url запроса:</p>

@@ -2,24 +2,6 @@ import React, {useContext} from 'react';
 import {AlertContext} from 'context/alert/alertContext';
 import sendRequest from 'js/sendRequest';
 
-// delete
-    // eslint-disable-next-line
-    // let asmadey = {
-    //     delStats: {
-    //         message: 'статистика стримера №83597658 не найдена, нечего удалять',
-    //         status: true
-    //     },
-    //     delStreamer: {
-    //         message: 'стример №83597658 удален из основного списка',
-    //         status: true,
-    //     },
-    //     nowStream: false,
-    //     unsubWebHook: {
-    //         message: 'Отписка от webhooks прошла успешно',
-    //         status: true,
-    //     }
-    // };
-// delete
 const delAlertResult = (servResponse) => {
     let arrAlerts = [];
     let delay = 0;
@@ -104,7 +86,6 @@ const ApiDeleteForm = ({request, apiURL}) => {
             };
             console.log('body ', body);
             sendRequest('POST', apiURL, body)
-            // new Promise (function (resolve, reject) { resolve(asmadey); })
             .then(response => {
                 console.log(response);
                 let alertsArr = delAlertResult(response);

@@ -45,7 +45,7 @@ module.exports = function addChannel2MainStack(channel) {
                     .then(() => {
                         Promise.all([
                             addChannel(channel), // добавление канала в основной стэк
-                            subscribe2WebHook(channel.twitchID, 60), // подписка на вебхуки
+                            subscribe2WebHook(channel.twitchID), // подписка на вебхуки
                             checkAndRecStream(channel.twitchID), // проверка, идет ли стрим
                         ])
                         .then(res => {

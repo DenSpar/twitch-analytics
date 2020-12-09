@@ -142,12 +142,14 @@ app.post('/api/totaldel', jsonParser, function(req, res) {
 });
 
 // удалит стрим № из списка живых стримов
-app.post('/api/deletestream/:id', function(req, res) {
+app.post('/api/deletestream', jsonParser, function(req, res) {
     if(!req.body) {return res.sendStatus(400)}
     else {
-        if(req.body.password !== password2Del) { res.send({message: "неверный пароль", status: false}); }
-        else {
-            const id = Number(req.params.id);
+        if(req.body.password !== password2Del) {
+            console.log("попытка удаления стрима из БД - неверный пароль");
+            res.send({message: "неверный пароль", status: false});
+        } else {
+            const id = Number(req.body.streamerID);
             deleteLiveStream(id)
             .then(response => res.send(response));
         };
