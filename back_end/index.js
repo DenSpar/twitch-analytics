@@ -4,6 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 var app = express();
 const jsonParser = express.json();
 
+const formatedLog = require('./formatedLog.js');
+
 const getList = require('./forDashboard/getList.js');
 const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
@@ -27,18 +29,18 @@ const refreshLiveStreams = require('./refreshLiveStreams/refreshLiveStreams.js')
 
 const password2Del = '5f92965aeb64f05d6b77a600';
 
-console.log('Server running at http://stat.metacorp.gg:3000/');
+formatedLog('Server running at http://stat.metacorp.gg:3000/', 'INFO');
 
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 let dbClient;
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
     app.locals.stats = client.db("streamers").collection("stats");
     app.locals.lives = client.db("streamers").collection("lives");
     app.listen(3000, function(){
-        console.log("mongoDB connect");
+        formatedLog('mongoDB connect', 'INFO');
         // автоматическое обновление статы
         updateStreamersStat();
         // автоматическое продление подписки
@@ -64,7 +66,7 @@ app.get('/api/streamers/:id', function(req, res) {
     // заменить на функцию
     const streamersList = app.locals.streamers;
     streamersList.findOne({twitchID: id}, function(err, streamer){
-        if(err) return console.log(err);
+        if(err) return formatedLog(err, 'ERROR');
         if (streamer) {
             getStreamer4Page(streamer)
             .then(streamerObj => res.send(streamerObj)
@@ -104,16 +106,16 @@ app.get('/api/showlives', function(req, res) {
 
 // поиск каналов по имени
 app.get('/api/search', function(req, res) {
-    if (req.query["name"]) {
-        let name = req.query["name"];
-        let limit = req.query["limit"];
-        if (!limit || limit === "undefined") { limit = 10; };
-        console.log("get-запрос: поиск каналов по имени " + name + ", лимит = " + limit);
+    if (req.query['name']) {
+        let name = req.query['name'];
+        let limit = req.query['limit'];
+        if (!limit || limit === 'undefined') { limit = 10; };
+        formatedLog('get-запрос: поиск каналов по имени ' + name + ', лимит = ' + limit, 'INFO');
         searchChannels(name, limit)
         .then(channels => res.send(channels))
     } else {
-        console.log("get-запрос: поиск каналов по имени - не указано имя поиска");
-        res.send({message: "не указано имя поиска"});
+        formatedLog('get-запрос: поиск каналов по имени - не указано имя поиска', 'INFO');
+        res.send({message: 'не указано имя поиска'});
     };
 });
 
@@ -131,8 +133,8 @@ app.post('/api/totaldel', jsonParser, function(req, res) {
     if(!req.body) { return res.sendStatus(400); }
     else {
         if(req.body.password !== password2Del) {
-            console.log("попытка тотального удаления стримера - неверный пароль");
-            res.send({message: "неверный пароль", status: false});
+            formatedLog('попытка тотального удаления стримера - неверный пароль', 'WARN');
+            res.send({message: 'неверный пароль', status: false});
         } else {
             const id = Number(req.body.streamerID);
             totalDeleteStreamer(id)
@@ -146,8 +148,8 @@ app.post('/api/deletestream', jsonParser, function(req, res) {
     if(!req.body) {return res.sendStatus(400)}
     else {
         if(req.body.password !== password2Del) {
-            console.log("попытка удаления стрима из БД - неверный пароль");
-            res.send({message: "неверный пароль", status: false});
+            formatedLog('попытка удаления стрима из БД - неверный пароль', 'WARN');
+            res.send({message: 'неверный пароль', status: false});
         } else {
             const id = Number(req.body.streamerID);
             deleteLiveStream(id)
@@ -161,7 +163,7 @@ app.get('/api/subwebhook/:id', function(req, res) {
     const id = Number(req.params.id);
     subscribe2WebHook(id)
     .then(response => {
-        console.log(response);
+        formatedLog(response);
         res.send({message: response})
     })
 });
@@ -179,18 +181,17 @@ app.get('/api/checkwebhooks', function(req, res) {
 
 // подтверждение подписки/отписки на вебхук
 app.get('/api/webhooks', function(req, res) {
-    console.log("webhook get-request");
-    // if (req.query) {console.log("req.query:", req.query);}; //показать query парамы
+    formatedLog('webhook get-request', 'INFO');
     if (req.query['hub.challenge']) {
         res.send(req.query['hub.challenge']);
         if(req.query['hub.mode'] === 'subscribe') {
-            console.log("подписка на стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+            formatedLog('подписка на стримера id=' + req.query['hub.topic'].match(/\d+$/)[0], 'INFO');
         };
         if(req.query['hub.mode'] === 'unsubscribe') {
-            console.log("отписка от стримера id=" + req.query['hub.topic'].match(/\d+$/)[0]);
+            formatedLog('отписка от стримера id=' + req.query['hub.topic'].match(/\d+$/)[0], 'INFO');
         };
     }
-    else {console.log("неизвестный реквест :(")};
+    else {formatedLog('неизвестный webhook get-request :('), 'WARN'};
 });
 
 // получение уведомления о начале/окончание стрима
@@ -199,7 +200,7 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
     else {res.sendStatus(202)};
     if (req.body.data.length !== 0) {
         let stream = req.body.data[0];
-        console.log('получен webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id);
+        formatedLog('получен webhook - ' + stream.user_name + '(' + stream.user_id + ')' + ' запустил стрим №' + stream.id, 'INFO');
         let newStream = {
             streamID: Number(stream.id),
             streamerID: Number(stream.user_id),
@@ -208,10 +209,10 @@ app.post('/api/webhooks', jsonParser, function (req, res) {
         };
         alreadyExistStream(newStream)
         .then(isStreamExist => {
-            if(isStreamExist) {console.log('стрим №' + stream.id + ' уже записывается')}
+            if(isStreamExist) {formatedLog('стрим №' + stream.id + ' уже записывается', 'INFO')}
             else {recStreamStat(newStream);}
         })
-    } else {console.log('получен webhook - стрим закончился');}
+    } else {formatedLog('получен webhook - стрим закончился', 'INFO');}
 });
 
 // прослушиваем прерывание работы программы (ctrl-c)
@@ -258,33 +259,5 @@ process.on("SIGINT", () => {
 //     const livesList = app.locals.lives;
 //     livesList.drop(function(err, result){              
 //         res.send({message: 'удалена коллекция lives'})
-//     });
-// });
-
-
-// срочно добавленный стример
-// app.get('/api/addone', function(req, res) {
-//     const streamersList = app.locals.streamers;
-//     const oneStreamer = {
-//         followers: [{"11/25/2020": 19}],
-//         maxOnline: 0,
-//         midOnline: {inDays: 0, value: 0},
-//         name: "russianminecrafttours",
-//         twitchID: 593756357,
-//         views: [{"11/25/2020": 8989}]
-//     }
-//     streamersList.insertOne(oneStreamer, function(err, result){          
-//         if(err) { return console.log(err); }
-//         console.log("добавлен новый стример", result.ops);
-//         res.send(result.ops)
-//     });
-// });
-
-// app.get('/api/delone', function(req, res) {
-//     const streamersList = app.locals.streamers;
-//     streamersList.findOneAndDelete({twitchID: 593756357}, function(err, result){               
-//         if(err) return console.log(err);
-//         console.log("удален стример");
-//         res.send(result)
 //     });
 // });
