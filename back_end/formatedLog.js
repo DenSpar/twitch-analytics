@@ -1,7 +1,7 @@
 module.exports = function formatedLog (logText, logLevel = 'TRACE') {
     console.log(
         new Date().toLocaleString('ru-Ru', { timeZone: 'Europe/Moscow' }),
-        logLevel + ' ',
+        logLevel,
         logText
     );
 };

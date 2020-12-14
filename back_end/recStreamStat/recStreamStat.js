@@ -79,58 +79,45 @@ let checkStream = (numID, obj) => {
     })
 };
 
-module.exports = function recStreamStat (newStream) {
-    getStreamsChannelById(newStream.streamerID)
+let startRec = (stream, title) => {
+    console.log("начинаю записывать стату по стриму №" + stream._id);
+    let statObj = {
+        streamerName: stream.channel.display_name,
+        streamerID: stream.channel._id,
+        maxViewers: stream.viewers,
+        midViewers: stream.viewers,
+        med50Viewers: stream.viewers,
+        stat:[stream.viewers],
+        stream: {created_at: stream.created_at},
+        record: {start_at: new Date().toISOString()},
+        games: {now: stream.game, all: [stream.game]},
+        title: title,
+        streamID: stream._id,
+        notes: []
+    };
+    let difStartAndRecStream = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
+    if (difStartAndRecStream > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
+    checkStream(statObj.streamerID, statObj);
+};
+
+let wrongStart = (newStream) => {
+    console.log("что-то не так: стрима №" + newStream.streamID +  " - нет. Проверю через минуту");
+    setTimeout(getStreamsChannelById, 60000, newStream.streamerID)
     .then(stream => {
-        console.log("начинаю записывать стату по стриму #" + newStream.streamID);
         if (stream.stream) {
-            let statObj = {
-                streamerName: stream.stream.channel.display_name,
-                streamerID: stream.stream.channel._id,
-                maxViewers: stream.stream.viewers,
-                midViewers: stream.stream.viewers,
-                med50Viewers: stream.stream.viewers,
-                stat:[stream.stream.viewers],
-                stream: {created_at: stream.stream.created_at},
-                record: {start_at: new Date().toISOString()},
-                games: {now: stream.stream.game, all: [stream.stream.game]},
-                title: newStream.title,
-                streamID: Number(newStream.streamID),
-                notes: []
-            };
-            let difStartAndRecStream = (new Date(statObj.record.start_at).getTime() - new Date(statObj.stream.created_at).getTime())/1000;
-            if (difStartAndRecStream > 300) {statObj.notes.push('сбор статистики не с начала стрима')};
-            checkStream(newStream.streamerID, statObj);
-        } else {console.log("что-то не так: стрима #" + newStream.streamID +  " - нет");}
+            startRec(stream.stream, newStream.title);
+        } else {
+            console.log("повторная проверка стрима №" + newStream.streamID +  " - стрима все еще нет");
+            deleteLiveStream(newStream.streamID);
+        };
     })
 };
 
-// сейчас записывает так:
-// {
-//     name: "Stray228",
-//     streams: [
-//         {games: ["Dota 2"],
-//         maxViewers: 10279,
-//         med50Viewers: 8336,
-//         midViewers: 8101,
-//         minutes1Viewer: 1,
-//         notes: [],
-//         record: {start_at: "2020-11-13T18:08:20.784Z", length: "5:55:48"},
-//         stream: {created_at: "2020-11-13T18:06:48Z", length: "5:57:21"},
-//         streamID: 39973754108,
-//         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
-
-//         {games: ["Dota 2"],
-//         maxViewers: 12102,
-//         med50Viewers: 9478,
-//         midViewers: 9379,
-//         minutes1Viewer: 2,
-//         notes: [],
-//         record:{length: "6:11:58", start_at: "2020-11-15T17:52:20.337Z"},
-//         stream: {created_at: "2020-11-15T17:51:35Z", length: "6:12:43"},
-//         streamID: 40001177404,
-//         title: "Как стать успешным стримером(секреты), заходи + прогрессируй братишка"},
-//     ],
-//     twitchID: 40488774,
-//     _id: "5faf1ef8d124e0bedd6d2b1a"
-// }
+module.exports = function recStreamStat (newStream) {
+    getStreamsChannelById(newStream.streamerID)
+    .then(stream => {
+        if (stream.stream) {
+            startRec(stream.stream, newStream.title);
+        } else { wrongStart(newStream); };
+    });
+};
