@@ -8,7 +8,7 @@ let makeSubsArr = (arr) => {
             secLeft: Math.round((new Date(sub.expires_at).getTime() - new Date().getTime())/1000)
         })
     })
-    return resArr
+    return resArr;
 };
 
 module.exports = function checkWebHooks(streamersIdArr) {
@@ -25,7 +25,7 @@ module.exports = function checkWebHooks(streamersIdArr) {
             streamersIdArr.map(streamerId => {
                 let isSub = false;
                 for (let i = 0; i < subsArr.length; i++) {
-                    if (subsArr[i].id = streamerId) {
+                    if (subsArr[i].id === Number(streamerId)) {
                         if (subsArr[i].secLeft > 260000) {
                             resObj.ok.push(subsArr[i]);
                         } else {
@@ -36,7 +36,7 @@ module.exports = function checkWebHooks(streamersIdArr) {
                         break
                     };
                 };
-                if (!isSub) {resObj.over.push(streamerId);};
+                if (!isSub) {resObj.over.push(Number(streamerId));};
             });
             resolve(resObj);
         });

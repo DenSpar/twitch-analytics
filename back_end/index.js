@@ -10,6 +10,7 @@ const getList = require('./forDashboard/getList.js');
 const getStreamer4Page = require('./forStreamerPage/getStreamer4Page.js')
 // const getStreamer = require('./twitchApiRequests/getStreamer.js');
 const updateStreamersStat = require('./updateStreamersStat/updateStreamersStat.js');
+const getWebHooks = require('./twitchApiRequests/getWebHooks.js');
 const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
 const updateWebHooks = require('./updateWebHooks.js');
@@ -90,6 +91,7 @@ app.get('/api/streamerfromlist/:id', function(req, res) {
 
 // вывод содержимого коллекции stats
 app.get('/api/showstats', function(req, res) {
+    // заменить на функцию
     const statsList = app.locals.stats;
     statsList.find().toArray(function(err, stats){
         res.send(stats)
@@ -98,6 +100,7 @@ app.get('/api/showstats', function(req, res) {
 
 // вывод содержимого коллекции lives
 app.get('/api/showlives', function(req, res) {
+    // заменить на функцию
     const livesList = app.locals.lives;
     livesList.find().toArray(function(err, lives){
         res.send(lives)
@@ -168,7 +171,7 @@ app.get('/api/subwebhook/:id', function(req, res) {
     })
 });
 
-// показать список активных подписок
+// показать отчет о подписках
 app.get('/api/checkwebhooks', function(req, res) {
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
@@ -176,7 +179,13 @@ app.get('/api/checkwebhooks', function(req, res) {
         streamers.map(streamer => streamersIdArr.push(streamer.twitchID));
         checkWebHooks(streamersIdArr)
         .then(result => res.send(result));
-    });    
+    });
+});
+
+// показать актуальный список подписок от twitch
+app.get('/api/getwebhooks', function(req, res) {
+    getWebHooks()
+    .then(result => res.send(result));
 });
 
 // подтверждение подписки/отписки на вебхук
