@@ -143,8 +143,8 @@ const Streamer = () => {
         // удалить условие
         if (nowURL.hostname === 'localhost') {
             console.log ('на localhost');
-            // testStreamer(denly);
-            testStreamer(closedChannel);
+            testStreamer(denly);
+            // testStreamer(closedChannel);
         } else {
             sendRequest('GET', 'https://stat.metacorp.gg/api/streamers/' + streamerID)
             .then(streamer => {

@@ -132,7 +132,7 @@ const StreamsTable = ({streams}) => {
                   return (<p className="table_cell_gameName" key={gameNum}>
                     &#8226;&#160;{game}
                   </p>)
-                };
+                } else return null;
               })}
             </td>
             <td className="table_cell">{stream.title}</td>

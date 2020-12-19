@@ -41,7 +41,7 @@ const Dev = () => {
             <ApiButtonAndForm request={"подписаться на вебхуки по стримам, по айди стримера:"}
             apiURL={"https://stat.metacorp.gg/api/subwebhook/"} />
 
-            <ApiDeleteForm request={"удалит стрим № из коллекции стримов, по айди стрима:"}
+            <ApiDeleteForm request={"удалить стрим № из коллекции стримов, по айди стрима:"}
             apiURL={"https://stat.metacorp.gg/api/deletestream"}/>
             <ApiDeleteForm request={"тотальное удаление стримера из всех БД, по айди стримера:"}
             apiURL={"https://stat.metacorp.gg/api/totaldel"}/>

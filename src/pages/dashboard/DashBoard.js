@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './dashboard.css';
 import DashboardTable from 'components/table/DashboardTable';
 import sendRequest from 'js/sendRequest';
-// import getList from 'js/getList';
 import Preloader from 'components/preloader/Preloader';
 import SearchChannel from 'components/searchChannel/SearchChannel';
 import StreamersContext from 'context/streamersContext';
