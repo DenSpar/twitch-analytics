@@ -24,7 +24,6 @@ module.exports = function searchChannels(name, limit=10) {
                 obj.channels.push(newChannel);
             })
             resolve(obj);
-            // resolve({searchRes: searchRes});
         })
     })
 };

@@ -8,7 +8,6 @@ module.exports = function subscribe2WebHook(streamerID, subTime = 864000) {
     return new Promise (function(resolve, reject) {
         getAccessToken()
         .then(accessToken => {
-            // подписаться на стримы
             let subscribeOnStreamURL = 'https://api.twitch.tv/helix/webhooks/hub';
             let reqHeaders = {
                 Authorization: 'Bearer ' + accessToken.access_token,

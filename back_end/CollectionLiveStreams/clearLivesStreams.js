@@ -13,7 +13,6 @@ mongoClient.connect(function(err, client){
 });
 
 module.exports = function clearLivesStreams () {
-    // вынести в отдельный модуль
     return new Promise (function(resolve, reject) {
         const livesList = app.locals.lives;
         livesList.drop(function(err, result){
