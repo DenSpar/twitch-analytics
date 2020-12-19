@@ -7,8 +7,6 @@ import greenOrRedDiff from 'js/greenOrRedDiff';
 import TrimName from 'components/trimName/TrimName';
 
 const DashboardTable = ({streamers, border = ''}) => {
-  console.log(streamers);
-
   const openStreamerPage = (streamer) => {
     if (streamer.id) {
       let streamerURL = new URL(window.location.href);

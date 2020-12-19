@@ -64,14 +64,11 @@ const addChannelAlertResult = (servResponse) => {
 // delete
 
 const SearchTable = ({streamers}) => {
-  console.log(streamers);
-  
   const alert = useContext(AlertContext);
   const {setStreamers} = useContext(StreamersContext);
 
   const addChannel = (streamer) => {
     //delete
-      console.log("streamer", streamer);
       let nowURL = new URL(window.location.href);
       if (nowURL.hostname === 'localhost') {
         let newStreamer = {
@@ -88,7 +85,6 @@ const SearchTable = ({streamers}) => {
             middle: "-"
           }
         };
-        console.log(streamer.name, streamer._id, newStreamer);
         setStreamers(prevState => {
           if (isInTable(newStreamer, prevState)) {
             alert.show('Канал '+ newStreamer.name +' уже в основном стэке');
@@ -99,7 +95,6 @@ const SearchTable = ({streamers}) => {
             alert.show(alertObj.text, alertObj.type, alertObj.time);
             if(servResponse.isStreamNow.status) {
               let timeDelay = alertObj.time + 750;
-              console.log("timeDelay",timeDelay);
               let streamMessage = servResponse.isStreamNow.message;
               setTimeout(alert.show, timeDelay, streamMessage, "success");
             };
@@ -110,7 +105,6 @@ const SearchTable = ({streamers}) => {
     } else {
       sendRequest('POST', 'https://stat.metacorp.gg/api/addchannel', streamer)
       .then(res => {
-        console.log("addChannel res:", res);
         let newStreamer = res.newStreamer;
 
         setStreamers(prevState => {

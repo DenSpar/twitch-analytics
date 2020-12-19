@@ -26,8 +26,9 @@ const Dev = () => {
             <p>дернуть ручку на metacorp</p>
             <div className="flex">
                 <div className="flex devContainer_column" style={{ width: '200px' }}>
-                    <ApiButton request={"список для дашборда"} apiURL={"https://stat.metacorp.gg/api/streamers"}></ApiButton>
-                    <ApiButton request={"проверка вебхуков"} apiURL={"https://stat.metacorp.gg/api/checkwebhooks"} />
+                    <ApiButton request={"список для дашборда"} apiURL={"https://stat.metacorp.gg/api/streamers"} />
+                    <ApiButton request={"отчет о вебхуках"} apiURL={"https://stat.metacorp.gg/api/checkwebhooks"} />
+                    <ApiButton request={"список вебхуков из twitch-api"} apiURL={"https://stat.metacorp.gg/api/getwebhooks"} />
                 </div>
                 <div className="flex devContainer_column" style={{ width: '200px' }}>
                     <ApiButton request={"коллекция стримеров"} apiURL={"https://stat.metacorp.gg/api/showlist"} />

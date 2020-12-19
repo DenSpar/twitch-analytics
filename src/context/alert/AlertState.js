@@ -8,7 +8,6 @@ export const AlertState = ({children}) => {
     const hide = () => dispatch({type: "HIDE_ALERT"});
 
     const show = (text, type = "warning", time=3000) => {
-        console.log("show");
         dispatch({
             type: "SHOW_ALERT",
             payload: {text, type, time}

@@ -11,9 +11,7 @@ const SearchChannel = () => {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
-  // может вынести просто в переменную?
   const [actualLimit, setActialLimit] = useState(10);
-  //
   const alert = useContext(AlertContext);
 
   let searchChannel = (query, limit=10) => {
@@ -21,10 +19,8 @@ const SearchChannel = () => {
     //delete
     let nowURL = new URL(window.location.href);
     if (nowURL.hostname === 'localhost') {
-      console.log ('на localhost');
       searchChannelByName(query, limit)
       .then(searchRes => {
-        console.log(searchRes);
         let newObj = {
           total: searchRes._total,
           channels: searchRes.channels
@@ -42,7 +38,6 @@ const SearchChannel = () => {
     } else {
       sendRequest('GET', 'https://stat.metacorp.gg/api/search?name=' + query + '&limit=' + limit)
       .then(searchRes => {
-        console.log(searchRes);
         setSearchState(searchRes);
       })
       .then(() => {
