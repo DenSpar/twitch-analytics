@@ -2,10 +2,12 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const formatedLog = require('../formatedLog.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
 });
@@ -15,7 +17,7 @@ module.exports = function deleteStreamerFromDB (streamerID) {
         let response = {};
         const streamersList = app.locals.streamers;
         streamersList.findOneAndDelete({twitchID: streamerID}, function(err, result){               
-            if(err) return console.log(err);    
+            if(err) return formatedLog(err, 'ERROR');    
             let streamer = result.value;
             if (streamer) {
                 response.message = 'Стример №' + streamerID +' удален из основного списка';
@@ -24,7 +26,7 @@ module.exports = function deleteStreamerFromDB (streamerID) {
                 response.message = 'Стример №' + streamerID + ' не найден в основном списке, нечего удалять';
                 response.status = false;
             };
-            console.log(response.message);
+            formatedLog(response.message, 'INFO');
             resolve(response);
         });
     });

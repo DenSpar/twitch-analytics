@@ -1,4 +1,5 @@
 const getStreamer4Dashboard = require('./getStreamer4Dashboard.js');
+const formatedLog = require('../formatedLog.js');
 
 let filterDeadChannels = (channels) => {
     let onlyUndead = [];
@@ -23,13 +24,8 @@ module.exports = function getList(listFromDB) {
                 listFromDB.map(channel => (getStreamer4Dashboard(channel)))
             )
             .then(allChannels => filterDeadChannels(allChannels))
-            .then(onlyLiveChannels => {
-                // onlyLiveChannels.map(channel => {
-                //     delete channel.description;
-                // });
-                resolve(onlyLiveChannels)
-            })        
+            .then(onlyLiveChannels => resolve(onlyLiveChannels))        
         ))
-        .catch(err => console.log(err))
+        .catch(err => formatedLog(err, 'ERROR'))
     )
 };

@@ -1,4 +1,5 @@
 var fetch = require('node-fetch');
+const formatedLog = require('./formatedLog.js');
 
 module.exports = function sendRequest(method, url, body = null, extHeaders = null) {  
   let options = { 
@@ -24,5 +25,5 @@ module.exports = function sendRequest(method, url, body = null, extHeaders = nul
       }
     };
   })
-  .catch(err => console.log(err))
+  .catch(err => formatedLog(err, 'ERROR'));
 };

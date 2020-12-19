@@ -3,6 +3,7 @@ const deleteStreamerFromDB = require('../collectionStreamers/deleteStreamerFromD
 const deleteStreamerStats = require('../collectionStats/deleteStreamerStats.js');
 const findLiveStream = require('../collectionLiveStreams/findLiveStream.js');
 const getStreamsChannelById = require('../twitchApiRequests/getStreamsChannelById.js');
+const formatedLog = require('../formatedLog.js');
 
 let checkNowStream = (streamerID) => {
     return new Promise (function (resolve, reject) {
@@ -22,7 +23,7 @@ let checkNowStream = (streamerID) => {
 
 module.exports = function totalDeleteStreamer(streamerID) {
     return new Promise (function(resolve, reject) {
-        console.log("запущенно полное удаление стримера №" + streamerID + " из БД");
+        formatedLog('запущенно полное удаление стримера №' + streamerID + ' из БД', 'INFO');
         Promise.all([
             unsubscribeOfWebHook(streamerID), // отписка от вебхука
             deleteStreamerFromDB(streamerID), // удаление из основного списка

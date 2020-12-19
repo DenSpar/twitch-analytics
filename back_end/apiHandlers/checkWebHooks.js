@@ -1,4 +1,5 @@
 const getWebHooks = require('../twitchApiRequests/getWebHooks.js');
+const formatedLog = require('../formatedLog.js');
 
 let makeSubsArr = (arr) => {
     let resArr = [];
@@ -15,7 +16,7 @@ module.exports = function checkWebHooks(streamersIdArr) {
     return new Promise (function(resolve, reject) {
         getWebHooks()
         .then(subsList => {
-            if (subsList.total === 0) {console.log('нет активных подписок')};
+            if (subsList.total === 0) { formatedLog('нет активных подписок', 'INFO'); };
             let subsArr = makeSubsArr(subsList.data);
             let resObj = {
                 ok: [],

@@ -28,13 +28,10 @@ module.exports = function getDiff(property, actual, streamerFromDB) {
             let daysOfComparison = 0;
             if (property === 'followers') { daysOfComparison = 7 };
             if (property === 'views') { daysOfComparison = 30 };
-            // console.log('property = ' + property + ', daysOfComparison = ' + daysOfComparison);
             for (let i = stats.length - 1; i >= 0; i--) {
                 let dateStr = Object.keys(stats[i])[0];
-                if (getDaysDiff(dateStr) < daysOfComparison && i !== 0) {
-                    // console.log(property + ': ', getDaysDiff(dateStr) + '<' + daysOfComparison, 'i=' + i);
-                    continue
-                } else {
+                if (getDaysDiff(dateStr) < daysOfComparison && i !== 0) { continue }
+                else {
                     obj.diff = obj.actual - Object.values(stats[i])[0];
                     let dateStr = Object.keys(stats[i])[0];
                     obj.inDays = getDaysDiff(dateStr);

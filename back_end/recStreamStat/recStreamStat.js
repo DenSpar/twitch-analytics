@@ -3,6 +3,7 @@ const quickSort = require('../quickSort.js');
 const videoTimeConverter = require('../videoTimeConverter.js');
 const saveStreamStat = require('./saveStreamStat.js');
 const deleteLiveStream = require('../collectionLiveStreams/deleteLiveStream.js');
+const formatedLog = require('../formatedLog.js');
 
 let deleteNulls = (obj) => {
     let firstViewer = 1;
@@ -39,7 +40,7 @@ let checkGame = (nowGame, gamesObj) => {
 };
 
 let endStream = (obj) => {
-    console.log(obj.streamerName + "(" + obj.streamerID + ") закончил стрим #" + obj.streamID);
+    formatedLog(obj.streamerName + '(' + obj.streamerID + ') закончил стрим #' + obj.streamID, 'INFO');
     deleteNulls(obj);
     if (obj.stat.length > 0) {
         obj.midViewers = Math.round(obj.stat.reduce((prev, viewers) => prev + viewers, 0) / obj.stat.length);
@@ -64,15 +65,7 @@ let checkStream = (numID, obj) => {
                 if (stream.stream.viewers > obj.maxViewers) {
                     obj.maxViewers = stream.stream.viewers
                 };
-
-                // delete
-                    console.log(
-                        obj.streamerName,
-                        ", id:" + obj.streamID,
-                        ", mins:" + (obj.stat.length-1)
-                    );
-                // delete
-
+                formatedLog(obj.streamerName + ', id:' + obj.streamID + ', mins:' + (obj.stat.length-1), 'INFO');
                 setTimeout(checkStream, 60000, numID, obj)
             } else { endStream(obj); };
         } else { endStream(obj); };
@@ -80,7 +73,7 @@ let checkStream = (numID, obj) => {
 };
 
 let startRec = (stream, title) => {
-    console.log("начинаю записывать стату по стриму №" + stream._id);
+    formatedLog('начинаю записывать стату по стриму №' + stream._id, 'INFO');
     let statObj = {
         streamerName: stream.channel.display_name,
         streamerID: stream.channel._id,
@@ -101,13 +94,13 @@ let startRec = (stream, title) => {
 };
 
 let wrongStart = (newStream) => {
-    console.log("что-то не так: стрима №" + newStream.streamID +  " - нет. Проверю через минуту");
+    formatedLog('что-то не так: стрима №' + newStream.streamID +  ' - нет. Проверю через минуту', 'WARN');
     setTimeout(getStreamsChannelById, 60000, newStream.streamerID)
     .then(stream => {
         if (stream.stream) {
             startRec(stream.stream, newStream.title);
         } else {
-            console.log("повторная проверка стрима №" + newStream.streamID +  " - стрима все еще нет");
+            formatedLog('повторная проверка стрима №' + newStream.streamID +  ' - стрима все еще нет', 'WARN');
             deleteLiveStream(newStream.streamID);
         };
     })

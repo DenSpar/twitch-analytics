@@ -2,10 +2,12 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const formatedLog = require('../formatedLog.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.lives = client.db("streamers").collection("lives");
 });
@@ -15,7 +17,7 @@ module.exports = function deleteLiveStream (streamID) {
         let response = {};
         const livesList = app.locals.lives;
         livesList.findOneAndDelete({streamID: streamID}, function(err, result){               
-            if(err) return console.log(err);    
+            if(err) return formatedLog(err, 'ERROR');    
             let stream = result.value;
             if (stream) {
                 response.message = 'стрим №' + streamID +' удален из текущих стримов';
@@ -24,7 +26,7 @@ module.exports = function deleteLiveStream (streamID) {
                 response.message = 'стрим №' + streamID + ' не найден, нечего удалять';
                 response.status = false;
             };
-            console.log(response.message);
+            formatedLog(response.message, 'INFO');
             resolve(response);
         });
     });

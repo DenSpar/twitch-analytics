@@ -4,17 +4,18 @@ var app = express();
 
 const checkWebHooks = require('./apiHandlers/checkWebHooks.js');
 const subscribe2WebHook  = require('./twitchApiRequests/subscribe2WebHook.js');
+const formatedLog = require('./formatedLog.js');
 
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
 });
 
 let updateScript = () => {
-    console.log('обновление вебхуков: проверяю статус подписок ...');
+    formatedLog('обновление вебхуков: проверяю статус подписок ...', 'INFO');
     const streamersList = app.locals.streamers;
     streamersList.find().toArray(function(err, streamers){
         let streamersIdArr = [];
@@ -27,16 +28,16 @@ let updateScript = () => {
                 sortedSubs.needRefresh.map(sub => arr2Subscribe.push(sub.id));
             };
             if(arr2Subscribe.length !== 0) {
-                console.log('обновление вебхуков: актуализирую подписки ...')
+                formatedLog('обновление вебхуков: актуализирую подписки ...', 'INFO');
                 arr2Subscribe.map(id2Subscribe => subscribe2WebHook(id2Subscribe))
-            } else {console.log('обновление вебхуков: все подписки действительны, нечего актуализировать')};
+            } else { formatedLog('обновление вебхуков: все подписки действительны, нечего актуализировать', 'INFO'); };
         })
     })
 };
 
 module.exports = function updateWebHooks() {
     updateScript();
-    console.log("обновление подписок: стартовал таймер");
+    formatedLog('обновление подписок: стартовал таймер', 'INFO');
     setInterval(() => { updateScript(); }, 86400000);
 };
 

@@ -3,6 +3,7 @@ const getChannelById = require('../twitchApiRequests/getChannelById.js');
 const getStreamerStats = require('../collectionStats/getStreamerStats.js');
 const getMidAndMaxOnline = require('./getMidAndMaxOnline.js');
 const updateStreamerInList = require('../collectionStreamers/updateStreamerInList.js');
+const formatedLog = require('../formatedLog.js');
 
 let getNewStat = (date) => {
     let localDate = date.toLocaleDateString();
@@ -64,15 +65,15 @@ let updateScript = () => {
     if (hoursNow > 23) { hoursNow = hoursNow - 24; };
     let hoursWait = 9;
     if (hoursNow === hoursWait) {
-        console.log('обновление статы стримеров: обновление ...');
+        formatedLog('обновление статы стримеров: обновление ...', 'INFO');
         return getNewStat(currentDate)
     } else {
-        console.log('обновление статы стримеров: сейчас ' + hoursNow + ' часов, жду ' + hoursWait);
+        formatedLog('обновление статы стримеров: сейчас ' + hoursNow + ' часов, жду ' + hoursWait, 'INFO');
     };
 };
 
 module.exports = function updateStreamersStat() {
     updateScript();
-    console.log("обновление статы стримеров: стартовал таймер");
+    formatedLog('обновление статы стримеров: стартовал таймер', 'INFO');
     setInterval(() => { updateScript(); }, 3600000);
 };

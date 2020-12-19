@@ -4,6 +4,7 @@ const getOnlineInfo = require('../preparingStreamers4Send/getOnlineInfo.js');
 const getStreamInfo = require('../preparingStreamers4Send/getStreamInfo.js');
 const getInfo4ClosedChannel = require('../preparingStreamers4Send/getInfo4ClosedChannel.js');
 const howManyStreamsIn7Days = require('./howManyStreamsIn7Days.js');
+const formatedLog = require('../formatedLog.js');
 
 let getChannelInfo = (numID, obj) => {
     return new Promise((resolve, reject) => {
@@ -60,5 +61,5 @@ module.exports = function getStreamer4Dashboard(streamerFromDB) {
             resolve(finalObj)
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => formatedLog(err, 'ERROR'));
 };

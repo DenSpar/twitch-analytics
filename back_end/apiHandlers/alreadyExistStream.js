@@ -1,6 +1,7 @@
 const findLiveStream = require('../collectionLiveStreams/findLiveStream.js');
 const updateLiveStream = require('../collectionLiveStreams/updateLiveStream.js');
 const addLiveStream = require('../collectionLiveStreams/addLiveStream.js');
+const formatedLog = require('../formatedLog.js');
 
 module.exports = function alreadyExistStream (srcStream) {
     return new Promise (function(resolve, reject) {
@@ -9,17 +10,17 @@ module.exports = function alreadyExistStream (srcStream) {
         .then(findStream => {
             if (findStream) {
                 if (findStream.streamID !== srcStream.streamID) {
-                        console.log('в БД записан устаревший стрим, заменяю актуальным ...');
+                        formatedLog('в БД записан устаревший стрим, заменяю актуальным ...', 'INFO');
                         updateLiveStream(srcStream);
                         response = false;
                     }
                 else {
-                    console.log('стрим №' + srcStream.streamID + ' уже есть в БД');
+                    formatedLog('стрим №' + srcStream.streamID + ' уже есть в БД', 'INFO');
                     response = true;
                 };
             }
             else {
-                console.log('в БД нет стрима №' + srcStream.streamID);
+                formatedLog('в БД нет стрима №' + srcStream.streamID, 'INFO');
                 addLiveStream(srcStream);
                 response = false;
             };

@@ -2,10 +2,12 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const formatedLog = require('../formatedLog.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.lives = client.db("streamers").collection("lives");
 });
@@ -17,9 +19,9 @@ module.exports = function updateLiveStream (stream) {
         livesList.findOneAndUpdate({streamerID: stream.streamerID}, { $set: stream },
             {returnOriginal: false },function(err, result){
                   
-           if(err) return console.log(err);
+           if(err) return formatedLog(err, 'ERROR');
             response = 'стрим №' + stream.streamID + ' записан в БД вместо старого';
-            console.log (response);
+            formatedLog(response, 'INFO');
             resolve({message: response, newStream: result});
         });
     });

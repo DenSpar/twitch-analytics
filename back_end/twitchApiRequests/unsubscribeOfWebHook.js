@@ -2,6 +2,8 @@ const sendRequest = require('../sendRequest.js');
 const clientId = require('./clientId.js').clientId;
 const getAccessToken = require('./getAccessToken.js');
 
+const formatedLog = require('../formatedLog.js');
+
 module.exports = function unsubscribeOfWebHook(streamerID) {
     return new Promise (function(resolve, reject) {
         getAccessToken()
@@ -28,9 +30,8 @@ module.exports = function unsubscribeOfWebHook(streamerID) {
                     response.message = 'Не удалось отписаться от webhooks';
                     response.status = false;
                 };
-                console.log ('канал №' + streamerID + ' - ' + response.message);
+                formatedLog('канал №' + streamerID + ' - ' + response.message, 'INFO');
                 resolve(response);
-                resolve(subsRes);
             });
         });
     });

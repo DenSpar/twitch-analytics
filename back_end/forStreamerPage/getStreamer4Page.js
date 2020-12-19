@@ -8,6 +8,7 @@ const videoTimeConverter = require('../videoTimeConverter.js');
 const splitNumbers = require('../preparingStreamers4Send/splitNumbers.js');
 const dateConverter = require('./dateConverter.js');
 const getInfo4ClosedChannel = require('../preparingStreamers4Send/getInfo4ClosedChannel.js');
+const formatedLog = require('../formatedLog.js');
 
 let makeVideosList = (videosArr) => {
     let arr = [] ;  
@@ -104,5 +105,5 @@ module.exports = function getStreamer4Page(streamerFromDB) {
             resolve(finalObj)
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => formatedLog(err, 'ERROR'));
 };

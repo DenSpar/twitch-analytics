@@ -4,6 +4,7 @@ const addChannel = require('../collectionStreamers/addChannel.js');
 const subscribe2WebHook = require('../twitchApiRequests/subscribe2WebHook.js');
 const checkAndRecStream = require('../refreshLiveStreams/checkAndRecStream.js');
 const getStreamer4Dashboard = require('../forDashboard/getStreamer4Dashboard.js');
+const formatedLog = require('../formatedLog.js');
 
 let refactorChannel = (channel) => {
     delete channel.description;
@@ -29,13 +30,13 @@ module.exports = function addChannel2MainStack(channel) {
     return new Promise (function(resolve, reject) {
         let response = {};
         if (channel) {
-            console.log("добавление нового канала " + channel.name + "(" + channel.twitchID + ")");
+            formatedLog('добавление нового канала ' + channel.name + '(' + channel.twitchID + ')', 'INFO');
             refactorChannel(channel);
             getStreamerFromDB(channel.twitchID)
             .then(streamerFromDB => {
                 if(streamerFromDB) {
                     response.message = "такой канал уже есть в основном стэке";
-                    console.log(response.message);
+                    formatedLog(response.message, 'INFO');
                     resolve(response);
                 } else {
                     getChannelById(channel.twitchID)

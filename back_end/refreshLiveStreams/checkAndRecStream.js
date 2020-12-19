@@ -2,6 +2,8 @@ const getStreamsChannelById = require('../twitchApiRequests/getStreamsChannelByI
 const recStreamStat = require('../recStreamStat/recStreamStat.js');
 const alreadyExistStream = require('../apiHandlers/alreadyExistStream.js');
 
+const formatedLog = require('../formatedLog.js');
+
 module.exports = function checkAndRecStream (channelID) {
     return new Promise (function(resolve, reject) {
         getStreamsChannelById(channelID)
@@ -25,8 +27,7 @@ module.exports = function checkAndRecStream (channelID) {
                             response.message = 'На канале №' + channelID + ' идет стрим - запущена запись статистики';
                             response.status = true;
                         };
-
-                        console.log (response.message);
+                        formatedLog(response.message, 'INFO');
                         resolve(response);
                     })
             } else {

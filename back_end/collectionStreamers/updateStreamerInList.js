@@ -2,10 +2,12 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var app = express();
 
+const formatedLog = require('../formatedLog.js');
+
 let dbClient;
 const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
+    if(err) return formatedLog(err, 'ERROR');
     dbClient = client;
     app.locals.streamers = client.db("streamers").collection("list");
 });
@@ -17,9 +19,9 @@ module.exports = function updateStreamerInList (streamerID, streamerName, update
         streamersList.findOneAndUpdate({twitchID: streamerID}, { $set: updatesOBJ },
             {returnOriginal: false },function(err, result){
 
-            if(err) return console.log(err);
+            if(err) return formatedLog(err, 'ERROR');
             response = 'статистика стримера ' + streamerName + '(' + streamerID + ')' + ' обновленна';
-            console.log (response);
+            formatedLog(response, 'INFO');
             resolve({message: response, newStat: result});
         });
     });
