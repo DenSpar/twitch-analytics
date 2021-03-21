@@ -3,7 +3,7 @@ import SearchTable from 'components/table/SearchTable';
 import './searchChannel.css';
 import Preloader from 'components/preloader/Preloader';
 import {AlertContext} from 'context/alert/alertContext';
-import searchChannelByName from 'js/twitchApiRequsts/searchChannelByName';
+// import searchChannelByName from 'js/twitchApiRequsts/searchChannelByName';
 import sendRequest from 'js/sendRequest';
 
 const SearchChannel = () => {
@@ -16,26 +16,24 @@ const SearchChannel = () => {
 
   let searchChannel = (query, limit=10) => {
     setLoading(true);
-    //delete
-    let nowURL = new URL(window.location.href);
-    if (nowURL.hostname === 'localhost') {
-      searchChannelByName(query, limit)
-      .then(searchRes => {
-        let newObj = {
-          total: searchRes._total,
-          channels: searchRes.channels
-        };
-        setSearchState(newObj);
-      })
-      .then(() => {
-        setLoading(false);
-        setTitle(query);
-        setValue('');
-        setActialLimit(prev => prev+10);
-      })
-      //delete
-
-    } else {
+    
+    // let nowURL = new URL(window.location.href);
+    // if (nowURL.hostname === 'localhost') {
+    //   searchChannelByName(query, limit)
+    //   .then(searchRes => {
+    //     let newObj = {
+    //       total: searchRes._total,
+    //       channels: searchRes.channels
+    //     };
+    //     setSearchState(newObj);
+    //   })
+    //   .then(() => {
+    //     setLoading(false);
+    //     setTitle(query);
+    //     setValue('');
+    //     setActialLimit(prev => prev+10);
+    //   })
+    // } else {
       sendRequest('GET', 'https://stat.metacorp.gg/api/search?name=' + query + '&limit=' + limit)
       .then(searchRes => {
         setSearchState(searchRes);
@@ -45,8 +43,8 @@ const SearchChannel = () => {
         setTitle(query);
         setValue('');
         setActialLimit(prev => prev+10);
-      })
-    }
+      });
+    // }
   };
 
   const submitHandler = (event) => {
@@ -74,13 +72,14 @@ const SearchChannel = () => {
     };
 
     return (
-    <div className="flex сontrolButtonsContainer">
-      {howManyResults!==0 && 
-        <button className="defaultBtn сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
-      }
-      <button className="defaultBtn сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
-    </div>
-  )};
+      <div className="flex сontrolButtonsContainer">
+        {howManyResults!==0 && 
+          <button className="defaultBtn сontrolButton" onClick={() => showMoreChannels()}>показать еще</button>
+        }
+        <button className="defaultBtn сontrolButton" onClick={() => clearSearchState()}>скрыть результат поиска</button>
+      </div>
+    )
+  };
 
   return (
     <Fragment>
